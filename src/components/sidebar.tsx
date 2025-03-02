@@ -25,6 +25,7 @@ import {
   X,
   ChevronRight,
   ChevronDown,
+  ChevronLeft,
   Menu,
 } from "lucide-react";
 
@@ -195,8 +196,8 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
           <CollapsibleTrigger asChild>
             <button
               className={cn(
-                "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground font-semibold",
-                openGroups[item.title] ? "bg-accent/50" : "transparent"
+                "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground font-semibold",
+                openGroups[item.title] ? "bg-accent/50 text-primary" : "text-foreground"
               )}
             >
               <div className="flex items-center gap-3">
@@ -221,7 +222,8 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
                   href={child.href || "#"}
                   onClick={() => onClose()}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground border-l-2 border-muted ml-3",
+                    "flex items-center gap-3 rounded-lg px-3 py-2 my-1 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+                    isCollapsed ? "pl-3" : "border-l-2 border-muted ml-3",
                     pathname === child.href
                       ? "bg-accent text-accent-foreground border-primary"
                       : "transparent"
@@ -287,7 +289,8 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
           className="ml-auto hidden md:flex"
           onClick={toggleSidebar}
         >
-          <Menu className="h-5 w-5" />
+          {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
+          <span className="sr-only">Toggle sidebar</span>
         </Button>
       </div>
       <ScrollArea className="flex-1 py-2">
