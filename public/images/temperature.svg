@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Thermometer body -->
+  <rect x="236" y="100" width="40" height="280" rx="20" fill="#e5e7eb" stroke="#1e40af" stroke-width="4" />
+  <!-- Thermometer bulb -->
+  <circle cx="256" cy="380" r="40" fill="#ef4444" stroke="#1e40af" stroke-width="4" />
+  <!-- Thermometer markings -->
+  <line x1="236" y1="140" x2="256" y2="140" stroke="#1e40af" stroke-width="2" />
+  <line x1="236" y1="180" x2="256" y2="180" stroke="#1e40af" stroke-width="2" />
+  <line x1="236" y1="220" x2="256" y2="220" stroke="#1e40af" stroke-width="2" />
+  <line x1="236" y1="260" x2="256" y2="260" stroke="#1e40af" stroke-width="2" />
+  <line x1="236" y1="300" x2="256" y2="300" stroke="#1e40af" stroke-width="2" />
+  <line x1="236" y1="340" x2="256" y2="340" stroke="#1e40af" stroke-width="2" />
+  <!-- Temperature level -->
+  <rect x="236" y="300" width="40" height="80" rx="20" fill="#ef4444" />
+  <!-- Cold indicator -->
+  <circle cx="180" cy="160" r="30" fill="#93c5fd" stroke="#1e40af" stroke-width="2" />
+  <path d="M170,160 L190,160 M180,150 L180,170" stroke="#1e40af" stroke-width="3" />
+  <!-- Hot indicator -->
+  <circle cx="180" cy="260" r="30" fill="#fecaca" stroke="#1e40af" stroke-width="2" />
+  <path d="M170,260 L190,260" stroke="#1e40af" stroke-width="3" />
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Main circle path -->
+  <circle cx="256" cy="256" r="160" stroke="#1e40af" stroke-width="4" stroke-dasharray="20,10" fill="none" />
+  
+  <!-- Nodes -->
+  <circle cx="256" cy="96" r="24" fill="#3b82f6" stroke="#1e40af" stroke-width="2" />
+  <circle cx="416" cy="256" r="24" fill="#60a5fa" stroke="#1e40af" stroke-width="2" />
+  <circle cx="256" cy="416" r="24" fill="#93c5fd" stroke="#1e40af" stroke-width="2" />
+  <circle cx="96" cy="256" r="24" fill="#bfdbfe" stroke="#1e40af" stroke-width="2" />
+  
+  <!-- Connection lines -->
+  <line x1="274" y1="110" x2="402" y2="238" stroke="#1e40af" stroke-width="2" />
+  <line x1="402" y1="274" x2="274" y2="402" stroke="#1e40af" stroke-width="2" />
+  <line x1="238" y1="402" x2="110" y2="274" stroke="#1e40af" stroke-width="2" />
+  <line x1="110" y1="238" x2="238" y2="110" stroke="#1e40af" stroke-width="2" />
+  
+  <!-- Node icons -->
+  <!-- Supplier icon -->
+  <rect x="244" y="84" width="24" height="24" rx="2" fill="white" />
+  <path d="M248,88 L264,88 M248,96 L264,96 M248,104 L264,104" stroke="#1e40af" stroke-width="2" />
+  
+  <!-- Distribution icon -->
+  <rect x="404" y="244" width="24" height="24" rx="2" fill="white" />
+  <path d="M408,256 L424,256 M416,248 L416,264" stroke="#1e40af" stroke-width="2" />
+  
+  <!-- Customer icon -->
+  <rect x="244" y="404" width="24" height="24" rx="2" fill="white" />
+  <circle cx="256" cy="416" r="8" stroke="#1e40af" stroke-width="2" fill="white" />
+  
+  <!-- Storage icon -->
+  <rect x="84" y="244" width="24" height="24" rx="2" fill="white" />
+  <path d="M88,252 L104,252 L96,244 L88,252 M88,260 L104,260" stroke="#1e40af" stroke-width="2" />
+</svg>
