@@ -43,7 +43,7 @@ export default function UsersPage() {
     if (status === 'authenticated') {
       if (session.user.role !== 'admin') {
         toast.error('You do not have permission to access this page');
-        router.push('/dashboard');
+        router.push('/pages');
       } else {
         fetchUsers();
       }

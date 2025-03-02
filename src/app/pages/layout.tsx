@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Sidebar } from '@/components/dashboard/sidebar';
-import { Header } from '@/components/dashboard/header';
+import { Sidebar } from '@/components/sidebar';
+import { Header } from '@/components/header';
 import { Toaster } from '@/components/ui/sonner';
 
 export default function DashboardLayout({

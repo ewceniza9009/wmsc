@@ -48,7 +48,7 @@ export default function LoginPage() {
       }
 
       // Redirect to dashboard on successful login
-      router.push('/dashboard');
+      router.push('/pages/dashboard');
       router.refresh();
     } catch (error) {
       toast.error('An error occurred during login');

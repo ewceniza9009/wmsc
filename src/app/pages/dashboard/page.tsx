@@ -72,7 +72,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className="flex justify-end">
               <Button asChild>
-                <Link href="/dashboard/inventory">
+                <Link href="/pages/inventory">
                   Go to Inventory <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -89,7 +89,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className="flex justify-end">
               <Button asChild>
-                <Link href="/dashboard/orders">
+                <Link href="/pages/orders">
                   Go to Orders <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -106,7 +106,7 @@ export default function DashboardPage() {
           <CardContent>
             <div className="flex justify-end">
               <Button asChild>
-                <Link href="/dashboard/users">
+                <Link href="/pages/users">
                   Go to Users <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
