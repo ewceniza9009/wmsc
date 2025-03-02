@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Truck body -->
+  <rect x="16" y="200" width="320" height="160" rx="20" fill="#3b82f6" />
+  <!-- Truck cabin -->
+  <rect x="336" y="240" width="160" height="120" rx="10" fill="#2563eb" />
+  <!-- Windshield -->
+  <rect x="356" y="260" width="120" height="60" rx="5" fill="#93c5fd" />
+  <!-- Wheels -->
+  <circle cx="100" cy="380" r="40" fill="#1f2937" />
+  <circle cx="100" cy="380" r="20" fill="#4b5563" />
+  <circle cx="260" cy="380" r="40" fill="#1f2937" />
+  <circle cx="260" cy="380" r="20" fill="#4b5563" />
+  <circle cx="400" cy="380" r="40" fill="#1f2937" />
+  <circle cx="400" cy="380" r="20" fill="#4b5563" />
+  <!-- Truck details -->
+  <rect x="36" y="220" width="280" height="100" rx="10" fill="#1d4ed8" />
+  <rect x="16" y="320" width="320" height="20" fill="#1e40af" />
+  <!-- Headlights -->
+  <rect x="336" y="280" width="20" height="20" rx="5" fill="#fef08a" />
+  <!-- Door -->
+  <line x1="356" y1="260" x2="356" y2="360" stroke="#1e40af" stroke-width="3" />
+</svg>

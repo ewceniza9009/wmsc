@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Pallet base -->
+  <rect x="96" y="360" width="320" height="40" rx="2" fill="#92400e" />
+  
+  <!-- Pallet slats (top) -->
+  <rect x="96" y="320" width="320" height="20" rx="2" fill="#b45309" />
+  
+  <!-- Pallet middle supports -->
+  <rect x="136" y="340" width="20" height="20" fill="#92400e" />
+  <rect x="246" y="340" width="20" height="20" fill="#92400e" />
+  <rect x="356" y="340" width="20" height="20" fill="#92400e" />
+  
+  <!-- Boxes on pallet -->
+  <rect x="116" y="200" width="80" height="120" rx="2" fill="#d97706" />
+  <rect x="216" y="240" width="80" height="80" rx="2" fill="#f59e0b" />
+  <rect x="316" y="220" width="80" height="100" rx="2" fill="#d97706" />
+  
+  <!-- Box details -->
+  <rect x="126" y="210" width="60" height="20" rx="1" fill="#b45309" />
+  <rect x="226" y="250" width="60" height="20" rx="1" fill="#b45309" />
+  <rect x="326" y="230" width="60" height="20" rx="1" fill="#b45309" />
+  
+  <!-- Box tape/markings -->
+  <line x1="156" y1="200" x2="156" y2="320" stroke="#78350f" stroke-width="2" />
+  <line x1="256" y1="240" x2="256" y2="320" stroke="#78350f" stroke-width="2" />
+  <line x1="356" y1="220" x2="356" y2="320" stroke="#78350f" stroke-width="2" />
+  
+  <!-- Pallet shadow -->
+  <ellipse cx="256" cy="410" rx="160" ry="10" fill="#1f2937" opacity="0.2" />
+</svg>

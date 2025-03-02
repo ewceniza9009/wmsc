@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Building base -->
+  <rect x="56" y="200" width="400" height="240" rx="5" fill="#64748b" />
+  
+  <!-- Roof -->
+  <polygon points="256,80 36,200 476,200" fill="#475569" />
+  
+  <!-- Front wall details -->
+  <rect x="96" y="240" width="320" height="200" fill="#94a3b8" />
+  
+  <!-- Loading dock doors -->
+  <rect x="116" y="300" width="80" height="140" rx="5" fill="#334155" />
+  <rect x="216" y="300" width="80" height="140" rx="5" fill="#334155" />
+  <rect x="316" y="300" width="80" height="140" rx="5" fill="#334155" />
+  
+  <!-- Door details -->
+  <line x1="116" y1="320" x2="196" y2="320" stroke="#94a3b8" stroke-width="2" />
+  <line x1="216" y1="320" x2="296" y2="320" stroke="#94a3b8" stroke-width="2" />
+  <line x1="316" y1="320" x2="396" y2="320" stroke="#94a3b8" stroke-width="2" />
+  
+  <!-- Windows -->
+  <rect x="126" y="250" width="60" height="30" rx="2" fill="#bfdbfe" />
+  <rect x="226" y="250" width="60" height="30" rx="2" fill="#bfdbfe" />
+  <rect x="326" y="250" width="60" height="30" rx="2" fill="#bfdbfe" />
+  
+  <!-- Window frames -->
+  <line x1="156" y1="250" x2="156" y2="280" stroke="#1e40af" stroke-width="1" />
+  <line x1="256" y1="250" x2="256" y2="280" stroke="#1e40af" stroke-width="1" />
+  <line x1="356" y1="250" x2="356" y2="280" stroke="#1e40af" stroke-width="1" />
+  
+  <!-- Warehouse sign -->
+  <rect x="206" y="160" width="100" height="30" rx="2" fill="#1e40af" />
+  <text x="256" y="180" font-family="Arial" font-size="14" fill="white" text-anchor="middle">WAREHOUSE</text>
+</svg>

@@ -10,74 +10,74 @@
 }
 
 :root {
-  --background: oklch(0.99 0.01 240);
-  --foreground: oklch(0.2 0.02 240);
-  --card: oklch(1 0.005 240);
-  --card-foreground: oklch(0.2 0.02 240);
-  --popover: oklch(1 0.005 240);
-  --popover-foreground: oklch(0.2 0.02 240);
-  --primary: oklch(0.55 0.2 250);
-  --primary-foreground: oklch(0.98 0.005 240);
-  --secondary: oklch(0.96 0.03 260);
-  --secondary-foreground: oklch(0.3 0.05 250);
-  --muted: oklch(0.96 0.01 240);
-  --muted-foreground: oklch(0.6 0.05 240);
-  --accent: oklch(0.9 0.1 250);
-  --accent-foreground: oklch(0.2 0.05 250);
+  --background: oklch(0.99 0.01 195);
+  --foreground: oklch(0.2 0.02 195);
+  --card: oklch(1 0.005 195);
+  --card-foreground: oklch(0.2 0.02 195);
+  --popover: oklch(1 0.005 195);
+  --popover-foreground: oklch(0.2 0.02 195);
+  --primary: oklch(0.55 0.2 195); /* Teal primary */
+  --primary-foreground: oklch(0.98 0.005 195);
+  --secondary: oklch(0.96 0.03 195);
+  --secondary-foreground: oklch(0.3 0.05 195);
+  --muted: oklch(0.96 0.01 195);
+  --muted-foreground: oklch(0.6 0.05 195);
+  --accent: oklch(0.9 0.1 195); /* Teal accent */
+  --accent-foreground: oklch(0.2 0.05 195);
   --destructive: oklch(0.6 0.25 27);
-  --destructive-foreground: oklch(0.98 0.01 240);
-  --border: oklch(0.9 0.02 240);
-  --input: oklch(0.9 0.02 240);
-  --ring: oklch(0.55 0.2 250);
-  --chart-1: oklch(0.65 0.22 41);
+  --destructive-foreground: oklch(0.98 0.01 195);
+  --border: oklch(0.9 0.02 195);
+  --input: oklch(0.9 0.02 195);
+  --ring: oklch(0.55 0.2 195);
+  --chart-1: oklch(0.65 0.22 195);
   --chart-2: oklch(0.6 0.18 185);
-  --chart-3: oklch(0.5 0.15 227);
-  --chart-4: oklch(0.7 0.2 84);
-  --chart-5: oklch(0.75 0.19 70);
+  --chart-3: oklch(0.5 0.15 205);
+  --chart-4: oklch(0.7 0.2 175);
+  --chart-5: oklch(0.75 0.19 165);
   --radius: 0.75rem;
-  --sidebar: oklch(0.98 0.02 250);
-  --sidebar-foreground: oklch(0.2 0.02 240);
-  --sidebar-primary: oklch(0.55 0.2 250);
-  --sidebar-primary-foreground: oklch(0.98 0.005 240);
-  --sidebar-accent: oklch(0.9 0.1 250);
-  --sidebar-accent-foreground: oklch(0.2 0.05 250);
-  --sidebar-border: oklch(0.9 0.02 240);
-  --sidebar-ring: oklch(0.55 0.2 250);
+  --sidebar: oklch(0.98 0.02 195);
+  --sidebar-foreground: oklch(0.2 0.02 195);
+  --sidebar-primary: oklch(0.55 0.2 195);
+  --sidebar-primary-foreground: oklch(0.98 0.005 195);
+  --sidebar-accent: oklch(0.9 0.1 195);
+  --sidebar-accent-foreground: oklch(0.2 0.05 195);
+  --sidebar-border: oklch(0.9 0.02 195);
+  --sidebar-ring: oklch(0.55 0.2 195);
 }
 
 .dark {
-  --background: oklch(0.15 0.02 240);
-  --foreground: oklch(0.95 0.01 240);
-  --card: oklch(0.18 0.03 240);
-  --card-foreground: oklch(0.95 0.01 240);
-  --popover: oklch(0.18 0.03 240);
-  --popover-foreground: oklch(0.95 0.01 240);
-  --primary: oklch(0.65 0.25 250);
-  --primary-foreground: oklch(0.15 0.02 240);
-  --secondary: oklch(0.25 0.05 250);
-  --secondary-foreground: oklch(0.95 0.01 240);
-  --muted: oklch(0.25 0.03 240);
-  --muted-foreground: oklch(0.75 0.05 240);
-  --accent: oklch(0.3 0.1 250);
-  --accent-foreground: oklch(0.95 0.01 240);
+  --background: oklch(0.15 0.02 195);
+  --foreground: oklch(0.95 0.01 195);
+  --card: oklch(0.18 0.03 195);
+  --card-foreground: oklch(0.95 0.01 195);
+  --popover: oklch(0.18 0.03 195);
+  --popover-foreground: oklch(0.95 0.01 195);
+  --primary: oklch(0.65 0.25 195); /* Teal primary for dark mode */
+  --primary-foreground: oklch(0.15 0.02 195);
+  --secondary: oklch(0.25 0.05 195);
+  --secondary-foreground: oklch(0.95 0.01 195);
+  --muted: oklch(0.25 0.03 195);
+  --muted-foreground: oklch(0.75 0.05 195);
+  --accent: oklch(0.3 0.1 195); /* Teal accent for dark mode */
+  --accent-foreground: oklch(0.95 0.01 195);
   --destructive: oklch(0.5 0.2 25);
-  --destructive-foreground: oklch(0.95 0.01 240);
-  --border: oklch(0.25 0.03 240);
-  --input: oklch(0.25 0.03 240);
-  --ring: oklch(0.65 0.25 250);
-  --chart-1: oklch(0.65 0.25 264);
-  --chart-2: oklch(0.7 0.2 162);
-  --chart-3: oklch(0.75 0.2 70);
-  --chart-4: oklch(0.65 0.27 304);
-  --chart-5: oklch(0.65 0.25 16);
-  --sidebar: oklch(0.2 0.04 240);
-  --sidebar-foreground: oklch(0.95 0.01 240);
-  --sidebar-primary: oklch(0.65 0.25 250);
-  --sidebar-primary-foreground: oklch(0.15 0.02 240);
-  --sidebar-accent: oklch(0.3 0.1 250);
-  --sidebar-accent-foreground: oklch(0.95 0.01 240);
-  --sidebar-border: oklch(0.25 0.03 240);
-  --sidebar-ring: oklch(0.65 0.25 250);
+  --destructive-foreground: oklch(0.95 0.01 195);
+  --border: oklch(0.25 0.03 195);
+  --input: oklch(0.25 0.03 195);
+  --ring: oklch(0.65 0.25 195);
+  --chart-1: oklch(0.65 0.25 195);
+  --chart-2: oklch(0.7 0.2 185);
+  --chart-3: oklch(0.75 0.2 205);
+  --chart-4: oklch(0.65 0.27 175);
+  --chart-5: oklch(0.65 0.25 165);
+  --sidebar: oklch(0.2 0.04 195);
+  --sidebar-foreground: oklch(0.95 0.01 195);
+  --sidebar-primary: oklch(0.65 0.25 195);
+  --sidebar-primary-foreground: oklch(0.15 0.02 195);
+  --sidebar-accent: oklch(0.3 0.1 195);
+  --sidebar-accent-foreground: oklch(0.95 0.01 195);
+  --sidebar-border: oklch(0.25 0.03 195);
+  --sidebar-ring: oklch(0.65 0.25 195);
 }
 
 @theme inline {
@@ -125,7 +125,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: linear-gradient(to bottom right, var(--background), oklch(0.97 0.03 245));
+    background-image: linear-gradient(to bottom right, var(--background), oklch(0.97 0.03 195));
     background-attachment: fixed;
   }
   
@@ -142,7 +142,7 @@
   
   /* Enhance buttons with subtle gradient */
   button[class*="bg-primary"] {
-    background-image: linear-gradient(to bottom right, var(--primary), oklch(0.6 0.22 255));
+    background-image: linear-gradient(to bottom right, var(--primary), oklch(0.6 0.22 195));
     transition: all 0.2s ease;
   }
   
@@ -157,7 +157,7 @@
   
   /* Dark mode adjustments */
   .dark body {
-    background-image: linear-gradient(to bottom right, var(--background), oklch(0.17 0.04 245));
+    background-image: linear-gradient(to bottom right, var(--background), oklch(0.17 0.04 195));
   }
   
   .dark [data-slot="card"] {
@@ -165,6 +165,6 @@
   }
   
   .dark button[class*="bg-primary"] {
-    background-image: linear-gradient(to bottom right, var(--primary), oklch(0.7 0.27 255));
+    background-image: linear-gradient(to bottom right, var(--primary), oklch(0.7 0.27 195));
   }
 }
