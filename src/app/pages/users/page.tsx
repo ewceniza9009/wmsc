@@ -302,7 +302,7 @@ export default function UsersPage() {
                     <TableCell>
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         user.role === 'admin' ? 'bg-red-100 text-red-800' :
-                        user.role === 'manager' ? 'bg-blue-100 text-blue-800' :
+                        user.role === 'manager' ? 'bg-teal-100 text-teal-800' :
                         'bg-green-100 text-green-800'
                       }`}>
                         {user.role.charAt(0).toUpperCase() + user.role.slice(1)}

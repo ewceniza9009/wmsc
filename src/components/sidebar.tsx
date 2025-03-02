@@ -250,7 +250,7 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
         className={cn(
           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
           pathname === item.href
-            ? "bg-accent text-accent-foreground"
+            ? "bg-accent/50 text-teal-700"
             : "transparent"
         )}
       >
@@ -272,7 +272,7 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
         >
           <Warehouse className="mr-2 h-6 w-6" />
           <span className={cn(isCollapsed ? "hidden" : "block")}>
-            WMS Cold Storage
+            COLD STORAGE
           </span>
         </Link>
         {/* Removed duplicate close button as SheetContent already provides one */}
