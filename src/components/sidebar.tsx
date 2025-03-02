@@ -197,7 +197,7 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
             <button
               className={cn(
                 "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground font-semibold",
-                openGroups[item.title] ? "bg-accent/50 text-primary" : "text-foreground"
+                openGroups[item.title] ? "bg-accent/50 text-teal-700" : "text-teal-700"
               )}
             >
               <div className="flex items-center gap-3">
@@ -225,7 +225,7 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
                     "flex items-center gap-3 rounded-lg px-3 py-2 my-1 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
                     isCollapsed ? "pl-3" : "border-l-2 border-muted ml-3",
                     pathname === child.href
-                      ? "bg-accent text-accent-foreground border-primary"
+                      ? "bg-accent/50 text-teal-700 border-primary"
                       : "transparent"
                   )}
                 >
@@ -263,10 +263,10 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
   };
 
   const sidebarContent = (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col relative">
       <div className="flex h-16 items-center border-b px-4">
         <Link
-          href="/dashboard"
+          href="/pages/dashboard"
           className="flex items-center font-semibold"
           onClick={() => onClose()}
         >
@@ -275,29 +275,24 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
             WMS Cold Storage
           </span>
         </Link>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="ml-auto md:hidden"
-          onClick={onClose}
-        >
-          <X className="h-5 w-5" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="ml-auto hidden md:flex"
-          onClick={toggleSidebar}
-        >
-          {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
-          <span className="sr-only">Toggle sidebar</span>
-        </Button>
+        {/* Removed duplicate close button as SheetContent already provides one */}
       </div>
       <ScrollArea className="flex-1 py-2">
         <nav className="grid gap-1 px-2">
           {filteredNavItems.map(renderNavItem)}
         </nav>
       </ScrollArea>
+      
+      {/* Floating toggle button */}
+      <Button
+        variant="outline"
+        size="icon"
+        className="absolute -right-3 top-20 h-6 w-6 rounded-full border shadow-md hidden md:flex justify-center items-center bg-background z-10"
+        onClick={toggleSidebar}
+      >
+        {isCollapsed ? <ChevronRight className="h-3 w-3" /> : <ChevronLeft className="h-3 w-3" />}
+        <span className="sr-only">Toggle sidebar</span>
+      </Button>
     </div>
   );
 
