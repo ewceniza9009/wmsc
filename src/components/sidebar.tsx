@@ -1,143 +1,298 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
-import { 
-  LayoutDashboard, 
-  Package, 
-  ClipboardList, 
-  Truck, 
-  Users, 
-  Settings, 
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  LayoutDashboard,
+  Package,
+  ClipboardList,
+  Truck,
+  Users,
+  Settings,
   BarChart,
   Warehouse,
   Thermometer,
-  X
-} from 'lucide-react';
+  X,
+  ChevronRight,
+  ChevronDown,
+  Menu,
+} from "lucide-react";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   userRole: string;
+  isCollapsed?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
 }
 
 interface NavItem {
   title: string;
-  href: string;
+  href?: string;
   icon: React.ReactNode;
   roles: string[];
+  children?: NavItem[];
 }
 
-export function Sidebar({ isOpen, onClose, userRole }: SidebarProps) {
+export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapsed, onCollapsedChange }: SidebarProps) {
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(propIsCollapsed || false);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
 
   // Prevent hydration errors
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  const toggleSidebar = () => {
+    const newCollapsedState = !isCollapsed;
+    setIsCollapsed(newCollapsedState);
+    // Call the parent component's callback if provided
+    if (onCollapsedChange) {
+      onCollapsedChange(newCollapsedState);
+    }
+    // Force layout recalculation by triggering a small timeout
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 10);
+  };
+
+  const toggleGroup = (groupTitle: string) => {
+    setOpenGroups((prev) => ({
+      ...prev,
+      [groupTitle]: !prev[groupTitle],
+    }));
+  };
+
   const navItems: NavItem[] = [
     {
-      title: 'Dashboard',
-      href: '/pages/dashboard',
+      title: "Dashboard",
+      href: "/pages/dashboard",
       icon: <LayoutDashboard className="h-5 w-5" />,
-      roles: ['admin', 'manager', 'worker'],
+      roles: ["admin", "manager", "worker"],
     },
     {
-      title: 'Inventory',
-      href: '/pages/inventory',
+      title: "Inventory",
       icon: <Package className="h-5 w-5" />,
-      roles: ['admin', 'manager', 'worker'],
+      roles: ["admin", "manager", "worker"],
+      children: [
+        {
+          title: "Products",
+          href: "/pages/inventory/products",
+          icon: <Package className="h-5 w-5" />,
+          roles: ["admin", "manager", "worker"],
+        },
+        {
+          title: "Stock Levels",
+          href: "/pages/inventory/stock",
+          icon: <Package className="h-5 w-5" />,
+          roles: ["admin", "manager", "worker"],
+        },
+      ],
     },
     {
-      title: 'Orders',
-      href: '/pages/orders',
+      title: "Orders",
+      href: "/pages/orders",
       icon: <ClipboardList className="h-5 w-5" />,
-      roles: ['admin', 'manager', 'worker'],
+      roles: ["admin", "manager", "worker"],
     },
     {
-      title: 'Shipments',
-      href: '/pages/shipments',
+      title: "Logistics",
       icon: <Truck className="h-5 w-5" />,
-      roles: ['admin', 'manager'],
+      roles: ["admin", "manager"],
+      children: [
+        {
+          title: "Shipments",
+          href: "/pages/shipments",
+          icon: <Truck className="h-5 w-5" />,
+          roles: ["admin", "manager"],
+        },
+        {
+          title: "Temperature Logs",
+          href: "/pages/temperature",
+          icon: <Thermometer className="h-5 w-5" />,
+          roles: ["admin", "manager"],
+        },
+      ],
     },
     {
-      title: 'Temperature Logs',
-      href: '/pages/temperature',
-      icon: <Thermometer className="h-5 w-5" />,
-      roles: ['admin', 'manager'],
-    },
-    {
-      title: 'Storage Locations',
-      href: '/pages/locations',
+      title: "Storage Locations",
+      href: "/pages/locations",
       icon: <Warehouse className="h-5 w-5" />,
-      roles: ['admin', 'manager'],
+      roles: ["admin", "manager"],
     },
     {
-      title: 'Reports',
-      href: '/pages/reports',
+      title: "Reports",
+      href: "/pages/reports",
       icon: <BarChart className="h-5 w-5" />,
-      roles: ['admin', 'manager'],
+      roles: ["admin", "manager"],
     },
     {
-      title: 'Users',
-      href: '/pages/users',
-      icon: <Users className="h-5 w-5" />,
-      roles: ['admin'],
-    },
-    {
-      title: 'Settings',
-      href: '/pages/settings',
+      title: "Administration",
       icon: <Settings className="h-5 w-5" />,
-      roles: ['admin'],
+      roles: ["admin"],
+      children: [
+        {
+          title: "Users",
+          href: "/pages/users",
+          icon: <Users className="h-5 w-5" />,
+          roles: ["admin"],
+        },
+        {
+          title: "Settings",
+          href: "/pages/settings",
+          icon: <Settings className="h-5 w-5" />,
+          roles: ["admin"],
+        },
+      ],
     },
   ];
 
   // Filter nav items based on user role
-  const filteredNavItems = navItems.filter(item => item.roles.includes(userRole));
+  const filteredNavItems = navItems.filter((item) => {
+    // Check if the item itself has the role
+    const hasRole = item.roles.includes(userRole);
+
+    // If it has children, check if any child has the role
+    if (item.children) {
+      const hasChildWithRole = item.children.some((child) =>
+        child.roles.includes(userRole)
+      );
+      return hasRole || hasChildWithRole;
+    }
+
+    return hasRole;
+  });
+
+  // Render a nav item (could be a link or a collapsible group)
+  const renderNavItem = (item: NavItem) => {
+    // If the item has children, render it as a collapsible group
+    if (item.children && item.children.length > 0) {
+      const filteredChildren = item.children.filter((child) =>
+        child.roles.includes(userRole)
+      );
+
+      if (filteredChildren.length === 0) return null;
+
+      return (
+        <Collapsible
+          key={item.title}
+          open={openGroups[item.title]}
+          onOpenChange={() => toggleGroup(item.title)}
+          className="w-full"
+        >
+          <CollapsibleTrigger asChild>
+            <button
+              className={cn(
+                "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground font-semibold",
+                openGroups[item.title] ? "bg-accent/50" : "transparent"
+              )}
+            >
+              <div className="flex items-center gap-3">
+                {item.icon}
+                <span className={cn(isCollapsed ? "hidden" : "block")}>
+                  {item.title}
+                </span>
+              </div>
+              {!isCollapsed &&
+                (openGroups[item.title] ? (
+                  <ChevronDown className="h-4 w-4" />
+                ) : (
+                  <ChevronRight className="h-4 w-4" />
+                ))}
+            </button>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="pt-1">
+              {filteredChildren.map((child) => (
+                <Link
+                  key={child.href}
+                  href={child.href || "#"}
+                  onClick={() => onClose()}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground border-l-2 border-muted ml-3",
+                    pathname === child.href
+                      ? "bg-accent text-accent-foreground border-primary"
+                      : "transparent"
+                  )}
+                >
+                  {child.icon}
+                  <span className={cn(isCollapsed ? "hidden" : "block")}>
+                    {child.title}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      );
+    }
+
+    // Otherwise, render it as a regular link
+    return (
+      <Link
+        key={item.href}
+        href={item.href || "#"}
+        onClick={() => onClose()}
+        className={cn(
+          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+          pathname === item.href
+            ? "bg-accent text-accent-foreground"
+            : "transparent"
+        )}
+      >
+        {item.icon}
+        <span className={cn(isCollapsed ? "hidden" : "block")}>
+          {item.title}
+        </span>
+      </Link>
+    );
+  };
 
   const sidebarContent = (
     <div className="flex h-full flex-col">
-      <div className="flex h-14 items-center border-b px-4">
-        <Link 
-          href="/dashboard" 
+      <div className="flex h-16 items-center border-b px-4">
+        <Link
+          href="/dashboard"
           className="flex items-center font-semibold"
           onClick={() => onClose()}
         >
           <Warehouse className="mr-2 h-6 w-6" />
-          <span>WMS Cold Storage</span>
+          <span className={cn(isCollapsed ? "hidden" : "block")}>
+            WMS Cold Storage
+          </span>
         </Link>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="ml-auto md:hidden" 
+        <Button
+          variant="ghost"
+          size="icon"
+          className="ml-auto md:hidden"
           onClick={onClose}
         >
           <X className="h-5 w-5" />
         </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="ml-auto hidden md:flex"
+          onClick={toggleSidebar}
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
       </div>
       <ScrollArea className="flex-1 py-2">
         <nav className="grid gap-1 px-2">
-          {filteredNavItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => onClose()}
-              className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                pathname === item.href ? 'bg-accent text-accent-foreground' : 'transparent'
-              )}
-            >
-              {item.icon}
-              {item.title}
-            </Link>
-          ))}
+          {filteredNavItems.map(renderNavItem)}
         </nav>
       </ScrollArea>
     </div>
@@ -157,8 +312,11 @@ export function Sidebar({ isOpen, onClose, userRole }: SidebarProps) {
       </Sheet>
 
       {/* Desktop sidebar */}
-      <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex flex-col flex-1 min-h-0 border-r bg-background">
+      <div className={cn(
+        "hidden md:flex md:flex-col md:fixed md:inset-y-0 z-10 transition-all duration-300 ease-in-out",
+        isCollapsed ? "md:w-16" : "md:w-64"
+      )}>
+        <div className="flex flex-col flex-1 min-h-0 border-r bg-background w-full">
           {sidebarContent}
         </div>
       </div>

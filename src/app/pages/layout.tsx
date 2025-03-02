@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Sidebar } from '@/components/sidebar';
 import { Header } from '@/components/header';
 import { Toaster } from '@/components/ui/sonner';
+import { cn } from '@/lib/utils';
 
 export default function DashboardLayout({
   children,
@@ -15,6 +16,7 @@ export default function DashboardLayout({
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // Check if user is authenticated
   useEffect(() => {
@@ -41,10 +43,15 @@ export default function DashboardLayout({
           isOpen={isMobileMenuOpen} 
           onClose={() => setIsMobileMenuOpen(false)} 
           userRole={session.user.role as string}
+          isCollapsed={isSidebarCollapsed}
+          onCollapsedChange={(collapsed) => setIsSidebarCollapsed(collapsed)}
         />
         
         {/* Main Content */}
-        <div className="flex flex-col flex-1 overflow-hidden">
+        <div className={cn(
+          "flex flex-col flex-1 overflow-hidden transition-all duration-300 ease-in-out",
+          isSidebarCollapsed ? "md:ml-16" : "md:ml-64"
+        )}>
           <Header 
             onMenuClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
             user={session.user}
