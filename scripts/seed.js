@@ -124,6 +124,100 @@ UserRightSchema.index({ userId: 1, routeId: 1 }, { unique: true });
 // Create UserRight model
 const UserRight = mongoose.models.UserRight || mongoose.model('UserRight', UserRightSchema);
 
+// Define MstCompany Schema
+const MstCompanySchema = new mongoose.Schema(
+  {
+    companyName: {
+      type: String,
+      required: [true, 'Please provide a company name'],
+      maxlength: [100, 'Company name cannot be more than 100 characters'],
+    },
+    companyAddress: {
+      type: String,
+      required: [true, 'Please provide a company address'],
+    },
+    contactPerson: {
+      type: String,
+      required: [true, 'Please provide a contact person'],
+    },
+    contactNo: {
+      type: String,
+      required: [true, 'Please provide a contact number'],
+    },
+    tiin: {
+      type: String,
+    },
+    bookNumber: {
+      type: String,
+    },
+    accreditationNumber: {
+      type: String,
+    },
+    serialNumber: {
+      type: String,
+    },
+    permitNumber: {
+      type: String,
+    },
+    accountant: {
+      type: String,
+    },
+    financeManager: {
+      type: String,
+    },
+    operationsManager: {
+      type: String,
+    },
+    managingDirector: {
+      type: String,
+    },
+    defaultApproveBy: {
+      type: String,
+    },
+    imagePath: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
+
+// Create MstCompany model
+const MstCompany = mongoose.models.MstCompany || mongoose.model('MstCompany', MstCompanySchema);
+
+// Define MstWarehouse Schema
+const MstWarehouseSchema = new mongoose.Schema(
+  {
+    warehouseCode: {
+      type: String,
+      required: [true, 'Please provide a warehouse code'],
+      unique: true,
+    },
+    warehouseName: {
+      type: String,
+      required: [true, 'Please provide a warehouse name'],
+    },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'MstCompany',
+      required: [true, 'Please provide a company ID'],
+    },
+    address: {
+      type: String,
+      required: [true, 'Please provide an address'],
+    },
+    contact: {
+      type: String,
+    },
+    contactNumber: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
+
+// Create MstWarehouse model
+const MstWarehouse = mongoose.models.MstWarehouse || mongoose.model('MstWarehouse', MstWarehouseSchema);
+
 // Define seed data
 // Routes for the application
 const seedRoutes = [
@@ -175,6 +269,72 @@ const seedUsers = [
   },
 ];
 
+// Seed data for companies
+const seedCompanies = [
+  {
+    companyName: 'Global Logistics Inc.',
+    companyAddress: '123 Main Street, Business District, Metro City',
+    contactPerson: 'John Smith',
+    contactNo: '+1-555-123-4567',
+    tiin: '123-456-789-000',
+    bookNumber: 'BK-2023-001',
+    accreditationNumber: 'ACC-2023-0123',
+    serialNumber: 'SER-2023-456',
+    permitNumber: 'PER-2023-789',
+    accountant: 'Jane Doe',
+    financeManager: 'Robert Johnson',
+    operationsManager: 'Sarah Williams',
+    managingDirector: 'Michael Brown',
+    defaultApproveBy: 'Michael Brown',
+    imagePath: '/images/companies/global-logistics.png',
+  },
+  {
+    companyName: 'Fast Track Shipping Co.',
+    companyAddress: '456 Commerce Avenue, Industrial Park, Harbor City',
+    contactPerson: 'Emily Davis',
+    contactNo: '+1-555-987-6543',
+    tiin: '987-654-321-000',
+    bookNumber: 'BK-2023-002',
+    accreditationNumber: 'ACC-2023-0456',
+    serialNumber: 'SER-2023-789',
+    permitNumber: 'PER-2023-012',
+    accountant: 'Thomas Wilson',
+    financeManager: 'Lisa Anderson',
+    operationsManager: 'David Martinez',
+    managingDirector: 'Jennifer Taylor',
+    defaultApproveBy: 'Jennifer Taylor',
+    imagePath: '/images/companies/fast-track.png',
+  },
+];
+
+// Seed data for warehouses (will be linked to companies during seeding)
+const seedWarehouses = [
+  {
+    warehouseCode: 'WH-GL-001',
+    warehouseName: 'Global Logistics Main Warehouse',
+    // companyId will be set during seeding
+    address: '123 Storage Lane, Warehouse District, Metro City',
+    contact: 'Mark Wilson',
+    contactNumber: '+1-555-111-2222',
+  },
+  {
+    warehouseCode: 'WH-GL-002',
+    warehouseName: 'Global Logistics Satellite Facility',
+    // companyId will be set during seeding
+    address: '789 Distribution Road, Industrial Zone, Metro City',
+    contact: 'Laura Johnson',
+    contactNumber: '+1-555-333-4444',
+  },
+  {
+    warehouseCode: 'WH-FT-001',
+    warehouseName: 'Fast Track Central Hub',
+    // companyId will be set during seeding
+    address: '456 Shipping Boulevard, Port District, Harbor City',
+    contact: 'Chris Thompson',
+    contactNumber: '+1-555-555-6666',
+  },
+];
+
 // Seed function
 async function seedDatabase() {
   try {
@@ -189,6 +349,8 @@ async function seedDatabase() {
     await User.deleteMany({});
     await Route.deleteMany({});
     await UserRight.deleteMany({});
+    await MstCompany.deleteMany({});
+    await MstWarehouse.deleteMany({});
     
     // Create new users
     console.log('Creating new users...');
@@ -275,6 +437,41 @@ async function seedDatabase() {
       await UserRight.create(rightData);
     }
     console.log(`Created ${userRights.length} user rights records`);
+    
+    // Create companies
+    console.log('\nCreating companies...');
+    const createdCompanies = [];
+    for (const companyData of seedCompanies) {
+      const company = await MstCompany.create(companyData);
+      createdCompanies.push(company);
+      console.log(`Created company: ${companyData.companyName}`);
+    }
+    
+    // Create warehouses and link them to companies
+    console.log('\nCreating warehouses...');
+    const globalLogistics = createdCompanies.find(company => company.companyName === 'Global Logistics Inc.');
+    const fastTrack = createdCompanies.find(company => company.companyName === 'Fast Track Shipping Co.');
+    
+    // Assign company IDs to warehouses
+    const warehousesWithCompanies = [
+      {
+        ...seedWarehouses[0],
+        companyId: globalLogistics._id
+      },
+      {
+        ...seedWarehouses[1],
+        companyId: globalLogistics._id
+      },
+      {
+        ...seedWarehouses[2],
+        companyId: fastTrack._id
+      }
+    ];
+    
+    for (const warehouseData of warehousesWithCompanies) {
+      const warehouse = await MstWarehouse.create(warehouseData);
+      console.log(`Created warehouse: ${warehouseData.warehouseName} (${warehouseData.warehouseCode})`);
+    }
     
     console.log('\nDatabase seeding completed successfully!');
     console.log('\nYou can now log in with the following credentials:');
