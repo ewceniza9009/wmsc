@@ -11,8 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { PlusCircle, Pencil, Trash2, AlertCircle, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { PlusCircle, Pencil, Trash2, AlertCircle, Search, ChevronLeft, ChevronRight, Shield } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import UserRightsManager from '@/components/user-rights-manager';
 
 interface User {
   id: string;
@@ -30,6 +31,7 @@ export default function UsersPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isRightsDialogOpen, setIsRightsDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   
   // Form states
@@ -221,7 +223,7 @@ export default function UsersPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Users</h1>
           <p className="text-muted-foreground">
             Manage system users and their access rights
           </p>
@@ -375,13 +377,26 @@ export default function UsersPage() {
                         variant="ghost"
                         size="icon"
                         onClick={() => openEditDialog(user)}
+                        title="Edit User"
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
+                        onClick={() => {
+                          setSelectedUser(user);
+                          setIsRightsDialogOpen(true);
+                        }}
+                        title="Manage Permissions"
+                      >
+                        <Shield className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
                         onClick={() => openDeleteDialog(user)}
+                        title="Delete User"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -520,6 +535,24 @@ export default function UsersPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* User Rights Management Dialog */}
+      <Dialog open={isRightsDialogOpen} onOpenChange={setIsRightsDialogOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>User Permissions - {selectedUser?.name}</DialogTitle>
+            <DialogDescription>
+              Manage access rights for this user across different routes in the system.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedUser && (
+            <UserRightsManager 
+              userId={selectedUser.id} 
+              onClose={() => setIsRightsDialogOpen(false)} 
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
