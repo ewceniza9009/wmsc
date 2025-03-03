@@ -113,7 +113,8 @@ export default function Home() {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-teal-700 dark:text-teal-400">
-              Cold Storage Warehouse Management
+              Warehouse Management on
+              Cold Storage
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300">
               Streamline your temperature-controlled inventory, optimize operations, and ensure compliance with our comprehensive cold storage warehouse management solution.
