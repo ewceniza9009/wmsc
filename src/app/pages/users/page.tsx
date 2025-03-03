@@ -230,7 +230,7 @@ export default function UsersPage() {
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button disabled={true}>
               <PlusCircle className="mr-2 h-4 w-4" />
               Add User
             </Button>

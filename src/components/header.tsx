@@ -1,10 +1,13 @@
 'use client';
 
 import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Menu, LogOut, User } from 'lucide-react';
+import { Menu, LogOut, User, LayoutDashboard, Package, ChartBarStacked, Activity, Warehouse, Calendar1 } from 'lucide-react';
+import { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -17,6 +20,8 @@ interface HeaderProps {
 }
 
 export function Header({ onMenuClick, user }: HeaderProps) {
+  const [selectedWarehouse, setSelectedWarehouse] = useState('1');
+
   // Get user initials for avatar fallback
   const getInitials = (name: string = 'User') => {
     return name
@@ -26,21 +31,10 @@ export function Header({ onMenuClick, user }: HeaderProps) {
       .toUpperCase();
   };
 
-  // Generate random avatar URL based on user's email or name
-  const getRandomAvatarUrl = () => {
-    // Use a consistent identifier (email or name) to get the same avatar for the same user
-    const identifier = user?.email || user?.name || 'anonymous-user';
-    // Create a hash-like value from the identifier for more randomness
-    const hash = Array.from(identifier).reduce((acc, char) => {
-      return acc + char.charCodeAt(0);
-    }, 0);
-    
-    // Use DiceBear API with various styles
-    const styles = ['adventurer', 'avataaars', 'bottts', 'initials', 'micah', 'personas'];
-    const style = styles[hash % styles.length];
-    
-    // Return the avatar URL
-    return `https://api.dicebear.com/7.x/${style}/svg?seed=${encodeURIComponent(identifier)}`;
+  // Use warehouse-themed avatar instead of random avatar
+  const getWarehouseAvatar = () => {
+    // Use warehouse employee image as default avatar
+    return '/images/warehouse_employee.jpg';
   };
 
   const handleSignOut = async () => {
@@ -59,14 +53,47 @@ export function Header({ onMenuClick, user }: HeaderProps) {
         <span className="sr-only">Toggle menu</span>
       </Button>
       
-      <div className="ml-auto flex items-center gap-4">
+      {/* Navigation Links - hidden on mobile */}
+      <nav className="hidden md:flex items-center space-x-4">
+        <Link href="/pages/dashboard" className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center">
+          <LayoutDashboard className="h-4 w-4 mr-1" />
+          Dashboard
+        </Link>
+        <Link href="/pages/inventory-status" className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center">
+          <Package className="h-4 w-4 mr-1" />
+          Inventory Code/Material Status
+        </Link>
+        <Link href="/pages/storage-status" className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center">
+          <Activity className="h-4 w-4 mr-1" />
+          Storage Status
+        </Link>
+        <Link href="/pages/reports" className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center">
+          <Calendar1 className="h-4 w-4 mr-1" />
+          Calendar
+        </Link>
+      </nav>
+      
+      <div className="ml-auto flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2">
+          <Warehouse className="h-4 w-4 text-muted-foreground" />
+          <Select value={selectedWarehouse} onValueChange={setSelectedWarehouse}>
+            <SelectTrigger className="w-[180px] border-0 ring-0 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
+              <SelectValue placeholder="Select warehouse" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">Main Warehouse</SelectItem>
+              <SelectItem value="2">Cold Storage North</SelectItem>
+              <SelectItem value="3">Cold Storage South</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
               <Avatar>
                 <AvatarImage 
-                  src={user?.image || getRandomAvatarUrl()} 
-                  alt={user?.name || 'User'} 
+                  src={user?.image || getWarehouseAvatar()} 
+                  alt={user?.name || 'Warehouse User'} 
                 />
                 <AvatarFallback>{getInitials(user?.name || '')}</AvatarFallback>
               </Avatar>

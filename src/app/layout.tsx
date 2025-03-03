@@ -16,6 +16,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "WMSC",
   description: "Warehouse Management System Cold Storage",
+  icons: {
+    icon: "/images/warehouse.svg",
+    shortcut: "/images/warehouse.svg",
+    apple: "/images/warehouse.svg",
+  },
 };
 
 export default function RootLayout({
