@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,17 +12,22 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { toast } from 'sonner';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Warehouse, ArrowLeft, Loader2 } from 'lucide-react';
+import { Warehouse, ArrowLeft, Loader2, UserPlus } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const formSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+  confirmPassword: z.string().min(6, 'Password must be at least 6 characters'),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -36,30 +40,39 @@ export default function LoginPage() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
   async function onSubmit(data: FormValues) {
     setIsLoading(true);
     try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email: data.email,
-        password: data.password,
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        }),
       });
 
-      if (result?.error) {
-        toast.error('Invalid email or password');
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.message || 'Registration failed');
         return;
       }
 
-      // Redirect to dashboard on successful login
-      router.push('/pages/dashboard');
-      router.refresh();
+      toast.success('Registration successful! Please log in.');
+      router.push('/login');
     } catch (error) {
-      toast.error('An error occurred during login');
+      toast.error('An error occurred during registration');
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -101,23 +114,23 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Back to home link */}
+      {/* Back to login link */}
       <div className="absolute top-6 left-6 z-20">
         <motion.div
           whileHover={{ x: -5 }}
           whileTap={{ scale: 0.95 }}
           className="cursor-pointer"
         >
-          <Link href="/" passHref legacyBehavior>
+          <Link href="/login" passHref legacyBehavior>
             <a className="flex items-center text-teal-700 dark:text-teal-500 hover:text-teal-800 dark:hover:text-teal-400 p-2">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
+              Back to Login
             </a>
           </Link>
         </motion.div>
       </div>
 
-      {/* Login card */}
+      {/* Register card */}
       <div className="flex items-center justify-center min-h-screen px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -138,19 +151,44 @@ export default function LoginPage() {
                     delay: 0.3 
                   }}
                 >
-                  <Warehouse className="h-12 w-12 text-teal-600" />
+                  <UserPlus className="h-12 w-12 text-teal-600" />
                 </motion.div>
               </div>
               <CardTitle className="text-2xl font-bold text-center text-teal-700 dark:text-teal-500">
-                WMS Cold Storage Login
+                Create an Account
               </CardTitle>
               <CardDescription className="text-center">
-                Enter your credentials to access your account
+                Register for WMS Cold Storage system
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full Name</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="John Doe" 
+                              {...field} 
+                              disabled={isLoading}
+                              className="bg-white/50 dark:bg-gray-700/50"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </motion.div>
+                  
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -203,9 +241,35 @@ export default function LoginPage() {
                   </motion.div>
                   
                   <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <FormField
+                      control={form.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Confirm Password</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="password" 
+                              placeholder="******" 
+                              {...field} 
+                              disabled={isLoading}
+                              className="bg-white/50 dark:bg-gray-700/50"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </motion.div>
+                  
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 }}
+                    transition={{ delay: 0.7 }}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                   >
@@ -217,24 +281,19 @@ export default function LoginPage() {
                       {isLoading ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Logging in...
+                          Registering...
                         </>
-                      ) : 'Login'}
+                      ) : 'Register'}
                     </Button>
                   </motion.div>
                 </form>
               </Form>
             </CardContent>
-            <CardFooter className="flex flex-col space-y-2 items-center">
+            <CardFooter className="flex justify-center">
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Don&apos;t have an account?{' '}
-                <Link href="/register" className="text-teal-600 hover:text-teal-700 dark:text-teal-500 dark:hover:text-teal-400">
-                  Register
-                </Link>
-              </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                <Link href="/forgot-password" className="text-teal-600 hover:text-teal-700 dark:text-teal-500 dark:hover:text-teal-400">
-                  Forgot your password?
+                Already have an account?{' '}
+                <Link href="/login" className="text-teal-600 hover:text-teal-700 dark:text-teal-500 dark:hover:text-teal-400">
+                  Login
                 </Link>
               </p>
             </CardFooter>
