@@ -127,7 +127,7 @@ export function Sidebar({
         },
         {
           title: "Warehouse",
-          href: "/pages/warehouse",
+          href: "/pages/warehouses",
           icon: <Warehouse className="h-5 w-5" />,
           roles: ["admin", "manager", "worker"],
         },

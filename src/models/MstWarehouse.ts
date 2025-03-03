@@ -42,4 +42,5 @@ const MstWarehouseSchema = new mongoose.Schema(
   
   // Create MstWarehouse model
   const MstWarehouse = mongoose.models.MstWarehouse || mongoose.model('MstWarehouse', MstWarehouseSchema);
-  
+
+  export default MstWarehouse;
