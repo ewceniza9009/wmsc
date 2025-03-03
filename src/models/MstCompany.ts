@@ -16,6 +16,8 @@ export interface IMstCompany extends Document {
     managingDirector: Schema.Types.ObjectId;
     defaultApproveBy: Schema.Types.ObjectId;
     imagePath: string;
+    createdAt: Date;
+    updatedAt: Date;
   }
 
 // Define MstCompany Schema
@@ -77,3 +79,5 @@ const MstCompanySchema = new mongoose.Schema(
   
   // Create MstCompany model
   const MstCompany = mongoose.models.MstCompany || mongoose.model('MstCompany', MstCompanySchema);
+
+  export default MstCompany

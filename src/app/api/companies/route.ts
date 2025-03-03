@@ -1,0 +1,32 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import  {authOptions} from '../auth/[...nextauth]/route';
+import dbConnect from '@/lib/mongoose';
+import MstCompany from '@/models/MstCompany';
+
+// GET /api/companies - Get all companies
+export async function GET(request: NextRequest) {
+  try {
+    // Connect to database
+    await dbConnect();
+
+    // Get user session
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Check authorization (only admin and manager can access companies)
+    if (!['admin', 'manager'].includes(session.user.role)) {
+      return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+    }
+
+    // Fetch all companies
+    const companies = await MstCompany.find({}).sort({ companyName: 1 });
+
+    return NextResponse.json(companies);
+  } catch (error: any) {
+    console.error('Error fetching companies:', error);
+    return NextResponse.json({ message: error.message || 'Failed to fetch companies' }, { status: 500 });
+  }
+}

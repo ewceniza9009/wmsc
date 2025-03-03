@@ -1,12 +1,14 @@
 import mongoose, { Schema, Document, ObjectId } from 'mongoose';
 
-interface IMstWarehouse extends Document {
+export interface IMstWarehouse extends Document {
     warehouseCode: string;
     warehouseName: string;
     companyId: Schema.Types.ObjectId; // Reference to MstCompany
     address: string;
     contact: string;
     contactNumber: string;
+    createdAt: Date;
+    updatedAt: Date;
   }
   
 // Define MstWarehouse Schema

@@ -13,27 +13,20 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { toast } from 'sonner';
 import { PlusCircle, Pencil, Trash2, AlertCircle, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-
-interface Warehouse {
-  id: string;
-  warehouseCode: string;
-  warehouseName: string;
-  companyId: string;
-  address: string;
-  contact: string;
-  contactNumber: string;
-  createdAt: string;
-}
+import { IMstCompany } from '@/models/MstCompany';
+import { IMstWarehouse } from '@/models/MstWarehouse';
+import mongoose from 'mongoose';
 
 export default function WarehousesPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [warehouses, setWarehouses] = useState<IMstWarehouse[]>([]);
+  const [companies, setCompanies] = useState<IMstCompany[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(null);
+  const [selectedWarehouse, setSelectedWarehouse] = useState<IMstWarehouse | null>(null);
   
   // Form states
   const [warehouseCode, setWarehouseCode] = useState('');
@@ -56,11 +49,26 @@ export default function WarehousesPage() {
         router.push('/pages');
       } else {
         fetchWarehouses();
+        fetchCompanies();
       }
     } else if (status === 'unauthenticated') {
       router.push('/login');
     }
   }, [status, session, router]);
+
+  const fetchCompanies = async () => {
+    try {
+      const response = await fetch('/api/companies');
+      if (!response.ok) {
+        throw new Error('Failed to fetch companies');
+      }
+      const data = await response.json();
+      setCompanies(data);
+    } catch (error) {
+      console.error('Error fetching companies:', error);
+      toast.error('Failed to load companies');
+    }
+  };
 
   const fetchWarehouses = async () => {
     setIsLoading(true);
@@ -164,18 +172,18 @@ export default function WarehousesPage() {
     }
   };
 
-  const openEditDialog = (warehouse: Warehouse) => {
+  const openEditDialog = (warehouse: IMstWarehouse) => {
     setSelectedWarehouse(warehouse);
     setWarehouseCode(warehouse.warehouseCode);
     setWarehouseName(warehouse.warehouseName);
-    setCompanyId(warehouse.companyId);
+    setCompanyId(warehouse.companyId.toString());
     setAddress(warehouse.address);
     setContact(warehouse.contact);
     setContactNumber(warehouse.contactNumber);
     setIsEditDialogOpen(true);
   };
 
-  const openDeleteDialog = (warehouse: Warehouse) => {
+  const openDeleteDialog = (warehouse: IMstWarehouse) => {
     setSelectedWarehouse(warehouse);
     setIsDeleteDialogOpen(true);
   };
@@ -388,7 +396,7 @@ export default function WarehousesPage() {
                     <TableCell>{warehouse.warehouseName}</TableCell>
                     <TableCell>{warehouse.address}</TableCell>
                     <TableCell>{warehouse.contact}</TableCell>
-                    <TableCell>{formatDate(warehouse.createdAt)}</TableCell>
+                    <TableCell>{formatDate(warehouse.createdAt.toLocaleString())}</TableCell>
                     <TableCell className="text-right">
                       <Button
                         variant="ghost"
@@ -499,7 +507,11 @@ export default function WarehousesPage() {
                   <SelectValue placeholder="Select company" />
                 </SelectTrigger>
                 <SelectContent>
-                  {/* Company options will be populated from API */}
+                  {
+                   companies.map((company) => (
+                    <SelectItem value={company._id as string}>{company.companyName}</SelectItem>
+                   )) 
+                  }                  
                 </SelectContent>
               </Select>
             </div>
