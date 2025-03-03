@@ -142,7 +142,7 @@ export default function LoginPage() {
                 </motion.div>
               </div>
               <CardTitle className="text-2xl font-bold text-center text-teal-700 dark:text-teal-500">
-                WMS Cold Storage Login
+                WMSC - Welcome!
               </CardTitle>
               <CardDescription className="text-center">
                 Enter your credentials to access your account
