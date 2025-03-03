@@ -22,7 +22,7 @@ export async function GET() {
     await dbConnect();
     
     // Find all users but don't return passwords
-    const users = await User.find({}).select('-password').sort({ createdAt: -1 });
+    const users = await User.find({}).select('-password').sort({ name: 1 });
     
     // Transform the users to include id instead of _id
     const transformedUsers = users.map(user => ({

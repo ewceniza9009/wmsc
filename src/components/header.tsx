@@ -26,6 +26,23 @@ export function Header({ onMenuClick, user }: HeaderProps) {
       .toUpperCase();
   };
 
+  // Generate random avatar URL based on user's email or name
+  const getRandomAvatarUrl = () => {
+    // Use a consistent identifier (email or name) to get the same avatar for the same user
+    const identifier = user?.email || user?.name || 'anonymous-user';
+    // Create a hash-like value from the identifier for more randomness
+    const hash = Array.from(identifier).reduce((acc, char) => {
+      return acc + char.charCodeAt(0);
+    }, 0);
+    
+    // Use DiceBear API with various styles
+    const styles = ['adventurer', 'avataaars', 'bottts', 'initials', 'micah', 'personas'];
+    const style = styles[hash % styles.length];
+    
+    // Return the avatar URL
+    return `https://api.dicebear.com/7.x/${style}/svg?seed=${encodeURIComponent(identifier)}`;
+  };
+
   const handleSignOut = async () => {
     await signOut({ redirect: true, callbackUrl: '/login' });
   };
@@ -47,7 +64,10 @@ export function Header({ onMenuClick, user }: HeaderProps) {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
               <Avatar>
-                <AvatarImage src={user?.image || ''} alt={user?.name || 'User'} />
+                <AvatarImage 
+                  src={user?.image || getRandomAvatarUrl()} 
+                  alt={user?.name || 'User'} 
+                />
                 <AvatarFallback>{getInitials(user?.name || '')}</AvatarFallback>
               </Avatar>
             </Button>

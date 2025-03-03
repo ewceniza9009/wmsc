@@ -484,6 +484,7 @@ export default function UsersPage() {
                 id="edit-email"
                 type="email"
                 value={email}
+                disabled={true}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -493,6 +494,7 @@ export default function UsersPage() {
                 id="edit-password"
                 type="password"
                 value={password}
+                disabled={true}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="******"
               />
