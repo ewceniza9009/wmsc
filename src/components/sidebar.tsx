@@ -41,6 +41,7 @@ import {
   Menu,
   Calendar,
   CandlestickChart,
+  CopyMinus,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -94,6 +95,16 @@ export function Sidebar({
       ...prev,
       [groupTitle]: !prev[groupTitle],
     }));
+  };
+
+  const collapseAllGroups = () => {
+    // Create a new object with all groups set to false
+    const collapsedGroups = Object.keys(openGroups).reduce((acc, key) => {
+      acc[key] = false;
+      return acc;
+    }, {} as Record<string, boolean>);
+    
+    setOpenGroups(collapsedGroups);
   };
 
   const navItems: NavItem[] = [
@@ -357,6 +368,19 @@ export function Sidebar({
           </span>
         </Link>
         {/* Removed duplicate close button as SheetContent already provides one */}
+      </div>
+      <div className="flex items-center justify-start px-2 py-1">
+        {!isCollapsed && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 px-2 text-xs flex items-center gap-1"
+            onClick={collapseAllGroups}
+          >
+            <CopyMinus className="h-3.5 w-3.5" />
+            <span>Collapse All</span>
+          </Button>
+        )}
       </div>
       <ScrollArea className="flex-1 py-2">
         <nav className="grid gap-1 px-2">

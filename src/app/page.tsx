@@ -103,7 +103,7 @@ export default function Home() {
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         {/* Hero Banner */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
           <motion.div 
@@ -159,39 +159,88 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Stats Section */}
+        {/* Benefits Section */}
         <motion.section 
-          className="py-12 bg-white dark:bg-gray-800 rounded-xl shadow-md mb-16"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="py-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold text-center mb-8 text-teal-700 dark:text-teal-400">Trusted by Cold Chain Leaders</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div className="space-y-2">
-                <p className="text-3xl font-bold text-teal-600">99.9%</p>
-                <p className="text-gray-600 dark:text-gray-300">Temperature Accuracy</p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-3xl font-bold text-teal-600">500+</p>
-                <p className="text-gray-600 dark:text-gray-300">Cold Storage Facilities</p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-3xl font-bold text-teal-600">10M+</p>
-                <p className="text-gray-600 dark:text-gray-300">Temperature-Sensitive Items</p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-3xl font-bold text-teal-600">24/7</p>
-                <p className="text-gray-600 dark:text-gray-300">Monitoring & Support</p>
-              </div>
-            </div>
+        <section>
+          <h2 className="text-3xl font-bold text-center mb-12 text-teal-700 dark:text-teal-400">Cold Storage Benefits</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div 
+              whileHover={{ y: -10 }}
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+            >
+              <Thermometer className="h-10 w-10 text-teal-600 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Temperature Monitoring</h3>
+              <p className="text-gray-600 dark:text-gray-300">Continuous monitoring with alerts for temperature deviations to protect sensitive inventory.</p>
+            </motion.div>
+            
+            <motion.div 
+              whileHover={{ y: -10 }}
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+            >
+              <Truck className="h-10 w-10 text-teal-600 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Cold Chain Logistics</h3>
+              <p className="text-gray-600 dark:text-gray-300">Maintain temperature integrity throughout the entire supply chain process.</p>
+            </motion.div>
+            
+            <motion.div 
+              whileHover={{ y: -10 }}
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+            >
+              <Shield className="h-10 w-10 text-teal-600 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Compliance & Reporting</h3>
+              <p className="text-gray-600 dark:text-gray-300">Automated documentation and reporting for regulatory compliance requirements.</p>
+            </motion.div>
+          </div>
+        </section>
+        </motion.section>
+
+        {/* Additional Benefits Section */}
+        <motion.section 
+          className="py-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-3xl font-bold text-center mb-12 text-teal-700 dark:text-teal-400">Advanced Cold Storage Features</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div 
+              whileHover={{ y: -10 }}
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+            >
+              <Clock className="h-10 w-10 text-teal-600 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Real-time Tracking</h3>
+              <p className="text-gray-600 dark:text-gray-300">Monitor inventory movements and status updates in real-time across your facilities.</p>
+            </motion.div>
+            
+            <motion.div 
+              whileHover={{ y: -10 }}
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+            >
+              <Shield className="h-10 w-10 text-teal-600 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Security & Compliance</h3>
+              <p className="text-gray-600 dark:text-gray-300">Enterprise-grade security features and compliance with industry regulations for cold storage.</p>
+            </motion.div>
+            
+            <motion.div 
+              whileHover={{ y: -10 }}
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+            >
+              <BarChart className="h-10 w-10 text-teal-600 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Analytics & Reporting</h3>
+              <p className="text-gray-600 dark:text-gray-300">Comprehensive data analysis and reporting tools to optimize your warehouse operations.</p>
+            </motion.div>
           </div>
         </motion.section>
 
-        {/* Features Carousel Section */}
-        <section className="py-12" id="features">
+          {/* Features Carousel Section */}
+          <section className="py-12" id="features">
           <h2 className="text-3xl font-bold text-center mb-12 text-teal-700 dark:text-teal-400">Cold Storage Solutions</h2>
           
           <div className="relative max-w-4xl mx-auto">
@@ -265,78 +314,37 @@ export default function Home() {
             </div>
           </div>
         </section>
-        
-        {/* Benefits Section */}
-        <section className="py-12">
-          <h2 className="text-3xl font-bold text-center mb-12 text-teal-700 dark:text-teal-400">Cold Storage Benefits</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <motion.div 
-              whileHover={{ y: -10 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-            >
-              <Thermometer className="h-10 w-10 text-teal-600 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Temperature Monitoring</h3>
-              <p className="text-gray-600 dark:text-gray-300">Continuous monitoring with alerts for temperature deviations to protect sensitive inventory.</p>
-            </motion.div>
-            
-            <motion.div 
-              whileHover={{ y: -10 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-            >
-              <Truck className="h-10 w-10 text-teal-600 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Cold Chain Logistics</h3>
-              <p className="text-gray-600 dark:text-gray-300">Maintain temperature integrity throughout the entire supply chain process.</p>
-            </motion.div>
-            
-            <motion.div 
-              whileHover={{ y: -10 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-            >
-              <Shield className="h-10 w-10 text-teal-600 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Compliance & Reporting</h3>
-              <p className="text-gray-600 dark:text-gray-300">Automated documentation and reporting for regulatory compliance requirements.</p>
-            </motion.div>
-          </div>
-        </section>
 
-        {/* Additional Benefits Section */}
+        {/* Stats Section */}
         <motion.section 
-          className="py-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          className="py-12 bg-white dark:bg-gray-800 rounded-xl shadow-md mb-16"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl font-bold text-center mb-12 text-teal-700 dark:text-teal-400">Advanced Cold Storage Features</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <motion.div 
-              whileHover={{ y: -10 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-            >
-              <Clock className="h-10 w-10 text-teal-600 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Real-time Tracking</h3>
-              <p className="text-gray-600 dark:text-gray-300">Monitor inventory movements and status updates in real-time across your facilities.</p>
-            </motion.div>
-            
-            <motion.div 
-              whileHover={{ y: -10 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-            >
-              <Shield className="h-10 w-10 text-teal-600 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Security & Compliance</h3>
-              <p className="text-gray-600 dark:text-gray-300">Enterprise-grade security features and compliance with industry regulations for cold storage.</p>
-            </motion.div>
-            
-            <motion.div 
-              whileHover={{ y: -10 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-            >
-              <BarChart className="h-10 w-10 text-teal-600 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Analytics & Reporting</h3>
-              <p className="text-gray-600 dark:text-gray-300">Comprehensive data analysis and reporting tools to optimize your warehouse operations.</p>
-            </motion.div>
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-bold text-center mb-8 text-teal-700 dark:text-teal-400">Trusted by Cold Chain Leaders</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div className="space-y-2">
+                <p className="text-3xl font-bold text-teal-600">99.9%</p>
+                <p className="text-gray-600 dark:text-gray-300">Temperature Accuracy</p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-3xl font-bold text-teal-600">500+</p>
+                <p className="text-gray-600 dark:text-gray-300">Cold Storage Facilities</p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-3xl font-bold text-teal-600">10M+</p>
+                <p className="text-gray-600 dark:text-gray-300">Temperature-Sensitive Items</p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-3xl font-bold text-teal-600">24/7</p>
+                <p className="text-gray-600 dark:text-gray-300">Monitoring & Support</p>
+              </div>
+            </div>
           </div>
-        </motion.section>
+        </motion.section>      
 
         {/* Call to Action Section */}
         <motion.section 
