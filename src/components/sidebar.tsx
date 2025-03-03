@@ -14,19 +14,33 @@ import {
 } from "@/components/ui/collapsible";
 import {
   LayoutDashboard,
+  Building2,
+  Container,
+  MapPin,
   Package,
+  Package2,
+  PackageOpen,
+  Combine,
+  Forklift,
   ClipboardList,
   Truck,
+  ArrowLeftRight,
   Users,
+  UserRoundSearch,
   Settings,
-  BarChart,
+  ChartBarStacked,
   Warehouse,
   Thermometer,
+  ChartCandlestick,
+  Activity,
+  CalendarCheck,
   X,
   ChevronRight,
   ChevronDown,
   ChevronLeft,
   Menu,
+  Calendar,
+  CandlestickChart,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -45,7 +59,13 @@ interface NavItem {
   children?: NavItem[];
 }
 
-export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapsed, onCollapsedChange }: SidebarProps) {
+export function Sidebar({
+  isOpen,
+  onClose,
+  userRole,
+  isCollapsed: propIsCollapsed,
+  onCollapsedChange,
+}: SidebarProps) {
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(propIsCollapsed || false);
@@ -65,7 +85,7 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
     }
     // Force layout recalculation by triggering a small timeout
     setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
+      window.dispatchEvent(new Event("resize"));
     }, 10);
   };
 
@@ -84,33 +104,88 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
       roles: ["admin", "manager", "worker"],
     },
     {
-      title: "Inventory",
+      title: "Setup",
       icon: <Package className="h-5 w-5" />,
       roles: ["admin", "manager", "worker"],
       children: [
         {
-          title: "Products",
-          href: "/pages/inventory/products",
-          icon: <Package className="h-5 w-5" />,
+          title: "Company",
+          href: "/pages/company",
+          icon: <Building2 className="h-5 w-5" />,
           roles: ["admin", "manager", "worker"],
         },
         {
-          title: "Stock Levels",
-          href: "/pages/inventory/stock",
-          icon: <Package className="h-5 w-5" />,
+          title: "Warehouse",
+          href: "/pages/warehouse",
+          icon: <Warehouse className="h-5 w-5" />,
+          roles: ["admin", "manager", "worker"],
+        },
+        {
+          title: "Supplier",
+          href: "/pages/supplier",
+          icon: <UserRoundSearch className="h-5 w-5" />,
+          roles: ["admin", "manager", "worker"],
+        },
+        {
+          title: "Storage Room",
+          href: "/pages/room",
+          icon: <Container className="h-5 w-5" />,
+          roles: ["admin", "manager", "worker"],
+        },
+        {
+          title: "Storage Location",
+          href: "/pages/location",
+          icon: <MapPin className="h-5 w-5" />,
+          roles: ["admin", "manager", "worker"],
+        },
+        {
+          title: "Materials",
+          href: "/pages/material",
+          icon: <Package2 className="h-5 w-5" />,
           roles: ["admin", "manager", "worker"],
         },
       ],
     },
     {
-      title: "Orders",
-      href: "/pages/orders",
-      icon: <ClipboardList className="h-5 w-5" />,
-      roles: ["admin", "manager", "worker"],
+      title: "Operations",
+      icon: <Combine className="h-5 w-5" />,
+      roles: ["admin", "manager"],
+      children: [
+        {
+          title: "Storage Receiving",
+          href: "/pages/storage-receiving",
+          icon: <Truck className="h-5 w-5" />,
+          roles: ["admin", "manager"],
+        },        
+        {
+          title: "Storage Transfer",
+          href: "/pages/storage-transfer",
+          icon: <ArrowLeftRight className="h-5 w-5" />,
+          roles: ["admin", "manager"],
+        },
+        {
+          title: "Storage Packing",
+          href: "/pages/storage-packing",
+          icon: <PackageOpen className="h-5 w-5" />,
+          roles: ["admin", "manager"],
+        },
+        {
+          title: "Withdrawal Order",
+          href: "/pages/witdrawal-order",
+          icon: <ClipboardList className="h-5 w-5" />,
+          roles: ["admin", "manager"],
+        },
+        {
+          title: "Storage Pick",
+          href: "/pages/pick",
+          icon: <Forklift className="h-5 w-5" />,
+          roles: ["admin", "manager"],
+        },
+      ],
     },
     {
-      title: "Logistics",
-      icon: <Truck className="h-5 w-5" />,
+      title: "Reports",
+      icon: <ChartBarStacked className="h-5 w-5" />,
       roles: ["admin", "manager"],
       children: [
         {
@@ -128,15 +203,15 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
       ],
     },
     {
-      title: "Storage Locations",
-      href: "/pages/locations",
-      icon: <Warehouse className="h-5 w-5" />,
-      roles: ["admin", "manager"],
+      title: "Inventory Status",
+      href: "/pages/inventory-status",
+      icon: <CandlestickChart className="h-5 w-5" />,
+      roles: ["admin", "manager", "worker"],
     },
     {
-      title: "Reports",
-      href: "/pages/reports",
-      icon: <BarChart className="h-5 w-5" />,
+      title: "Storage Status",
+      href: "/pages/storage-status",
+      icon: <Activity className="h-5 w-5" />,
       roles: ["admin", "manager"],
     },
     {
@@ -157,6 +232,12 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
           roles: ["admin"],
         },
       ],
+    },
+    {
+      title: "Calendar",
+      href: "/pages/calendar",
+      icon: <CalendarCheck className="h-5 w-5" />,
+      roles: ["admin", "manager"],
     },
   ];
 
@@ -197,7 +278,9 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
             <button
               className={cn(
                 "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground font-semibold",
-                openGroups[item.title] ? "bg-accent/50 text-teal-700" : "text-teal-700"
+                openGroups[item.title]
+                  ? "bg-accent/50 text-teal-700"
+                  : "text-teal-700"
               )}
             >
               <div className="flex items-center gap-3">
@@ -249,9 +332,7 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
         onClick={() => onClose()}
         className={cn(
           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-          pathname === item.href
-            ? "bg-accent/50 text-teal-700"
-            : "transparent"
+          pathname === item.href ? "bg-accent/50 text-teal-700" : "transparent"
         )}
       >
         {item.icon}
@@ -282,7 +363,7 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
           {filteredNavItems.map(renderNavItem)}
         </nav>
       </ScrollArea>
-      
+
       {/* Floating toggle button */}
       <Button
         variant="outline"
@@ -290,7 +371,11 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
         className="absolute -right-3 top-20 h-6 w-6 rounded-full border shadow-md hidden md:flex justify-center items-center bg-background z-10"
         onClick={toggleSidebar}
       >
-        {isCollapsed ? <ChevronRight className="h-3 w-3" /> : <ChevronLeft className="h-3 w-3" />}
+        {isCollapsed ? (
+          <ChevronRight className="h-3 w-3" />
+        ) : (
+          <ChevronLeft className="h-3 w-3" />
+        )}
         <span className="sr-only">Toggle sidebar</span>
       </Button>
     </div>
@@ -310,10 +395,12 @@ export function Sidebar({ isOpen, onClose, userRole, isCollapsed: propIsCollapse
       </Sheet>
 
       {/* Desktop sidebar */}
-      <div className={cn(
-        "hidden md:flex md:flex-col md:fixed md:inset-y-0 z-10 transition-all duration-300 ease-in-out",
-        isCollapsed ? "md:w-16" : "md:w-64"
-      )}>
+      <div
+        className={cn(
+          "hidden md:flex md:flex-col md:fixed md:inset-y-0 z-10 transition-all duration-300 ease-in-out",
+          isCollapsed ? "md:w-16" : "md:w-64"
+        )}
+      >
         <div className="flex flex-col flex-1 min-h-0 border-r bg-background w-full">
           {sidebarContent}
         </div>
