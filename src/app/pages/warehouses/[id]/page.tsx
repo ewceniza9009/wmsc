@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textArea";
 import usePage from "../usePage";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
@@ -30,6 +31,7 @@ export default function WarehouseDetailPage() {
 
   return (
     <div className="space-y-6">
+      {/* Full-width header */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">
@@ -42,75 +44,85 @@ export default function WarehouseDetailPage() {
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {isEdit ? "Save Changes" : "Add Warehouse"}
           </Button>
-          <div>
-            <Link href="./">
-              <Button variant="outline">Back</Button>
-            </Link>
-          </div>
+          <Link href="./">
+            <Button variant="outline">Back</Button>
+          </Link>
         </div>
       </div>
 
-      <form id="mainForm" onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid gap-2">
-          <Label htmlFor="warehouseCode">Warehouse Code</Label>
-          <Input
-            id="warehouseCode"
-            value={form.warehouseCode}
-            onChange={(e) => handleChange("warehouseCode", e.target.value)}
-            placeholder="e.g. WH001"
-          />
+      {/* Two-column layout for the form */}
+      <div className="grid grid-cols-2 gap-8">
+        <div>
+          <form id="mainForm" onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid gap-2">
+              <Label htmlFor="warehouseCode">Warehouse Code</Label>
+              <Input
+                id="warehouseCode"
+                value={form.warehouseCode}
+                onChange={(e) => handleChange("warehouseCode", e.target.value)}
+                placeholder="e.g. WH001"
+                className="w-40" // Reduced width
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="warehouseName">Warehouse Name</Label>
+              <Input
+                id="warehouseName"
+                value={form.warehouseName}
+                onChange={(e) => handleChange("warehouseName", e.target.value)}
+                className="w-120"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="companyId">Company</Label>
+              <Select
+                value={form.companyId}
+                onValueChange={(value) => handleChange("companyId", value)}
+              >
+                <SelectTrigger className="w-120">
+                  <SelectValue placeholder="Select company" />
+                </SelectTrigger>
+                <SelectContent>
+                  {companies.map((company) => (
+                    <SelectItem key={company.id} value={company.id}>
+                      {company.companyName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="address">Address</Label>
+              <Textarea
+                id="address"
+                value={form.address}
+                onChange={(e) => handleChange("address", e.target.value)}
+                placeholder="Enter address"
+                rows={4} // Multi-line text
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="contact">Contact Person</Label>
+              <Input
+                id="contact"
+                value={form.contact}
+                onChange={(e) => handleChange("contact", e.target.value)}
+                className="w-120" // Reduced width
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="contactNumber">Contact Number</Label>
+              <Input
+                id="contactNumber"
+                value={form.contactNumber}
+                onChange={(e) => handleChange("contactNumber", e.target.value)}
+                className="w-120" // Reduced width
+              />
+            </div>
+          </form>
         </div>
-        <div className="grid gap-2">
-          <Label htmlFor="warehouseName">Warehouse Name</Label>
-          <Input
-            id="warehouseName"
-            value={form.warehouseName}
-            onChange={(e) => handleChange("warehouseName", e.target.value)}
-          />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="companyId">Company</Label>
-          <Select
-            value={form.companyId}
-            onValueChange={(value) => handleChange("companyId", value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select company" />
-            </SelectTrigger>
-            <SelectContent>
-              {companies.map((company) => (
-                <SelectItem key={company.id} value={company.id}>
-                  {company.companyName}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="address">Address</Label>
-          <Input
-            id="address"
-            value={form.address}
-            onChange={(e) => handleChange("address", e.target.value)}
-          />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="contact">Contact Person</Label>
-          <Input
-            id="contact"
-            value={form.contact}
-            onChange={(e) => handleChange("contact", e.target.value)}
-          />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="contactNumber">Contact Number</Label>
-          <Input
-            id="contactNumber"
-            value={form.contactNumber}
-            onChange={(e) => handleChange("contactNumber", e.target.value)}
-          />
-        </div>
-      </form>
+        <div>{/* Empty second column to restrict form width */}</div>
+      </div>
     </div>
   );
 }
