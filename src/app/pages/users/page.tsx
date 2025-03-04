@@ -304,6 +304,22 @@ export default function UsersPage() {
                 />
               </div>
               <div className="grid gap-2">
+                <Label htmlFor="role">Role</Label>
+                <Select
+                  value={role}
+                  onValueChange={(value: any) => setRole(value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="manager">Manager</SelectItem>
+                    <SelectItem value="worker">Worker</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
@@ -322,23 +338,7 @@ export default function UsersPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="******"
                 />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="role">Role</Label>
-                <Select
-                  value={role}
-                  onValueChange={(value: any) => setRole(value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="admin">Admin</SelectItem>
-                    <SelectItem value="manager">Manager</SelectItem>
-                    <SelectItem value="worker">Worker</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              </div>              
             </div>
             <DialogFooter>
               <Button
@@ -546,6 +546,22 @@ export default function UsersPage() {
               />
             </div>
             <div className="grid gap-2">
+              <Label htmlFor="edit-role">Role</Label>
+              <Select
+                value={role}
+                onValueChange={(value: any) => setRole(value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="manager">Manager</SelectItem>
+                  <SelectItem value="worker">Worker</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
               <Label htmlFor="edit-email">Email</Label>
               <Input
                 id="edit-email"
@@ -567,23 +583,7 @@ export default function UsersPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="******"
               />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-role">Role</Label>
-              <Select
-                value={role}
-                onValueChange={(value: any) => setRole(value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="manager">Manager</SelectItem>
-                  <SelectItem value="worker">Worker</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            </div>            
           </div>
           <DialogFooter>
             <Button

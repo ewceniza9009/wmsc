@@ -250,19 +250,19 @@ const seedRoutes = [
 
 const seedUsers = [
   {
-    name: 'Admin User',
+    name: 'Erwin Wilson Ceniza',
     email: 'admin@example.com',
     password: 'password123',
     role: 'admin',
   },
   {
-    name: 'Manager User',
+    name: 'Neil Adrianne',
     email: 'manager@example.com',
     password: 'password123',
     role: 'manager',
   },
   {
-    name: 'Worker User',
+    name: 'Lourd Wilson',
     email: 'worker@example.com',
     password: 'password123',
     role: 'worker',
