@@ -64,7 +64,7 @@ export default function DashboardLayout({
         </div>
         {/* Decorative background image */}
         <img
-          src="./images/coldstorage.svg"
+          src="/images/coldstorage.svg"
           alt="Decorative Cold Storage"
           className="absolute bottom-0 right-0 opacity-[0.05] pointer-events-none"
         />

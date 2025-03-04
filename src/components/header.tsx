@@ -60,29 +60,30 @@ export function Header({ onMenuClick, user }: HeaderProps) {
     }
   }, []);
 
-  // Save the selected warehouse to localStorage whenever it changes
-  useEffect(() => {
-    if (selectedWarehouse) {
-      localStorage.setItem('selectedWarehouse', selectedWarehouse);
-    }
-  }, [selectedWarehouse]);
-
-  // Fetch warehouses using axios
   useEffect(() => {
     const fetchWarehouses = async () => {
       try {
         const { data } = await axios.get<WarehouseType[]>('/api/warehouses');
         setWarehouses(data);
-        // If no warehouse is selected from localStorage, default to the first one
-        if (!selectedWarehouse && data.length > 0) {
-          setSelectedWarehouse(data[0].id);
-        }
+  
+        // Ensure selectedWarehouse is loaded from storage OR defaults to the first warehouse
+        setSelectedWarehouse((prev) => {
+          const stored = localStorage.getItem('selectedWarehouse');
+          return stored ? stored : data.length > 0 ? data[0].id : prev;
+        });
       } catch (error) {
         console.error('Error fetching warehouses:', error);
       }
     };
-
+  
     fetchWarehouses();
+  }, []);
+
+  // Save the selected warehouse to localStorage whenever it changes
+  useEffect(() => {
+    if (selectedWarehouse) {
+      localStorage.setItem('selectedWarehouse', selectedWarehouse);
+    }
   }, [selectedWarehouse]);
 
   // Get user initials for avatar fallback
