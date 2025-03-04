@@ -105,7 +105,7 @@ export default function UsersPage() {
     }
   };
 
-  const handleEditUser = async () => {
+  const handleSave = async () => {
     if (!selectedUser) return;
 
     try {
@@ -515,7 +515,7 @@ export default function UsersPage() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleEditUser}>Update User</Button>
+            <Button onClick={handleSave}>Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
