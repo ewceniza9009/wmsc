@@ -16,11 +16,11 @@ import Link from "next/link";
 import { Loader2 } from "lucide-react";
 
 export default function WarehouseDetailPage() {
-  const { form, handleChange, handleSubmit, companies, isLoading, isSaving } = usePage();
+  const { form, handleChange, handleSubmit, companies, isDetailLoading, isSaving } = usePage();
   const { id } = useParams();
   const isEdit = id !== "new";
 
-  if (isLoading) {
+  if (isDetailLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>

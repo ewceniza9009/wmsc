@@ -55,6 +55,7 @@ export default function WarehousesPage() {
       <Card>
         <CardContent>
           <DataGrid
+            viewportHeight="60vh"
             data={warehouses}
             columns={[
               { header: "Code" },

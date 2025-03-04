@@ -17,6 +17,7 @@ export default function usePage() {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDetailLoading, setIsDetailLoading] = useState(true);
   
   const [form, setForm] = useState({
     warehouseCode: "",
@@ -47,14 +48,14 @@ export default function usePage() {
 
   useEffect(() => {
     if (isEdit && id) {
-      setIsLoading(true);
+      setIsDetailLoading(true);
       axios
         .get(`/api/warehouses/${id}`)
         .then((res) => setForm(res.data))
         .catch((err) => console.error(err))
-        .finally(() => setIsLoading(false));
+        .finally(() => setIsDetailLoading(false));
     } else {
-      setIsLoading(false);
+      setIsDetailLoading(false);
     }
   }, [id, isEdit]);
 
@@ -123,6 +124,7 @@ export default function usePage() {
     warehouses,
     companies,
     isLoading,
+    isDetailLoading,
     isDeleteDialogOpen,
     setIsDeleteDialogOpen,
     selectedWarehouse,

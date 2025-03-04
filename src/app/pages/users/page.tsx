@@ -338,7 +338,7 @@ export default function UsersPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="******"
                 />
-              </div>              
+              </div>
             </div>
             <DialogFooter>
               <Button
@@ -395,83 +395,86 @@ export default function UsersPage() {
               </Select>
             </div>
           </div>
-
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {currentUsers.length === 0 ? (
+          <div
+            style={{ height: "60vh", overflowY: "auto" }}
+          >
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-6">
-                    <div className="flex flex-col items-center justify-center text-muted-foreground">
-                      <AlertCircle className="h-10 w-10 mb-2" />
-                      {searchTerm
-                        ? "No users match your search"
-                        : "No users found"}
-                    </div>
-                  </TableCell>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ) : (
-                currentUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          user.role === "admin"
-                            ? "bg-red-100 text-red-800"
-                            : user.role === "manager"
-                            ? "bg-teal-100 text-teal-800"
-                            : "bg-green-100 text-green-800"
-                        }`}
-                      >
-                        {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                      </span>
-                    </TableCell>
-                    <TableCell>{formatDate(user.createdAt)}</TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => openEditDialog(user)}
-                        title="Edit User"
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => {
-                          setSelectedUser(user);
-                          setIsRightsDialogOpen(true);
-                        }}
-                        title="Manage Permissions"
-                      >
-                        <Shield className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => openDeleteDialog(user)}
-                        title="Delete User"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+              </TableHeader>
+              <TableBody>
+                {currentUsers.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center py-6">
+                      <div className="flex flex-col items-center justify-center text-muted-foreground">
+                        <AlertCircle className="h-10 w-10 mb-2" />
+                        {searchTerm
+                          ? "No users match your search"
+                          : "No users found"}
+                      </div>
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-
+                ) : (
+                  currentUsers.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            user.role === "admin"
+                              ? "bg-red-100 text-red-800"
+                              : user.role === "manager"
+                              ? "bg-teal-100 text-teal-800"
+                              : "bg-green-100 text-green-800"
+                          }`}
+                        >
+                          {user.role.charAt(0).toUpperCase() +
+                            user.role.slice(1)}
+                        </span>
+                      </TableCell>
+                      <TableCell>{formatDate(user.createdAt)}</TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => openEditDialog(user)}
+                          title="Edit User"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => {
+                            setSelectedUser(user);
+                            setIsRightsDialogOpen(true);
+                          }}
+                          title="Manage Permissions"
+                        >
+                          <Shield className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => openDeleteDialog(user)}
+                          title="Delete User"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
           {/* Pagination controls */}
           {filteredUsers.length > 0 && (
             <div className="flex items-center justify-between mt-4">
@@ -583,7 +586,7 @@ export default function UsersPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="******"
               />
-            </div>            
+            </div>
           </div>
           <DialogFooter>
             <Button
