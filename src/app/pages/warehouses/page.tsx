@@ -53,9 +53,9 @@ export default function WarehousesPage() {
     setContact,
     contactNumber,
     setContactNumber,
-    handleAddWarehouse,
-    hanldeSave: handleSave,
-    handleDeleteWarehouse,
+    handleAdd,
+    handleSave,
+    handleDelete,
     openEditDialog,
     openDeleteDialog,
     resetForm,
@@ -98,7 +98,7 @@ export default function WarehousesPage() {
               <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleAddWarehouse}>Create Warehouse</Button>
+              <Button onClick={handleAdd}>Create Warehouse</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -225,7 +225,7 @@ export default function WarehousesPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteWarehouse} className="bg-red-600 hover:bg-red-700">
+            <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700">
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

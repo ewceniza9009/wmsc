@@ -79,7 +79,7 @@ export default function usePage() {
     setSelectedWarehouse(null);
   };
 
-  const handleAddWarehouse = async () => {
+  const handleAdd = async () => {
     try {
       const response = await fetch('/api/warehouses', {
         method: 'POST',
@@ -99,7 +99,7 @@ export default function usePage() {
     }
   };
 
-  const handleEditWarehouse = async () => {
+  const handleSave = async () => {
     if (!selectedWarehouse) return;
     try {
       const response = await fetch(`/api/warehouses/${selectedWarehouse.id}`, {
@@ -120,7 +120,7 @@ export default function usePage() {
     }
   };
 
-  const handleDeleteWarehouse = async () => {
+  const handleDelete = async () => {
     if (!selectedWarehouse) return;
     try {
       const response = await fetch(`/api/warehouses/${selectedWarehouse.id}`, {
@@ -180,9 +180,9 @@ export default function usePage() {
     contactNumber,
     setContactNumber,
     // Handlers
-    handleAddWarehouse,
-    hanldeSave: handleEditWarehouse,
-    handleDeleteWarehouse,
+    handleAdd,
+    handleSave,
+    handleDelete,
     openEditDialog,
     openDeleteDialog,
     resetForm,

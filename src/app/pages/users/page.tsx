@@ -1,25 +1,71 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { toast } from 'sonner';
-import { PlusCircle, Pencil, Trash2, AlertCircle, Search, ChevronLeft, ChevronRight, Shield } from 'lucide-react';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import UserRightsManager from '@/components/user-rights-manager';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { toast } from "sonner";
+import {
+  PlusCircle,
+  Pencil,
+  Trash2,
+  AlertCircle,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  Shield,
+  Loader2,
+} from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import UserRightsManager from "@/components/user-rights-manager";
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: 'admin' | 'manager' | 'worker';
+  role: "admin" | "manager" | "worker";
   createdAt: string;
 }
 
@@ -33,44 +79,46 @@ export default function UsersPage() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isRightsDialogOpen, setIsRightsDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  
+
   // Form states
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'admin' | 'manager' | 'worker'>('worker');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState<"admin" | "manager" | "worker">("worker");
 
   // Search and pagination states
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
+  const [isSaving, setIsSaving] = useState(false);
+
   // Check if user is admin
   useEffect(() => {
-    if (status === 'authenticated') {
-      if (session.user.role !== 'admin') {
-        toast.error('You do not have permission to access this page');
-        router.push('/pages');
+    if (status === "authenticated") {
+      if (session.user.role !== "admin") {
+        toast.error("You do not have permission to access this page");
+        router.push("/pages");
       } else {
         fetchUsers();
       }
-    } else if (status === 'unauthenticated') {
-      router.push('/login');
+    } else if (status === "unauthenticated") {
+      router.push("/login");
     }
   }, [status, session, router]);
 
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/users');
+      const response = await fetch("/api/users");
       if (!response.ok) {
-        throw new Error('Failed to fetch users');
+        throw new Error("Failed to fetch users");
       }
       const data = await response.json();
       setUsers(data);
     } catch (error) {
-      console.error('Error fetching users:', error);
-      toast.error('Failed to load users');
+      console.error("Error fetching users:", error);
+      toast.error("Failed to load users");
     } finally {
       setIsLoading(false);
     }
@@ -78,10 +126,10 @@ export default function UsersPage() {
 
   const handleAddUser = async () => {
     try {
-      const response = await fetch('/api/users', {
-        method: 'POST',
+      const response = await fetch("/api/users", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name,
@@ -93,21 +141,21 @@ export default function UsersPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create user');
+        throw new Error(errorData.message || "Failed to create user");
       }
 
-      toast.success('User created successfully');
+      toast.success("User created successfully");
       fetchUsers();
       resetForm();
       setIsAddDialogOpen(false);
     } catch (error: any) {
-      toast.error(error.message || 'Failed to create user');
+      toast.error(error.message || "Failed to create user");
     }
   };
 
   const handleSave = async () => {
     if (!selectedUser) return;
-
+    setIsSaving(true);
     try {
       const userData = {
         name,
@@ -117,24 +165,26 @@ export default function UsersPage() {
       };
 
       const response = await fetch(`/api/users/${selectedUser.id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update user');
+        throw new Error(errorData.message || "Failed to update user");
       }
 
-      toast.success('User updated successfully');
+      toast.success("User updated successfully");
       fetchUsers();
       resetForm();
       setIsEditDialogOpen(false);
     } catch (error: any) {
-      toast.error(error.message || 'Failed to update user');
+      toast.error(error.message || "Failed to update user");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -143,19 +193,19 @@ export default function UsersPage() {
 
     try {
       const response = await fetch(`/api/users/${selectedUser.id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to delete user');
+        throw new Error(errorData.message || "Failed to delete user");
       }
 
-      toast.success('User deleted successfully');
+      toast.success("User deleted successfully");
       fetchUsers();
       setIsDeleteDialogOpen(false);
     } catch (error: any) {
-      toast.error(error.message || 'Failed to delete user');
+      toast.error(error.message || "Failed to delete user");
     }
   };
 
@@ -163,7 +213,7 @@ export default function UsersPage() {
     setSelectedUser(user);
     setName(user.name);
     setEmail(user.email);
-    setPassword('');
+    setPassword("");
     setRole(user.role);
     setIsEditDialogOpen(true);
   };
@@ -174,24 +224,24 @@ export default function UsersPage() {
   };
 
   const resetForm = () => {
-    setName('');
-    setEmail('');
-    setPassword('');
-    setRole('worker');
+    setName("");
+    setEmail("");
+    setPassword("");
+    setRole("worker");
     setSelectedUser(null);
   };
 
   // Format date for display
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
   // Filter users based on search term
-  const filteredUsers = users.filter(user => {
+  const filteredUsers = users.filter((user) => {
     const searchTermLower = searchTerm.toLowerCase();
     return (
       user.name.toLowerCase().includes(searchTermLower) ||
@@ -208,10 +258,11 @@ export default function UsersPage() {
 
   // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-  const nextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
-  const prevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
+  const nextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
-  if (status === 'loading' || (status === 'authenticated' && isLoading)) {
+  if (status === "loading" || (status === "authenticated" && isLoading)) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -274,7 +325,10 @@ export default function UsersPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="role">Role</Label>
-                <Select value={role} onValueChange={(value: any) => setRole(value)}>
+                <Select
+                  value={role}
+                  onValueChange={(value: any) => setRole(value)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
@@ -287,7 +341,12 @@ export default function UsersPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
+              <Button
+                variant="outline"
+                onClick={() => setIsAddDialogOpen(false)}
+              >
+                Cancel
+              </Button>
               <Button onClick={handleAddUser}>Create User</Button>
             </DialogFooter>
           </DialogContent>
@@ -317,8 +376,8 @@ export default function UsersPage() {
               />
             </div>
             <div className="ml-4">
-              <Select 
-                value={itemsPerPage.toString()} 
+              <Select
+                value={itemsPerPage.toString()}
                 onValueChange={(value) => {
                   setItemsPerPage(Number(value));
                   setCurrentPage(1); // Reset to first page when changing items per page
@@ -353,7 +412,9 @@ export default function UsersPage() {
                   <TableCell colSpan={5} className="text-center py-6">
                     <div className="flex flex-col items-center justify-center text-muted-foreground">
                       <AlertCircle className="h-10 w-10 mb-2" />
-                      {searchTerm ? 'No users match your search' : 'No users found'}
+                      {searchTerm
+                        ? "No users match your search"
+                        : "No users found"}
                     </div>
                   </TableCell>
                 </TableRow>
@@ -363,11 +424,15 @@ export default function UsersPage() {
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        user.role === 'admin' ? 'bg-red-100 text-red-800' :
-                        user.role === 'manager' ? 'bg-teal-100 text-teal-800' :
-                        'bg-green-100 text-green-800'
-                      }`}>
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          user.role === "admin"
+                            ? "bg-red-100 text-red-800"
+                            : user.role === "manager"
+                            ? "bg-teal-100 text-teal-800"
+                            : "bg-green-100 text-green-800"
+                        }`}
+                      >
                         {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                       </span>
                     </TableCell>
@@ -406,12 +471,14 @@ export default function UsersPage() {
               )}
             </TableBody>
           </Table>
-          
+
           {/* Pagination controls */}
           {filteredUsers.length > 0 && (
             <div className="flex items-center justify-between mt-4">
               <div className="text-sm text-muted-foreground">
-                Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredUsers.length)} of {filteredUsers.length} users
+                Showing {indexOfFirstItem + 1} to{" "}
+                {Math.min(indexOfLastItem, filteredUsers.length)} of{" "}
+                {filteredUsers.length} users
               </div>
               <div className="flex items-center space-x-2">
                 <Button
@@ -434,7 +501,7 @@ export default function UsersPage() {
                   } else {
                     pageNum = currentPage - 2 + i;
                   }
-                  
+
                   return (
                     <Button
                       key={pageNum}
@@ -489,7 +556,9 @@ export default function UsersPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="edit-password">Password (leave blank to keep unchanged)</Label>
+              <Label htmlFor="edit-password">
+                Password (leave blank to keep unchanged)
+              </Label>
               <Input
                 id="edit-password"
                 type="password"
@@ -501,7 +570,10 @@ export default function UsersPage() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="edit-role">Role</Label>
-              <Select value={role} onValueChange={(value: any) => setRole(value)}>
+              <Select
+                value={role}
+                onValueChange={(value: any) => setRole(value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select role" />
                 </SelectTrigger>
@@ -514,24 +586,39 @@ export default function UsersPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleSave} disabled={isSaving}>
+              {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Save
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Delete User Confirmation */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete User</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this user? This action cannot be undone.
+              Are you sure you want to delete this user? This action cannot be
+              undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteUser} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={handleDeleteUser}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -544,13 +631,14 @@ export default function UsersPage() {
           <DialogHeader>
             <DialogTitle>User Permissions - {selectedUser?.name}</DialogTitle>
             <DialogDescription>
-              Manage access rights for this user across different routes in the system.
+              Manage access rights for this user across different routes in the
+              system.
             </DialogDescription>
           </DialogHeader>
           {selectedUser && (
-            <UserRightsManager 
-              userId={selectedUser.id} 
-              onClose={() => setIsRightsDialogOpen(false)} 
+            <UserRightsManager
+              userId={selectedUser.id}
+              onClose={() => setIsRightsDialogOpen(false)}
             />
           )}
         </DialogContent>
