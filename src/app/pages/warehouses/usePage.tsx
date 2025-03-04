@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
 import { Company } from "@/models/MstCompany";
@@ -11,15 +11,26 @@ import { Warehouse } from "@/models/MstWarehouse";
 export default function usePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { id } = useParams();
+  const isEdit = id !== "new";
 
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const [form, setForm] = useState({
+    warehouseCode: "",
+    warehouseName: "",
+    companyId: "",
+    address: "",
+    contact: "",
+    contactNumber: "",
+  });
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Authenticate and fetch initial data
   useEffect(() => {
     if (status === "authenticated") {
       if (!["admin", "manager"].includes(session.user.role)) {
@@ -33,6 +44,19 @@ export default function usePage() {
       router.push("/login");
     }
   }, [status, session, router]);
+
+  useEffect(() => {
+    if (isEdit && id) {
+      setIsLoading(true);
+      axios
+        .get(`/api/warehouses/${id}`)
+        .then((res) => setForm(res.data))
+        .catch((err) => console.error(err))
+        .finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+    }
+  }, [id, isEdit]);
 
   const fetchCompanies = async () => {
     try {
@@ -72,6 +96,29 @@ export default function usePage() {
     setIsDeleteDialogOpen(true);
   };
 
+  const handleChange = (field: string, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSaving(true);
+    try {
+      if (isEdit) {
+        await axios.put(`/api/warehouses/${id}`, form);
+        toast.success("Warehouse updated successfully");
+      } else {
+        await axios.post("/api/warehouses", form);
+        router.push("/warehouses");
+        toast.success("Warehouse added successfully");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return {
     warehouses,
     companies,
@@ -81,5 +128,9 @@ export default function usePage() {
     selectedWarehouse,
     handleDelete,
     openDeleteDialog,
+    form,
+    handleChange,
+    handleSubmit,
+    isSaving,
   };
 }
