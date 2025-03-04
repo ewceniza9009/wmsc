@@ -110,7 +110,7 @@ export default function usePage() {
         toast.success("Warehouse updated successfully");
       } else {
         await axios.post("/api/warehouses", form);
-        router.push("/warehouses");
+        router.push("./");
         toast.success("Warehouse added successfully");
       }
     } catch (error) {

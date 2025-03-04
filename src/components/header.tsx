@@ -4,10 +4,33 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Menu, LogOut, User, LayoutDashboard, Package, ChartBarStacked, Activity, Warehouse, Calendar1 } from 'lucide-react';
-import { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import {
+  Menu,
+  LogOut,
+  User,
+  LayoutDashboard,
+  Package,
+  Activity,
+  Warehouse,
+  Calendar1
+} from 'lucide-react';
+import { useState, useEffect } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
+import axios from 'axios';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -19,21 +42,60 @@ interface HeaderProps {
   };
 }
 
+interface WarehouseType {
+  id: string;
+  warehouseName: string;
+  // Add other fields as necessary
+}
+
 export function Header({ onMenuClick, user }: HeaderProps) {
-  const [selectedWarehouse, setSelectedWarehouse] = useState('1');
+  const [selectedWarehouse, setSelectedWarehouse] = useState<string>('');
+  const [warehouses, setWarehouses] = useState<WarehouseType[]>([]);
+
+  // On mount, load the selected warehouse from localStorage
+  useEffect(() => {
+    const storedWarehouse = localStorage.getItem('selectedWarehouse');
+    if (storedWarehouse) {
+      setSelectedWarehouse(storedWarehouse);
+    }
+  }, []);
+
+  // Save the selected warehouse to localStorage whenever it changes
+  useEffect(() => {
+    if (selectedWarehouse) {
+      localStorage.setItem('selectedWarehouse', selectedWarehouse);
+    }
+  }, [selectedWarehouse]);
+
+  // Fetch warehouses using axios
+  useEffect(() => {
+    const fetchWarehouses = async () => {
+      try {
+        const { data } = await axios.get<WarehouseType[]>('/api/warehouses');
+        setWarehouses(data);
+        // If no warehouse is selected from localStorage, default to the first one
+        if (!selectedWarehouse && data.length > 0) {
+          setSelectedWarehouse(data[0].id);
+        }
+      } catch (error) {
+        console.error('Error fetching warehouses:', error);
+      }
+    };
+
+    fetchWarehouses();
+  }, [selectedWarehouse]);
 
   // Get user initials for avatar fallback
   const getInitials = (name: string = 'User') => {
     return name
       .split(' ')
-      .map(part => part[0])
+      .map((part) => part[0])
       .join('')
       .toUpperCase();
   };
 
-  // Use warehouse-themed avatar instead of random avatar
+  // Use warehouse-themed avatar instead of a random avatar
   const getWarehouseAvatar = () => {
-    // Use warehouse employee image as default avatar
     return '/images/warehouse_employee.jpg';
   };
 
@@ -43,47 +105,56 @@ export function Header({ onMenuClick, user }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="md:hidden"
-        onClick={onMenuClick}
-      >
+      <Button variant="ghost" size="icon" className="md:hidden" onClick={onMenuClick}>
         <Menu className="h-5 w-5" />
         <span className="sr-only">Toggle menu</span>
       </Button>
-      
+
       {/* Navigation Links - hidden on mobile */}
       <nav className="hidden md:flex items-center space-x-4">
-        <Link href="/pages/dashboard" className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center">
+        <Link
+          href="/pages/dashboard"
+          className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center"
+        >
           <LayoutDashboard className="h-4 w-4 mr-1" />
           Dashboard
         </Link>
-        <Link href="/pages/inventory-status" className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center">
+        <Link
+          href="/pages/inventory-status"
+          className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center"
+        >
           <Package className="h-4 w-4 mr-1" />
           Inventory Code/Material Status
         </Link>
-        <Link href="/pages/storage-status" className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center">
+        <Link
+          href="/pages/storage-status"
+          className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center"
+        >
           <Activity className="h-4 w-4 mr-1" />
           Storage Status
         </Link>
-        <Link href="/pages/reports" className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center">
+        <Link
+          href="/pages/reports"
+          className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center"
+        >
           <Calendar1 className="h-4 w-4 mr-1" />
           Calendar
         </Link>
       </nav>
-      
+
       <div className="ml-auto flex items-center gap-2">
         <div className="hidden md:flex items-center gap-2">
           <Warehouse className="h-4 w-4 text-muted-foreground" />
           <Select value={selectedWarehouse} onValueChange={setSelectedWarehouse}>
-            <SelectTrigger className="w-[180px] border-0 ring-0 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
+            <SelectTrigger className="w-auto border-0 ring-0 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
               <SelectValue placeholder="Select warehouse" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">Main Warehouse</SelectItem>
-              <SelectItem value="2">Cold Storage North</SelectItem>
-              <SelectItem value="3">Cold Storage South</SelectItem>
+              {warehouses.map((warehouse) => (
+                <SelectItem key={warehouse.id} value={warehouse.id}>
+                  {warehouse.warehouseName}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -91,9 +162,9 @@ export function Header({ onMenuClick, user }: HeaderProps) {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
               <Avatar>
-                <AvatarImage 
-                  src={user?.image || getWarehouseAvatar()} 
-                  alt={user?.name || 'Warehouse User'} 
+                <AvatarImage
+                  src={user?.image || getWarehouseAvatar()}
+                  alt={user?.name || 'Warehouse User'}
                 />
                 <AvatarFallback>{getInitials(user?.name || '')}</AvatarFallback>
               </Avatar>
