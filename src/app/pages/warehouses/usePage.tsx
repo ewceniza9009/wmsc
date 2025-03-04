@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { Company } from '@/models/MstCompany';
-import { Warehouse } from '@/models/MstWarehouse';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import axios from "axios";
+import { Company } from "@/models/MstCompany";
+import { Warehouse } from "@/models/MstWarehouse";
 
 export default function usePage() {
   const { data: session, status } = useSession();
@@ -15,145 +16,55 @@ export default function usePage() {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Dialog states
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(null);
 
-  // Form states
-  const [warehouseCode, setWarehouseCode] = useState('');
-  const [warehouseName, setWarehouseName] = useState('');
-  const [companyId, setCompanyId] = useState('');
-  const [address, setAddress] = useState('');
-  const [contact, setContact] = useState('');
-  const [contactNumber, setContactNumber] = useState('');
-
-  const [isSaving, setIsSaving] = useState(false);
-
   // Authenticate and fetch initial data
   useEffect(() => {
-    if (status === 'authenticated') {
-      if (!['admin', 'manager'].includes(session.user.role)) {
-        toast.error('You do not have permission to access this page');
-        router.push('/pages');
+    if (status === "authenticated") {
+      if (!["admin", "manager"].includes(session.user.role)) {
+        toast.error("You do not have permission to access this page");
+        router.push("/pages");
       } else {
         fetchWarehouses();
         fetchCompanies();
       }
-    } else if (status === 'unauthenticated') {
-      router.push('/login');
+    } else if (status === "unauthenticated") {
+      router.push("/login");
     }
   }, [status, session, router]);
 
   const fetchCompanies = async () => {
     try {
-      const response = await fetch('/api/companies');
-      if (!response.ok) throw new Error('Failed to fetch companies');
-      const data = await response.json();
+      const { data } = await axios.get("/api/companies");
       setCompanies(data);
-    } catch (error) {
-      toast.error('Failed to load companies');
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to load companies");
     }
   };
 
   const fetchWarehouses = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/warehouses');
-      if (!response.ok) throw new Error('Failed to fetch warehouses');
-      const data = await response.json();
+      const { data } = await axios.get("/api/warehouses");
       setWarehouses(data);
-    } catch (error) {
-      toast.error('Failed to load warehouses');
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to load warehouses");
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const resetForm = () => {
-    setWarehouseCode('');
-    setWarehouseName('');
-    setCompanyId('');
-    setAddress('');
-    setContact('');
-    setContactNumber('');
-    setSelectedWarehouse(null);
-  };
-
-  const handleAdd = async () => {
-    try {
-      const response = await fetch('/api/warehouses', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ warehouseCode, warehouseName, companyId, address, contact, contactNumber }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create warehouse');
-      }
-      toast.success('Warehouse created successfully');
-      fetchWarehouses();
-      resetForm();
-      setIsAddDialogOpen(false);
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to create warehouse');
-    }
-  };
-
-  const handleSave = async () => {
-    if (!selectedWarehouse) return;
-    setIsSaving(true);
-    try {
-      const response = await fetch(`/api/warehouses/${selectedWarehouse.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ warehouseCode, warehouseName, companyId, address, contact, contactNumber }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update warehouse');
-      }
-      toast.success('Warehouse updated successfully');
-      fetchWarehouses();
-      resetForm();
-      setIsEditDialogOpen(false);
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update warehouse');
-    }
-    finally
-    {
-      setIsSaving(false);
     }
   };
 
   const handleDelete = async () => {
     if (!selectedWarehouse) return;
     try {
-      const response = await fetch(`/api/warehouses/${selectedWarehouse.id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to delete warehouse');
-      }
-      toast.success('Warehouse deleted successfully');
+      await axios.delete(`/api/warehouses/${selectedWarehouse.id}`);
+      toast.success("Warehouse deleted successfully");
       fetchWarehouses();
       setIsDeleteDialogOpen(false);
     } catch (error: any) {
-      toast.error(error.message || 'Failed to delete warehouse');
+      toast.error(error?.response?.data?.message || "Failed to delete warehouse");
     }
-  };
-
-  const openEditDialog = (warehouse: Warehouse) => {
-    setSelectedWarehouse(warehouse);
-    setWarehouseCode(warehouse.warehouseCode);
-    setWarehouseName(warehouse.warehouseName);
-    setCompanyId(warehouse.companyId.toString());
-    setAddress(warehouse.address);
-    setContact(warehouse.contact);
-    setContactNumber(warehouse.contactNumber);
-    setIsEditDialogOpen(true);
   };
 
   const openDeleteDialog = (warehouse: Warehouse) => {
@@ -165,34 +76,10 @@ export default function usePage() {
     warehouses,
     companies,
     isLoading,
-    // Dialog states
-    isAddDialogOpen,
-    setIsAddDialogOpen,
-    isEditDialogOpen,
-    setIsEditDialogOpen,
     isDeleteDialogOpen,
     setIsDeleteDialogOpen,
     selectedWarehouse,
-    // Form states and setters
-    warehouseCode,
-    setWarehouseCode,
-    warehouseName,
-    setWarehouseName,
-    companyId,
-    setCompanyId,
-    address,
-    setAddress,
-    contact,
-    setContact,
-    contactNumber,
-    setContactNumber,
-    // Handlers
-    handleAdd,
-    handleSave,
     handleDelete,
-    openEditDialog,
     openDeleteDialog,
-    isSaving,
-    resetForm,
   };
 }
