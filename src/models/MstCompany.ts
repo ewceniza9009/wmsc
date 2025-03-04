@@ -10,11 +10,32 @@ export interface IMstCompany extends Document {
     accreditationNumber: string;
     serialNumber: string;
     permitNumber: string;
-    accountant: Schema.Types.ObjectId;
-    financeManager: Schema.Types.ObjectId;
-    operationsManager: Schema.Types.ObjectId;
-    managingDirector: Schema.Types.ObjectId;
-    defaultApproveBy: Schema.Types.ObjectId;
+    accountant: string;
+    financeManager: string;
+    operationsManager: string;
+    managingDirector: string;
+    defaultApproveBy: string;
+    imagePath: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+
+  export interface Company {
+    id: string;
+    companyName: string;
+    companyAddress: string;
+    contactPerson: string;
+    contactNo: string;
+    tiin: string;
+    bookNumber: string;
+    accreditationNumber: string;
+    serialNumber: string;
+    permitNumber: string;
+    accountant: string;
+    financeManager: string;
+    operationsManager: string;
+    managingDirector: string;
+    defaultApproveBy: string;
     imagePath: string;
     createdAt: Date;
     updatedAt: Date;

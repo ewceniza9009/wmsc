@@ -24,7 +24,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { PlusCircle, Pencil, Trash2 } from 'lucide-react';
+import { PlusCircle, Pencil, Trash2, Loader2 } from 'lucide-react';
 import DataGrid from '@/components/DataGrid';
 import { TableRow, TableCell } from '@/components/ui/table';
 import usePage from './usePage';
@@ -58,6 +58,7 @@ export default function WarehousesPage() {
     handleDelete,
     openEditDialog,
     openDeleteDialog,
+    isSaving,
     resetForm,
   } = usePage();
 
@@ -173,7 +174,7 @@ export default function WarehousesPage() {
                 <SelectContent>
                   {
                     companies.map((company) => (
-                    <SelectItem value={company._id as string}>{company.companyName}</SelectItem>
+                    <SelectItem value={company.id}>{company.companyName}</SelectItem>
                     )) 
                   }                  
                 </SelectContent>
@@ -208,7 +209,9 @@ export default function WarehousesPage() {
             <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button onClick={handleSave} disabled={isSaving}>
+            {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

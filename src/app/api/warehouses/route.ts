@@ -22,8 +22,20 @@ export async function GET(req: NextRequest) {
     await dbConnect();
     
     const warehouses = await MstWarehouse.find({}).sort({ createdAt: -1 });
+
+    const transformedWarehouses = warehouses.map(warehouse => ({
+      id: warehouse._id.toString(),
+      warehouseCode: warehouse.warehouseCode,
+      warehouseName: warehouse.warehouseName,
+      companyId: warehouse.companyId.toString(), // Reference to MstCompany
+      address: warehouse.address,
+      contact: warehouse.contact,
+      contactNumber: warehouse.contactNumber,
+      createdAt: warehouse.createdAt,
+      updatedAt: warehouse.updatedAt
+    }));
     
-    return NextResponse.json(warehouses);
+    return NextResponse.json(transformedWarehouses);
   } catch (error: any) {
     console.error('Error fetching warehouses:', error);
     return NextResponse.json({ message: error.message || 'Failed to fetch warehouses' }, { status: 500 });

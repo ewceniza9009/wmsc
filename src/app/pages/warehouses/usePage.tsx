@@ -4,22 +4,22 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { IMstCompany } from '@/models/MstCompany';
-import { IMstWarehouse } from '@/models/MstWarehouse';
+import { Company } from '@/models/MstCompany';
+import { Warehouse } from '@/models/MstWarehouse';
 
 export default function usePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const [warehouses, setWarehouses] = useState<IMstWarehouse[]>([]);
-  const [companies, setCompanies] = useState<IMstCompany[]>([]);
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Dialog states
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedWarehouse, setSelectedWarehouse] = useState<IMstWarehouse | null>(null);
+  const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(null);
 
   // Form states
   const [warehouseCode, setWarehouseCode] = useState('');
@@ -28,6 +28,8 @@ export default function usePage() {
   const [address, setAddress] = useState('');
   const [contact, setContact] = useState('');
   const [contactNumber, setContactNumber] = useState('');
+
+  const [isSaving, setIsSaving] = useState(false);
 
   // Authenticate and fetch initial data
   useEffect(() => {
@@ -101,6 +103,7 @@ export default function usePage() {
 
   const handleSave = async () => {
     if (!selectedWarehouse) return;
+    setIsSaving(true);
     try {
       const response = await fetch(`/api/warehouses/${selectedWarehouse.id}`, {
         method: 'PUT',
@@ -117,6 +120,10 @@ export default function usePage() {
       setIsEditDialogOpen(false);
     } catch (error: any) {
       toast.error(error.message || 'Failed to update warehouse');
+    }
+    finally
+    {
+      setIsSaving(false);
     }
   };
 
@@ -138,7 +145,7 @@ export default function usePage() {
     }
   };
 
-  const openEditDialog = (warehouse: IMstWarehouse) => {
+  const openEditDialog = (warehouse: Warehouse) => {
     setSelectedWarehouse(warehouse);
     setWarehouseCode(warehouse.warehouseCode);
     setWarehouseName(warehouse.warehouseName);
@@ -149,7 +156,7 @@ export default function usePage() {
     setIsEditDialogOpen(true);
   };
 
-  const openDeleteDialog = (warehouse: IMstWarehouse) => {
+  const openDeleteDialog = (warehouse: Warehouse) => {
     setSelectedWarehouse(warehouse);
     setIsDeleteDialogOpen(true);
   };
@@ -185,6 +192,7 @@ export default function usePage() {
     handleDelete,
     openEditDialog,
     openDeleteDialog,
+    isSaving,
     resetForm,
   };
 }

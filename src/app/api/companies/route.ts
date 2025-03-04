@@ -24,7 +24,28 @@ export async function GET(request: NextRequest) {
     // Fetch all companies
     const companies = await MstCompany.find({}).sort({ companyName: 1 });
 
-    return NextResponse.json(companies);
+    const transformedCompanies = companies.map(company => ({
+      id: company._id.toString(),
+      companyName: company.companyName,
+      companyAddress: company.companyAddress,
+      contactPerson: company.contactPerson,
+      contactNo: company.contactNo,
+      tiin: company.tiin,
+      bookNumber: company.bookNumber,
+      accreditationNumber: company.accreditationNumber,
+      serialNumber: company.serialNumber,
+      permitNumber: company.permitNumber,
+      accountant: company.accountant,
+      financeManager: company.financeManager,
+      operationsManager: company.operationsManager,
+      managingDirector: company.managingDirector,
+      defaultApproveBy: company.defaultApproveBy,
+      imagePath: company.imagePath,
+      createdAt: company.createdAt,
+      updatedAt: company.updatedAt
+    }));
+
+    return NextResponse.json(transformedCompanies);
   } catch (error: any) {
     console.error('Error fetching companies:', error);
     return NextResponse.json({ message: error.message || 'Failed to fetch companies' }, { status: 500 });

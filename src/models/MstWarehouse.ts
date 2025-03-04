@@ -10,6 +10,18 @@ export interface IMstWarehouse extends Document {
     createdAt: Date;
     updatedAt: Date;
   }
+
+  export interface Warehouse {
+    id: string;
+    warehouseCode: string;
+    warehouseName: string;
+    companyId: string; // Reference to MstCompany
+    address: string;
+    contact: string;
+    contactNumber: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }
   
 // Define MstWarehouse Schema
 const MstWarehouseSchema = new mongoose.Schema(
