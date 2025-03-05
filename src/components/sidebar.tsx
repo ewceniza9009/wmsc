@@ -121,7 +121,7 @@ export function Sidebar({
       children: [
         {
           title: "Company",
-          href: "/pages/company",
+          href: "/pages/companies",
           icon: <Building2 className="h-5 w-5" />,
           roles: ["admin", "manager", "worker"],
         },

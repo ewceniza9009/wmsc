@@ -20,7 +20,8 @@ import {
   Package,
   Activity,
   Warehouse,
-  Calendar1
+  Calendar1,
+  CandlestickChart
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import {
@@ -124,7 +125,7 @@ export function Header({ onMenuClick, user }: HeaderProps) {
           href="/pages/inventory-status"
           className="text-sm font-medium text-muted-foreground hover:text-teal-700 flex items-center"
         >
-          <Package className="h-4 w-4 mr-1" />
+          <CandlestickChart className="h-4 w-4 mr-1" />
           Inventory Code/Material Status
         </Link>
         <Link

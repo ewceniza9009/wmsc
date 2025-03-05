@@ -14,10 +14,18 @@ import {
 import { Textarea } from "@/components/ui/textArea";
 import usePage from "../usePage";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, SaveAll } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function WarehouseDetailPage() {
-  const { form, handleChange, handleSubmit, companies, isDetailLoading, isSaving } = usePage();
+  const {
+    form,
+    handleChange,
+    handleSubmit,
+    companies,
+    isDetailLoading,
+    isSaving,
+  } = usePage();
   const { id } = useParams();
   const isEdit = id !== "new";
 
@@ -30,99 +38,103 @@ export default function WarehouseDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Full-width header */}
+    <div className="space-y-6 p-4">
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold">
-            {isEdit ? "Edit Warehouse" : "Add New Warehouse"}
-          </h1>
-          <p>Warehouse detail section</p>
-        </div>
-        <div className="flex gap-5">
-          <Button form="mainForm" type="submit" disabled={isSaving}>
-            {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isEdit ? "Save Changes" : "Add Warehouse"}
-          </Button>
-          <Link href="./">
-            <Button variant="outline">Back</Button>
+        <div className="flex items-center gap-2">
+          <Link href="../warehouses">
+            <Button variant="outline" size="icon">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
           </Link>
+          <h1 className="text-2xl font-bold">
+            {form.warehouseName ? form.warehouseName : "New Warehouse"}
+          </h1>
         </div>
+        <Button form="mainForm" type="submit" disabled={isSaving}>
+          {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <SaveAll className="mr-2 h-4 w-4" />}
+          {isEdit ? "Save Changes" : "Add Warehouse"}
+        </Button>
       </div>
 
-      {/* Two-column layout for the form */}
-      <div className="grid grid-cols-2 gap-8">
-        <div>
-          <form id="mainForm" onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid gap-2">
-              <Label htmlFor="warehouseCode">Warehouse Code</Label>
-              <Input
-                id="warehouseCode"
-                value={form.warehouseCode}
-                onChange={(e) => handleChange("warehouseCode", e.target.value)}
-                placeholder="e.g. WH001"
-                className="w-40" // Reduced width
-              />
+      <form id="mainForm" onSubmit={handleSubmit} className="space-y-4">
+        <Card className="min-h-[75vh]">
+          <CardHeader>
+            <CardTitle>Warehouse Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="warehouseCode">Warehouse Code</Label>
+                <Input
+                  id="warehouseCode"
+                  value={form.warehouseCode}
+                  onChange={(e) => handleChange("warehouseCode", e.target.value)}
+                  placeholder="e.g. WH001"
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="warehouseName">Warehouse Name</Label>
+                <Input
+                  id="warehouseName"
+                  value={form.warehouseName}
+                  onChange={(e) => handleChange("warehouseName", e.target.value)}
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="companyId">Company</Label>
+                <Select
+                  value={form.companyId}
+                  onValueChange={(value) => handleChange("companyId", value)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select company" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {companies.map((company) => (
+                      <SelectItem key={company.id} value={company.id}>
+                        {company.companyName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2 col-span-full">
+                <Label htmlFor="address">Address</Label>
+                <Textarea
+                  id="address"
+                  value={form.address}
+                  onChange={(e) => handleChange("address", e.target.value)}
+                  placeholder="Enter address"
+                  rows={4}
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contact">Contact Person</Label>
+                <Input
+                  id="contact"
+                  value={form.contact}
+                  onChange={(e) => handleChange("contact", e.target.value)}
+                  placeholder="Enter contact person"
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contactNumber">Contact Number</Label>
+                <Input
+                  id="contactNumber"
+                  value={form.contactNumber}
+                  onChange={(e) => handleChange("contactNumber", e.target.value)}
+                  placeholder="Enter contact number"
+                  className="w-full"
+                />
+              </div>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="warehouseName">Warehouse Name</Label>
-              <Input
-                id="warehouseName"
-                value={form.warehouseName}
-                onChange={(e) => handleChange("warehouseName", e.target.value)}
-                className="w-120"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="companyId">Company</Label>
-              <Select
-                value={form.companyId}
-                onValueChange={(value) => handleChange("companyId", value)}
-              >
-                <SelectTrigger className="w-120">
-                  <SelectValue placeholder="Select company" />
-                </SelectTrigger>
-                <SelectContent>
-                  {companies.map((company) => (
-                    <SelectItem key={company.id} value={company.id}>
-                      {company.companyName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="address">Address</Label>
-              <Textarea
-                id="address"
-                value={form.address}
-                onChange={(e) => handleChange("address", e.target.value)}
-                placeholder="Enter address"
-                rows={4} // Multi-line text
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="contact">Contact Person</Label>
-              <Input
-                id="contact"
-                value={form.contact}
-                onChange={(e) => handleChange("contact", e.target.value)}
-                className="w-120" // Reduced width
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="contactNumber">Contact Number</Label>
-              <Input
-                id="contactNumber"
-                value={form.contactNumber}
-                onChange={(e) => handleChange("contactNumber", e.target.value)}
-                className="w-120" // Reduced width
-              />
-            </div>
-          </form>
-        </div>
-        <div>{/* Empty second column to restrict form width */}</div>
-      </div>
+          </CardContent>
+        </Card>
+      </form>
     </div>
   );
 }
