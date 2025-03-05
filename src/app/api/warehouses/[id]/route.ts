@@ -5,7 +5,7 @@ import dbConnect from '@/lib/mongoose';
 import MstWarehouse from '@/models/MstWarehouse';
 
 // GET /api/warehouses/[id] - Get a specific warehouse
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context : { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions);
     
@@ -20,8 +20,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
 
     await dbConnect();
+
+    const {id} = await context.params;
     
-    const warehouse = await MstWarehouse.findById(params.id);
+    const warehouse = await MstWarehouse.findById(id);
     
     if (!warehouse) {
       return NextResponse.json({ message: 'Warehouse not found' }, { status: 404 });
@@ -35,7 +37,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 // PUT /api/warehouses/[id] - Update a warehouse
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context : { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions);
     
@@ -58,8 +60,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
     }
 
+    const {id} = await context.params;
+
     // Check if warehouse exists
-    const warehouse = await MstWarehouse.findById(params.id);
+    const warehouse = await MstWarehouse.findById(id);
     if (!warehouse) {
       return NextResponse.json({ message: 'Warehouse not found' }, { status: 404 });
     }
@@ -67,7 +71,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     // Check if warehouse code already exists (for another warehouse)
     const existingWarehouse = await MstWarehouse.findOne({ 
       warehouseCode: body.warehouseCode,
-      _id: { $ne: params.id }
+      _id: { $ne: id }
     });
     
     if (existingWarehouse) {
@@ -76,7 +80,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
     // Update warehouse
     const updatedWarehouse = await MstWarehouse.findByIdAndUpdate(
-      params.id,
+      id,
       body,
       { new: true, runValidators: true }
     );
@@ -89,7 +93,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 // DELETE /api/warehouses/[id] - Delete a warehouse
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context : { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions);
     
@@ -105,14 +109,16 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
     await dbConnect();
     
+    const {id} = await context.params;
+
     // Check if warehouse exists
-    const warehouse = await MstWarehouse.findById(params.id);
+    const warehouse = await MstWarehouse.findById(id);
     if (!warehouse) {
       return NextResponse.json({ message: 'Warehouse not found' }, { status: 404 });
     }
 
     // Delete warehouse
-    await MstWarehouse.findByIdAndDelete(params.id);
+    await MstWarehouse.findByIdAndDelete(id);
     
     return NextResponse.json({ message: 'Warehouse deleted successfully' });
   } catch (error: any) {

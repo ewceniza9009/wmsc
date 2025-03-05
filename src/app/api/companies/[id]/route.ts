@@ -1,11 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
-import dbConnect from '@/lib/mongoose';
-import MstCompany from '@/models/MstCompany';
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/route";
+import dbConnect from "@/lib/mongoose";
+import MstCompany from "@/models/MstCompany";
 
 // GET /api/companies/[id] - Get a specific company
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     // Connect to database
     await dbConnect();
@@ -13,18 +16,23 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     // Get user session
     const session = await getServerSession(authOptions);
     if (!session) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     // Check authorization (only admin and manager can access companies)
-    if (!['admin', 'manager'].includes(session.user.role)) {
-      return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+    if (!["admin", "manager"].includes(session.user.role)) {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
+    const { id } = await context.params;
+
     // Fetch the company
-    const company = await MstCompany.findById(params.id);
+    const company = await MstCompany.findById(id);
     if (!company) {
-      return NextResponse.json({ message: 'Company not found' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Company not found" },
+        { status: 404 }
+      );
     }
 
     // Transform the company data
@@ -46,18 +54,24 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       defaultApproveBy: company.defaultApproveBy,
       imagePath: company.imagePath,
       createdAt: company.createdAt,
-      updatedAt: company.updatedAt
+      updatedAt: company.updatedAt,
     };
 
     return NextResponse.json(transformedCompany);
   } catch (error: any) {
-    console.error('Error fetching company:', error);
-    return NextResponse.json({ message: error.message || 'Failed to fetch company' }, { status: 500 });
+    console.error("Error fetching company:", error);
+    return NextResponse.json(
+      { message: error.message || "Failed to fetch company" },
+      { status: 500 }
+    );
   }
 }
 
 // PUT /api/companies/[id] - Update a company
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     // Connect to database
     await dbConnect();
@@ -65,20 +79,21 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     // Get user session
     const session = await getServerSession(authOptions);
     if (!session) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     // Check authorization (only admin and manager can update companies)
-    if (!['admin', 'manager'].includes(session.user.role)) {
-      return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+    if (!["admin", "manager"].includes(session.user.role)) {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
     // Get request body
     const body = await request.json();
+    const { id } = await context.params;
 
     // Update the company
     const updatedCompany = await MstCompany.findByIdAndUpdate(
-      params.id,
+      id,
       {
         companyName: body.companyName,
         companyAddress: body.companyAddress,
@@ -100,18 +115,27 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     );
 
     if (!updatedCompany) {
-      return NextResponse.json({ message: 'Company not found' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Company not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ message: 'Company updated successfully' });
+    return NextResponse.json({ message: "Company updated successfully" });
   } catch (error: any) {
-    console.error('Error updating company:', error);
-    return NextResponse.json({ message: error.message || 'Failed to update company' }, { status: 500 });
+    console.error("Error updating company:", error);
+    return NextResponse.json(
+      { message: error.message || "Failed to update company" },
+      { status: 500 }
+    );
   }
 }
 
 // DELETE /api/companies/[id] - Delete a company
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     // Connect to database
     await dbConnect();
@@ -119,23 +143,31 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     // Get user session
     const session = await getServerSession(authOptions);
     if (!session) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     // Check authorization (only admin and manager can delete companies)
-    if (!['admin', 'manager'].includes(session.user.role)) {
-      return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+    if (!["admin", "manager"].includes(session.user.role)) {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
+
+    const { id } = await context.params;
 
     // Delete the company
-    const deletedCompany = await MstCompany.findByIdAndDelete(params.id);
+    const deletedCompany = await MstCompany.findByIdAndDelete(id);
     if (!deletedCompany) {
-      return NextResponse.json({ message: 'Company not found' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Company not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ message: 'Company deleted successfully' });
+    return NextResponse.json({ message: "Company deleted successfully" });
   } catch (error: any) {
-    console.error('Error deleting company:', error);
-    return NextResponse.json({ message: error.message || 'Failed to delete company' }, { status: 500 });
+    console.error("Error deleting company:", error);
+    return NextResponse.json(
+      { message: error.message || "Failed to delete company" },
+      { status: 500 }
+    );
   }
 }
