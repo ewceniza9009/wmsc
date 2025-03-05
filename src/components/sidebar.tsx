@@ -103,7 +103,7 @@ export function Sidebar({
       acc[key] = false;
       return acc;
     }, {} as Record<string, boolean>);
-    
+
     setOpenGroups(collapsedGroups);
   };
 
@@ -167,7 +167,7 @@ export function Sidebar({
           href: "/pages/storage-receiving",
           icon: <Truck className="h-5 w-5" />,
           roles: ["admin", "manager"],
-        },        
+        },
         {
           title: "Storage Transfer",
           href: "/pages/storage-transfer",
@@ -363,7 +363,12 @@ export function Sidebar({
           onClick={() => onClose()}
         >
           <Warehouse className="mr-2 h-6 w-6" />
-          <span className={cn(isCollapsed ? "hidden" : "block")}>
+          <span
+            className={cn(
+              isCollapsed ? "hidden" : "block",
+              "text-2xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-500 drop-shadow-md"
+            )}
+          >
             COLD STORAGE
           </span>
         </Link>
