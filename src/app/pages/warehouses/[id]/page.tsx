@@ -38,11 +38,11 @@ export default function WarehouseDetailPage() {
   }
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Link href="../warehouses">
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" className="cursor-pointer">
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
@@ -50,7 +50,7 @@ export default function WarehouseDetailPage() {
             {form.warehouseName ? form.warehouseName : "New Warehouse"}
           </h1>
         </div>
-        <Button form="mainForm" type="submit" disabled={isSaving}>
+        <Button form="mainForm" type="submit" disabled={isSaving} className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white">
           {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <SaveAll className="mr-2 h-4 w-4" />}
           {isEdit ? "Save Changes" : "Add Warehouse"}
         </Button>

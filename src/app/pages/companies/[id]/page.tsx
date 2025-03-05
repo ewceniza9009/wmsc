@@ -29,7 +29,7 @@ export default function CompanyDetailPage() {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Link href="../companies">
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" className="cursor-pointer">
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
@@ -38,7 +38,7 @@ export default function CompanyDetailPage() {
           </h1>
         </div>
         <div className="flex gap-5">
-          <Button form="mainForm" type="submit" disabled={isSaving}>
+          <Button form="mainForm" type="submit" disabled={isSaving}  className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white">
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {!isSaving && <SaveAll className="mr-2 h-4 w-4" />}
             {isEdit ? "Save Changes" : "Add Company"}

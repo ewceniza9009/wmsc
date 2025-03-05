@@ -46,7 +46,7 @@ export default function WarehousesPage() {
         </div>
 
         <Link href="./warehouses/new">
-          <Button>
+          <Button className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white">
             <PlusCircle className="mr-2 h-4 w-4" /> Add
           </Button>
         </Link>
