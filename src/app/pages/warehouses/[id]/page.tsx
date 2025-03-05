@@ -57,7 +57,7 @@ export default function WarehouseDetailPage() {
       </div>
 
       <form id="mainForm" onSubmit={handleSubmit} className="space-y-4">
-        <Card className="min-h-[75vh]">
+        <Card className="min-h-[77vh]">
           <CardHeader>
             <CardTitle>Warehouse Information</CardTitle>
           </CardHeader>
