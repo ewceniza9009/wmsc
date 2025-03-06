@@ -377,15 +377,15 @@ export function Sidebar({
 
       {/* Company Logo and Name (only visible when not collapsed) */}
       {!isCollapsed && (
-        <div className="flex flex-col items-center px-2 py-5 border-b">
+        <div className="flex items-center px-3 py-2 border-b">
           <Image
             src="/images/global_marketing.jpg"
             alt="Global Marketing Logo"
             width={50}
             height={50}
-            className="rounded-full border border-gray-300 p-1"
+            className="rounded-full border-2 border-e-cyan-500 p-1"
           />
-          <span className="text-sm text-black mt-2">
+          <span className="text-sm font-small text-primary px-2 w-50 text-start break-words">
             Global Marketing Corporation
           </span>
         </div>
