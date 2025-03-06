@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -132,8 +133,8 @@ export function Sidebar({
           roles: ["admin", "manager", "worker"],
         },
         {
-          title: "Supplier",
-          href: "/pages/supplier",
+          title: "Customer",
+          href: "/pages/customers",
           icon: <UserRoundSearch className="h-5 w-5" />,
           roles: ["admin", "manager", "worker"],
         },
@@ -372,9 +373,25 @@ export function Sidebar({
             COLD STORAGE
           </span>
         </Link>
-        {/* Removed duplicate close button as SheetContent already provides one */}
       </div>
-      <div className="flex items-center justify-start px-2 py-1">
+
+      {/* Company Logo and Name (only visible when not collapsed) */}
+      {!isCollapsed && (
+        <div className="flex flex-col items-center px-2 py-5 border-b">
+          <Image
+            src="/images/global_marketing.jpg"
+            alt="Global Marketing Logo"
+            width={50}
+            height={50}
+            className="rounded-full border border-gray-300 p-1"
+          />
+          <span className="text-sm text-black mt-2">
+            Global Marketing Corporation
+          </span>
+        </div>
+      )}
+
+      <div className="flex items-center justify-start px-2 pt-4">
         {!isCollapsed && (
           <Button
             variant="ghost"
