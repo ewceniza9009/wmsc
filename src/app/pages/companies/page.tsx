@@ -12,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { PlusCircle, Pencil, Trash2 } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, Building2 } from "lucide-react";
 import DataGrid from "@/components/DataGrid";
 import { TableRow, TableCell } from "@/components/ui/table";
 import usePage from "./usePage";
@@ -41,7 +41,10 @@ export default function CompaniesPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">Companies</h1>
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <Building2 className="h-6 w-6 text-primary" />
+            Companies
+          </h1>
           <p>Manage companies and their information</p>
         </div>
 

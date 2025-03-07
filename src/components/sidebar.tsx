@@ -386,7 +386,7 @@ export function Sidebar({
             className="rounded-full border-2 border-e-cyan-500 p-1"
           />
           <span className="text-sm font-small text-primary px-2 w-50 text-start break-words">
-            Global Marketing Corporation
+            Global 168 Marketing Corporation
           </span>
         </div>
       )}

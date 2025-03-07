@@ -48,6 +48,7 @@ import {
   ChevronRight,
   Shield,
   Loader2,
+  Users,
 } from "lucide-react";
 import {
   AlertDialog,
@@ -274,7 +275,10 @@ export default function UsersPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Users</h1>
+          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+            <Users className="h-6 w-6 text-primary" />
+            Users
+          </h1>
           <p className="text-muted-foreground">
             Manage users and their access rights
           </p>

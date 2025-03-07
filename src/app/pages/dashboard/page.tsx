@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Boxes, Clock, Truck, Users } from 'lucide-react';
+import { ArrowRight, Boxes, Clock, LayoutDashboard, Truck, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -42,7 +42,10 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+          <LayoutDashboard className="h-7 w-7 text-primary" />
+          Dashboard
+        </h1>
         <p className="text-muted-foreground">
           Welcome back, {session?.user?.name || 'User'}!
         </p>
