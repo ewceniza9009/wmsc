@@ -60,7 +60,9 @@ export default function DashboardLayout({
           />
 
           {/* Page Content */}
-          <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gradient-to-b from-teal-100/20 to-teal-100/20 dark:from-teal-900/50 dark:to-teal-900/50">{children}</main>
+          <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gradient-to-b from-teal-100/20 to-teal-100/20 dark:from-teal-900/50 dark:to-teal-900/50">
+            {children}
+          </main>
         </div>
         {/* Decorative background image */}
         <img

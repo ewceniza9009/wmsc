@@ -77,10 +77,15 @@ export default function DataGrid<T>({
 
   // Update isMobile state on window resize (using Tailwind's sm breakpoint, 640px)
   useEffect(() => {
+    // Only access window on the client side
     const handleResize = () => {
       setIsMobile(window.innerWidth < 640);
     };
+    
+    // Set initial value only on client side
     handleResize();
+    
+    // Add resize listener
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
