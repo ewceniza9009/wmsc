@@ -29,9 +29,48 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        <style>
+          {`
+            :root {
+              color-scheme: light dark;
+            }
+            
+            html.light {
+              color-scheme: light;
+            }
+            
+            html.dark {
+              color-scheme: dark;
+            }
+            
+            /* Prevent FOUC (Flash of Unstyled Content) during theme transitions */
+            html.light, html.dark {
+              transition-property: background-color, border-color, color, fill, stroke;
+              transition-duration: 200ms;
+            }
+          `}
+        </style>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem("wmsc-theme") || "dark";
+                  document.documentElement.classList.add(theme);
+                } catch (e) {
+                  // Fail silently if localStorage is not available
+                  document.documentElement.classList.add("dark");
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true}
       >
         <ClientProviders>{children}</ClientProviders>
       </body>

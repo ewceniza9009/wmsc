@@ -2,6 +2,7 @@
 
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -51,6 +52,7 @@ interface WarehouseType {
 }
 
 export function Header({ onMenuClick, user }: HeaderProps) {
+  const router = useRouter();
   const [selectedWarehouse, setSelectedWarehouse] = useState<string>('');
   const [warehouses, setWarehouses] = useState<WarehouseType[]>([]);
 
@@ -182,7 +184,7 @@ export function Header({ onMenuClick, user }: HeaderProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/profile')}>
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
             </DropdownMenuItem>
