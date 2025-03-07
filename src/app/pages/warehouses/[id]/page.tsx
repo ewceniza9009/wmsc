@@ -14,7 +14,7 @@ import {
 import { Textarea } from "@/components/ui/textArea";
 import usePage from "../usePage";
 import Link from "next/link";
-import { ArrowLeft, Loader2, SaveAll } from "lucide-react";
+import { ArrowLeft, Loader2, SaveAll, Warehouse } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function WarehouseDetailPage() {
@@ -46,12 +46,24 @@ export default function WarehouseDetailPage() {
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <h1 className="text-2xl font-bold">
-            {form.warehouseName ? form.warehouseName : "New Warehouse"}
-          </h1>
+          <div>
+            <h1 className="text-2xl font-bold flex items-center gap-2">
+              <Warehouse className="h-6 w-6 text-primary" />
+              {form.warehouseName ? form.warehouseName : "New Warehouse"}
+            </h1>
+          </div>
         </div>
-        <Button form="mainForm" type="submit" disabled={isSaving} className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white">
-          {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <SaveAll className="mr-2 h-4 w-4" />}
+        <Button
+          form="mainForm"
+          type="submit"
+          disabled={isSaving}
+          className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white"
+        >
+          {isSaving ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <SaveAll className="mr-2 h-4 w-4" />
+          )}
           {isEdit ? "Save Changes" : "Add Warehouse"}
         </Button>
       </div>
@@ -68,7 +80,9 @@ export default function WarehouseDetailPage() {
                 <Input
                   id="warehouseCode"
                   value={form.warehouseCode}
-                  onChange={(e) => handleChange("warehouseCode", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("warehouseCode", e.target.value)
+                  }
                   placeholder="e.g. WH001"
                   className="w-full"
                 />
@@ -78,7 +92,9 @@ export default function WarehouseDetailPage() {
                 <Input
                   id="warehouseName"
                   value={form.warehouseName}
-                  onChange={(e) => handleChange("warehouseName", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("warehouseName", e.target.value)
+                  }
                   className="w-full"
                 />
               </div>
@@ -126,7 +142,9 @@ export default function WarehouseDetailPage() {
                 <Input
                   id="contactNumber"
                   value={form.contactNumber}
-                  onChange={(e) => handleChange("contactNumber", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("contactNumber", e.target.value)
+                  }
                   placeholder="Enter contact number"
                   className="w-full"
                 />

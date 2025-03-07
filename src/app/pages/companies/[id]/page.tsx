@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Loader2, Save, SaveAll } from "lucide-react";
+import { ArrowLeft, Building2, Loader2, Save, SaveAll } from "lucide-react";
 import Link from "next/link";
 import usePage from "../usePage";
 
@@ -33,9 +33,12 @@ export default function CompanyDetailPage() {
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <h1 className="text-2xl font-bold">
-            {form.companyName ? form.companyName : "New Company"}
-          </h1>
+          <div>
+            <h1 className="text-2xl font-bold flex items-center gap-2">
+              <Building2 className="h-6 w-6 text-primary" />
+              {form.companyName ? form.companyName : "New Company"}
+            </h1>
+          </div>
         </div>
         <div className="flex gap-5">
           <Button form="mainForm" type="submit" disabled={isSaving}  className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white">
