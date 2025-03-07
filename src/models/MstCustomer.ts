@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, ObjectId } from 'mongoose';
 
-export interface ICustomer extends Document {
+export interface IMstCustomer extends Document {
   customerNumber: string;
   customerName: string;
   accountId: Schema.Types.ObjectId;
@@ -56,7 +56,7 @@ export interface Customer {
 }
 
 // Define Customer Schema
-const CustomerSchema = new mongoose.Schema(
+const MstCustomerSchema = new mongoose.Schema(
   {
     customerNumber: {
       type: String,
@@ -142,6 +142,6 @@ const CustomerSchema = new mongoose.Schema(
 );
 
 // Create Customer model
-const Customer = mongoose.models.Customer || mongoose.model('Customer', CustomerSchema);
+const MstCustomer = mongoose.models.MstCustomer || mongoose.model('MstCustomer', MstCustomerSchema);
 
-export default Customer;
+export default MstCustomer;
