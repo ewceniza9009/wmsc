@@ -22,8 +22,8 @@ export interface IMstCustomer extends Document {
   status: string;
   createdBy: Schema.Types.ObjectId;
   updatedBy: Schema.Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
+  createdDate: Date;
+  updatedDate: Date;
   __v: number;
 }
 
@@ -50,13 +50,14 @@ export interface Customer {
   status: string;
   createdBy: string;
   updatedBy: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdDate: Date;
+  updatedDate: Date;
   __v: number;
 }
 
 // Define Customer Schema
 const MstCustomerSchema = new mongoose.Schema(
+  
   {
     customerNumber: {
       type: String,
@@ -138,9 +139,14 @@ const MstCustomerSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true }
-);
-
+  { 
+    timestamps: { 
+      createdAt: 'createdDate', 
+      updatedAt: 'updatedDate' 
+    } 
+  }
+    
+  );
 // Create Customer model
 const MstCustomer = mongoose.models.MstCustomer || mongoose.model('MstCustomer', MstCustomerSchema);
 

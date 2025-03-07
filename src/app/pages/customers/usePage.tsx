@@ -36,11 +36,7 @@ export default function usePage() {
     shippingAddress: "",
     taxId: "",
     isLocked: false,
-    status: "",
-    createdBy: "",
-    updatedBy: "",
-    createdAt: Date,
-    updatedAt: Date,
+    status: ""
   });
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -102,7 +98,7 @@ export default function usePage() {
     setIsDeleteDialogOpen(true);
   };
 
-  const handleChange = (field: "", value: "") => {
+  const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 

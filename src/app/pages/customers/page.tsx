@@ -75,7 +75,7 @@ export default function CustomersPage() {
                 <TableCell>{customer.contactPerson}</TableCell>
                 <TableCell>{customer.contactNumber}</TableCell>
                 <TableCell>
-                  {new Date(customer.createdAt).toLocaleDateString()}
+                  {new Date(customer.createdDate).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="text-right">
                   <Link href={`./customers/${customer.id}`}>

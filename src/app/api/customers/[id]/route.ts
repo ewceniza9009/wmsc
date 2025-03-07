@@ -53,8 +53,8 @@ export async function GET(req: NextRequest, context : { params: { id: string } }
       status: customer.status,
       createdBy: customer.createdBy,
       updatedBy: customer.updatedBy,
-      createdAt: customer.createdAt,
-      updatedAt: customer.updatedAt,
+      createdDate: customer.createdDate,
+      updatedDate: customer.updatedDate,
     };
     
     return NextResponse.json(transformedCustomer);
