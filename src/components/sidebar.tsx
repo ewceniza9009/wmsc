@@ -152,7 +152,7 @@ export function Sidebar({
         },
         {
           title: "Materials",
-          href: "/pages/material",
+          href: "/pages/materials",
           icon: <Package2 className="h-5 w-5" />,
           roles: ["admin", "manager", "worker"],
         },
