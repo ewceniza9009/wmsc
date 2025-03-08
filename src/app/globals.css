@@ -167,4 +167,68 @@
   .dark button[class*="bg-primary"] {
     background-image: linear-gradient(to bottom right, var(--primary), oklch(0.7 0.27 195));
   }
+  
+  /* Darker background for form controls in dark mode */
+  .dark input, 
+  .dark select, 
+  .dark textarea{
+    background-color: oklch(0.2 0.03 195) !important;
+    color: oklch(0.95 0.01 195) !important;
+    border-color: oklch(0.3 0.05 195) !important;
+  }
+
+  /* Darken other UI controls in dark mode */
+  .dark button[variant="app"] {
+    background-color: oklch(0.18 0.02 195) !important;
+    color: oklch(0.9 0.01 195) !important;
+    border-color: oklch(0.25 0.04 195) !important;
+  }
+
+  /* Target the combobox button specifically */
+  .dark button[role="combobox"],
+  .dark [data-slot="button"][role="combobox"] {
+    background-color: oklch(0.15 0.02 195) !important;
+    color: oklch(0.9 0.01 195) !important;
+    border-color: oklch(0.25 0.04 195) !important;
+  }
+  
+  /* Additional selectors to ensure buttons are properly styled */
+  .dark .popover-trigger button,
+  .dark button[class*="bg-transparent"],
+  .dark button[class*="border-input"],
+  .dark .dark-combobox-button {
+    background-color: oklch(0.15 0.02 195) !important;
+    color: oklch(0.9 0.01 195) !important;
+    border-color: oklch(0.25 0.04 195) !important;
+  }
+
+  /* Force all combobox related elements to have dark background */
+  .dark [class*="combobox"],
+  .dark [class*="popover-trigger"],
+  .dark [class*="popover-content"] {
+    background-color: oklch(0.15 0.02 195) !important;
+    color: oklch(0.9 0.01 195) !important;
+    border-color: oklch(0.25 0.04 195) !important;
+  }
+
+  .dark [data-slot="checkbox"],
+  .dark [data-slot="radio"],
+  .dark [data-slot="switch"] {
+    background-color: oklch(0.15 0.02 195) !important;
+    border-color: oklch(0.25 0.04 195) !important;
+  }
+
+  .dark [data-slot="combobox"],
+  .dark [data-slot="combobox-trigger"],
+  .dark [data-slot="combobox-content"] {
+    background-color: oklch(0.15 0.02 195) !important;
+    color: oklch(0.9 0.01 195) !important;
+    border-color: oklch(0.25 0.04 195) !important;
+  }
+
+  .dark button[variant="app"][role="combobox"] {
+    background-color: oklch(0.15 0.02 195) !important;
+    color: oklch(0.9 0.01 195) !important;
+    border-color: oklch(0.25 0.04 195) !important;
+  }
 }

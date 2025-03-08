@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useTheme } from "next-themes"
 
 // Allow the label to be a React node (JSX element or string)
 export interface SearchableComboboxItem {
@@ -66,6 +67,7 @@ export function SearchableCombobox({
   const [isLoading, setIsLoading] = useState(false)
   const [page, setPage] = useState(1)
   const [hasMoreItems, setHasMoreItems] = useState(initialHasMoreItems)
+  const { resolvedTheme } = useTheme()
 
   // Update the selected label when the value changes
   useEffect(() => {
@@ -127,10 +129,16 @@ export function SearchableCombobox({
           aria-expanded={open}
           className={cn(
             "w-full justify-between",
+            resolvedTheme === "dark" ? "dark-combobox-button" : "",
             disabled && "cursor-not-allowed opacity-50",
             triggerClassName
           )}
           disabled={disabled}
+          style={resolvedTheme === "dark" ? {
+            backgroundColor: "oklch(0.15 0.02 195)",
+            color: "oklch(0.9 0.01 195)",
+            borderColor: "oklch(0.25 0.04 195)"
+          } : undefined}
         >
           <span className="truncate">
             {selectedLabel}
