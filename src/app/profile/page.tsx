@@ -65,7 +65,6 @@ export default function ProfilePage() {
       confirmPassword: "",
     },
   });
-
   // Load user data when session is available
   useEffect(() => {
     if (session?.user) {
@@ -75,7 +74,6 @@ export default function ProfilePage() {
       });
     }
   }, [session, profileForm]);
-
   // Handle profile update submission
   async function onProfileSubmit(data: ProfileFormValues) {
     setIsLoading(true);
@@ -96,9 +94,19 @@ export default function ProfilePage() {
         throw new Error("Failed to update profile");
       }
       
+      const result = await response.json();
+      
+      // Update the form with the returned data to ensure UI is in sync
+      profileForm.reset({
+        name: result.user.name,
+        email: result.user.email,
+      });
+      
       toast.success("Profile updated successfully");
       
-      // Refresh session data to reflect changes
+      // Force a session update
+      await fetch("/api/auth/session");
+      // Refresh the session data
       const event = new Event("visibilitychange");
       document.dispatchEvent(event);
     } catch (error) {
@@ -108,7 +116,6 @@ export default function ProfilePage() {
       setIsLoading(false);
     }
   }
-
   // Handle password change submission
   async function onPasswordSubmit(data: PasswordFormValues) {
     setIsLoading(true);
@@ -139,7 +146,6 @@ export default function ProfilePage() {
       setIsLoading(false);
     }
   }
-
   // Show loading state when session is loading
   if (status === "loading") {
     return (
@@ -160,7 +166,6 @@ export default function ProfilePage() {
       </div>
     );
   }
-
   return (
     <motion.div 
       className="container mx-auto py-10 space-y-8"

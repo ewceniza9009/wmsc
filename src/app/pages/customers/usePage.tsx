@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { Customer } from "@/models/MstCustomer";
 import { Term } from "@/models/MstTerm";
+import { Tax } from "@/models/MstTax";
 
 export default function usePage() {
   const { data: session, status } = useSession();
@@ -16,6 +17,7 @@ export default function usePage() {
 
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [terms, setTerms] = useState<Term[]>([]);
+  const [taxes, setTaxes] = useState<Tax[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailLoading, setIsDetailLoading] = useState(true);
   
@@ -53,6 +55,7 @@ export default function usePage() {
       } else {
         fetchCustomers();
         fetchTerms();
+        fetchTaxes();
       }
     } else if (status === "unauthenticated") {
       router.push("/login");
@@ -90,6 +93,15 @@ export default function usePage() {
       setTerms(data);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to load terms");
+    }
+  };
+
+  const fetchTaxes = async () => {
+    try {
+      const { data } = await axios.get("/api/taxes");
+      setTaxes(data);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to load taxes");
     }
   };
 
@@ -136,6 +148,7 @@ export default function usePage() {
   return {
     customers,
     terms,
+    taxes,
     isLoading,
     isDetailLoading,
     isDeleteDialogOpen,

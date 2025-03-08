@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/select";
 
 export default function CustomerDetailPage() {
-  const { form, terms, handleChange, handleSubmit, isDetailLoading, isSaving } =
+  const { form, terms, taxes, handleChange, handleSubmit, isDetailLoading, isSaving } =
     usePage();
   const { id } = useParams();
   const isEdit = id !== "new";
@@ -121,6 +121,25 @@ export default function CustomerDetailPage() {
                     {terms.map((term) => (
                       <SelectItem key={term.id} value={term.id}>
                         {term.terms}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="taxId">Tax</Label>
+                <Select
+                  value={form.taxId}
+                  onValueChange={(value) => handleChange("taxId", value)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select tax" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {taxes.map((tax) => (
+                      <SelectItem key={tax.id} value={tax.id}>
+                        {tax.taxCode}
                       </SelectItem>
                     ))}
                   </SelectContent>
