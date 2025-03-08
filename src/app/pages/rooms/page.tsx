@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { PlusCircle, Pencil, Trash2, Thermometer } from "lucide-react";
-import DataGrid from "@/components/DataGrid";
+import ServerDataGrid from "@/components/ServerDataGrid";
 import { TableRow, TableCell } from "@/components/ui/table";
 import usePage from "./usePage";
 import Link from "next/link";
@@ -27,6 +27,13 @@ export default function RoomsPage() {
     selectedRoom,
     handleDelete,
     openDeleteDialog,
+    totalItems,
+    currentPage,
+    itemsPerPage,
+    searchTerm,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleSearchChange,
   } = usePage();
 
   if (isLoading) {
@@ -57,7 +64,7 @@ export default function RoomsPage() {
 
       <Card>
         <CardContent>
-          <DataGrid
+          <ServerDataGrid
             viewportHeight="60vh"
             data={rooms}
             columns={[
@@ -68,6 +75,14 @@ export default function RoomsPage() {
               { header: "Actions" },
             ]}
             searchFields={["roomNumber", "roomName"]}
+            totalItems={totalItems}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            isLoading={isLoading}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+            onSearchChange={handleSearchChange}
+            searchTerm={searchTerm}
             renderRow={(room) => (
               <TableRow key={room.id}>
                 <TableCell>{room.roomNumber}</TableCell>

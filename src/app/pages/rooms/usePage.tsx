@@ -17,6 +17,12 @@ export default function usePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailLoading, setIsDetailLoading] = useState(true);
   
+  // Server-side pagination and search state
+  const [totalItems, setTotalItems] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+  
   const [form, setForm] = useState({
     roomNumber: "",
     roomName: "",
@@ -34,12 +40,12 @@ export default function usePage() {
         toast.error("You do not have permission to access this page");
         router.push("/pages");
       } else {
-        fetchRooms();
+        fetchRooms(currentPage, itemsPerPage, searchTerm);
       }
     } else if (status === "unauthenticated") {
       router.push("/login");
     }
-  }, [status, session, router]);
+  }, [status, session, router, currentPage, itemsPerPage, searchTerm]);
 
   useEffect(() => {
     if (isEdit && id) {
@@ -54,11 +60,12 @@ export default function usePage() {
     }
   }, [id, isEdit]);
 
-  const fetchRooms = async () => {
+  const fetchRooms = async (page: number, limit: number, search: string) => {
     setIsLoading(true);
     try {
-      const { data } = await axios.get("/api/rooms");
-      setRooms(data);
+      const { data } = await axios.get(`/api/rooms?page=${page}&limit=${limit}&search=${search}`);
+      setRooms(data.items);
+      setTotalItems(data.totalItems);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to load rooms");
     } finally {
@@ -71,11 +78,28 @@ export default function usePage() {
     try {
       await axios.delete(`/api/rooms/${selectedRoom.id}`);
       toast.success("Room deleted successfully");
-      fetchRooms();
+      fetchRooms(currentPage, itemsPerPage, searchTerm);
       setIsDeleteDialogOpen(false);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to delete room");
     }
+  };
+
+  // Handle page change for ServerDataGrid
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  // Handle items per page change for ServerDataGrid
+  const handleItemsPerPageChange = (itemsPerPage: number) => {
+    setItemsPerPage(itemsPerPage);
+    setCurrentPage(1); // Reset to first page when changing items per page
+  };
+
+  // Handle search term change for ServerDataGrid
+  const handleSearchChange = (search: string) => {
+    setSearchTerm(search);
+    setCurrentPage(1); // Reset to first page when searching
   };
 
   const openDeleteDialog = (room: Room) => {
@@ -119,5 +143,13 @@ export default function usePage() {
     handleChange,
     handleSubmit,
     isSaving,
+    // Server-side pagination and search props
+    totalItems,
+    currentPage,
+    itemsPerPage,
+    searchTerm,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleSearchChange,
   };
 }

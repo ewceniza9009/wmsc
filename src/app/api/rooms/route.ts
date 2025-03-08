@@ -4,8 +4,8 @@ import { authOptions } from '../auth/[...nextauth]/route';
 import dbConnect from '@/lib/mongoose';
 import MstRoom from '@/models/MstRoom';
 
-// GET /api/rooms - Get all rooms
-export async function GET(req: NextRequest) {
+// GET /api/rooms - Get all rooms with pagination and search support
+export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     
@@ -21,7 +21,34 @@ export async function GET(req: NextRequest) {
 
     await dbConnect();
     
-    const rooms = await MstRoom.find({}).sort({ createdDate: -1 });
+    // Get query parameters for pagination and search
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '1');
+    const limit = parseInt(url.searchParams.get('limit') || '10');
+    const searchTerm = url.searchParams.get('search') || '';
+    
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+    
+    // Build search query if search term is provided
+    let query = {};
+    if (searchTerm) {
+      query = {
+        $or: [
+          { roomNumber: { $regex: searchTerm, $options: 'i' } },
+          { roomName: { $regex: searchTerm, $options: 'i' } }
+        ]
+      };
+    }
+
+    // Get total count for pagination
+    const totalItems = await MstRoom.countDocuments(query);
+    
+    // Fetch rooms with pagination and search
+    const rooms = await MstRoom.find(query)
+      .sort({ createdDate: -1 })
+      .skip(skip)
+      .limit(limit);
 
     const transformedRooms = rooms.map(room => ({
       id: room._id.toString(),
@@ -36,7 +63,12 @@ export async function GET(req: NextRequest) {
       __v: room.__v
     }));
     
-    return NextResponse.json(transformedRooms);
+    return NextResponse.json({
+      items: transformedRooms,
+      totalItems,
+      currentPage: page,
+      itemsPerPage: limit
+    });
   } catch (error: any) {
     console.error('Error fetching rooms:', error);
     return NextResponse.json({ message: error.message || 'Failed to fetch rooms' }, { status: 500 });
