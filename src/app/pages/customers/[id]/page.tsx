@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, Loader2, Save, SaveAll, UserRoundSearch } from "lucide-react";
 import Link from "next/link";
 import usePage from "../usePage";
+import { AccountCombobox } from "@/components/AccountCombobox";
 
 export default function CustomerDetailPage() {
   const { form, handleChange, handleSubmit, isDetailLoading, isSaving } =
@@ -75,6 +76,14 @@ export default function CustomerDetailPage() {
                   onChange={(e) => handleChange("customerName", e.target.value)}
                   placeholder="Enter customer name"
                   required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="accountId">Account</Label>
+                <AccountCombobox 
+                  value={form.accountId}
+                  onValueChange={(value) => handleChange("accountId", value)}
+                  placeholder="Select an account"
                 />
               </div>
 
