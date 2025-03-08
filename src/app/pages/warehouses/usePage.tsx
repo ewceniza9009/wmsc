@@ -19,6 +19,12 @@ export default function usePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailLoading, setIsDetailLoading] = useState(true);
   
+  // Pagination and search state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [totalItems, setTotalItems] = useState(0);
+  
   const [form, setForm] = useState({
     warehouseCode: "",
     warehouseName: "",
@@ -45,6 +51,13 @@ export default function usePage() {
       router.push("/login");
     }
   }, [status, session, router]);
+  
+  // Refetch warehouses when pagination or search changes
+  useEffect(() => {
+    if (status === "authenticated" && ["admin", "manager"].includes(session?.user.role)) {
+      fetchWarehouses();
+    }
+  }, [currentPage, itemsPerPage, searchTerm]);
 
   useEffect(() => {
     if (isEdit && id) {
@@ -71,8 +84,15 @@ export default function usePage() {
   const fetchWarehouses = async () => {
     setIsLoading(true);
     try {
-      const { data } = await axios.get("/api/warehouses");
-      setWarehouses(data);
+      const { data } = await axios.get("/api/warehouses", {
+        params: {
+          page: currentPage,
+          limit: itemsPerPage,
+          search: searchTerm
+        }
+      });
+      setWarehouses(data.data);
+      setTotalItems(data.pagination.total);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to load warehouses");
     } finally {
@@ -120,6 +140,21 @@ export default function usePage() {
     }
   };
 
+  // Handle pagination and search changes
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (perPage: number) => {
+    setItemsPerPage(perPage);
+    setCurrentPage(1); // Reset to first page when changing items per page
+  };
+
+  const handleSearchChange = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage(1); // Reset to first page when searching
+  };
+
   return {
     warehouses,
     companies,
@@ -134,5 +169,13 @@ export default function usePage() {
     handleChange,
     handleSubmit,
     isSaving,
+    // Pagination and search props
+    currentPage,
+    itemsPerPage,
+    searchTerm,
+    totalItems,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleSearchChange,
   };
 }

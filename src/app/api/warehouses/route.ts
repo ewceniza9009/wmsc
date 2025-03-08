@@ -4,7 +4,7 @@ import { authOptions } from '../auth/[...nextauth]/route';
 import dbConnect from '@/lib/mongoose';
 import MstWarehouse from '@/models/MstWarehouse';
 
-// GET /api/warehouses - Get all warehouses
+// GET /api/warehouses - Get all warehouses with pagination and search
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -21,7 +21,34 @@ export async function GET(req: NextRequest) {
 
     await dbConnect();
     
-    const warehouses = await MstWarehouse.find({}).sort({ createdAt: -1 });
+    // Get query parameters for pagination and search
+    const url = new URL(req.url);
+    const page = parseInt(url.searchParams.get('page') || '1');
+    const limit = parseInt(url.searchParams.get('limit') || '10');
+    const search = url.searchParams.get('search') || '';
+    
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+    
+    // Build search query
+    const searchQuery = search
+      ? {
+          $or: [
+            { warehouseCode: { $regex: search, $options: 'i' } },
+            { warehouseName: { $regex: search, $options: 'i' } },
+            { address: { $regex: search, $options: 'i' } },
+          ],
+        }
+      : {};
+    
+    // Get total count for pagination
+    const total = await MstWarehouse.countDocuments(searchQuery);
+    
+    // Fetch warehouses with pagination and search
+    const warehouses = await MstWarehouse.find(searchQuery)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
     const transformedWarehouses = warehouses.map(warehouse => ({
       id: warehouse._id.toString(),
@@ -35,7 +62,15 @@ export async function GET(req: NextRequest) {
       updatedAt: warehouse.updatedAt
     }));
     
-    return NextResponse.json(transformedWarehouses);
+    return NextResponse.json({
+      data: transformedWarehouses,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      }
+    });
   } catch (error: any) {
     console.error('Error fetching warehouses:', error);
     return NextResponse.json({ message: error.message || 'Failed to fetch warehouses' }, { status: 500 });

@@ -67,13 +67,16 @@ export function Header({ onMenuClick, user }: HeaderProps) {
   useEffect(() => {
     const fetchWarehouses = async () => {
       try {
-        const { data } = await axios.get<WarehouseType[]>("/api/warehouses");
-        setWarehouses(data);
+        const response = await axios.get("/api/warehouses");
+        // The API returns { data: [...warehouses], pagination: {...} }
+        // Extract the warehouses array from the response
+        const warehousesData = response.data.data || [];
+        setWarehouses(warehousesData);
 
         // Ensure selectedWarehouse is loaded from storage OR defaults to the first warehouse
         setSelectedWarehouse((prev) => {
           const stored = localStorage.getItem("selectedWarehouse");
-          return stored ? stored : data.length > 0 ? data[0].id : prev;
+          return stored ? stored : warehousesData.length > 0 ? warehousesData[0].id : prev;
         });
       } catch (error) {
         console.error("Error fetching warehouses:", error);

@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { PlusCircle, Pencil, Trash2, Loader2, Warehouse } from "lucide-react";
-import DataGrid from "@/components/DataGrid";
+import ServerDataGrid from "@/components/ServerDataGrid";
 import { TableRow, TableCell } from "@/components/ui/table";
 import usePage from "./usePage";
 import Link from "next/link";
@@ -27,6 +27,14 @@ export default function WarehousesPage() {
     selectedWarehouse,
     handleDelete,
     openDeleteDialog,
+    // Pagination and search props
+    currentPage,
+    itemsPerPage,
+    searchTerm,
+    totalItems,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleSearchChange,
   } = usePage();
 
   if (isLoading) {
@@ -57,7 +65,7 @@ export default function WarehousesPage() {
 
       <Card>
         <CardContent>
-          <DataGrid
+          <ServerDataGrid
             viewportHeight="60vh"
             data={warehouses}
             columns={[
@@ -69,6 +77,14 @@ export default function WarehousesPage() {
               { header: "Actions" },
             ]}
             searchFields={["warehouseCode", "warehouseName", "address"]}
+            totalItems={totalItems}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            isLoading={isLoading}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+            onSearchChange={handleSearchChange}
+            searchTerm={searchTerm}
             renderRow={(warehouse) => (
               <TableRow key={warehouse.id}>
                 <TableCell>{warehouse.warehouseCode}</TableCell>
