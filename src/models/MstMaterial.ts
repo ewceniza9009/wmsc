@@ -31,11 +31,18 @@ const MaterialSchema = new Schema(
     weightType: { type: String, required: true, enum: ['Fixed', 'Variable'] },
     isLocked: { type: Boolean, default: false },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    createdDate: { type: Date, default: Date.now },
     updatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
-    updatedDate: { type: Date, default: Date.now },
+    __v: {
+      type: Number,
+      default: 0,
+    }
   },
-  { timestamps: false }
+  {
+    timestamps: {
+      createdAt: "createdDate",
+      updatedAt: "updatedDate",
+    },
+  }
 );
 
 export default mongoose.models.MstMaterial || mongoose.model('MstMaterial', MaterialSchema);

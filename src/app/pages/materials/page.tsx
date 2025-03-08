@@ -72,7 +72,6 @@ export default function MaterialsPage() {
               { header: "Material No." },
               { header: "Brand Code" },
               { header: "Material Name" },
-              { header: "Category" },
               { header: "Weight Type" },
               { header: "Created" },
               { header: "Actions" },
@@ -91,21 +90,19 @@ export default function MaterialsPage() {
                 <TableCell>{material.materialNumber}</TableCell>
                 <TableCell>{material.brandCode}</TableCell>
                 <TableCell>{material.materialName}</TableCell>
-                <TableCell>{material.materialCategoryId}</TableCell>
                 <TableCell>{material.weightType}</TableCell>
                 <TableCell>
                   {new Date(material.createdDate).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="text-right">
                   <Link href={`./materials/${material.id}`}>
-                    <Button variant="ghost" size="icon" className="text-teal-500 hover:text-teal-600 hover:bg-teal-50">
+                    <Button variant="ghost" size="icon">
                       <Pencil className="h-4 w-4" />
                     </Button>
                   </Link>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-teal-500 hover:text-teal-600 hover:bg-teal-50"
                     onClick={() => openDeleteDialog(material)}
                   >
                     <Trash2 className="h-4 w-4" />
