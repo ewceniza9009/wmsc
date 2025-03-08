@@ -20,9 +20,10 @@ import {
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
+// Allow the label to be a React node (JSX element or string)
 export interface SearchableComboboxItem {
   value: string
-  label: string
+  label: React.ReactNode
 }
 
 interface SearchableComboboxProps {
@@ -39,6 +40,7 @@ interface SearchableComboboxProps {
   hasMoreItems?: boolean
   defaultOpen?: boolean
   itemsPerPage?: number
+  defaultItem?: SearchableComboboxItem | null
 }
 
 export function SearchableCombobox({
@@ -55,16 +57,17 @@ export function SearchableCombobox({
   hasMoreItems: initialHasMoreItems = false,
   defaultOpen = false,
   itemsPerPage = 10,
+  defaultItem = null,
 }: SearchableComboboxProps) {
   const [open, setOpen] = useState(defaultOpen)
   const [items, setItems] = useState<SearchableComboboxItem[]>(initialItems || [])
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedLabel, setSelectedLabel] = useState<string>("")
+  const [selectedLabel, setSelectedLabel] = useState<React.ReactNode>(defaultItem ? defaultItem.label : placeholder)
   const [isLoading, setIsLoading] = useState(false)
   const [page, setPage] = useState(1)
   const [hasMoreItems, setHasMoreItems] = useState(initialHasMoreItems)
 
-  // Set the selected label when the value changes
+  // Update the selected label when the value changes
   useEffect(() => {
     if (value) {
       const selected = items.find(item => item.value === value)
@@ -72,22 +75,25 @@ export function SearchableCombobox({
         setSelectedLabel(selected.label)
       }
     } else {
-      setSelectedLabel("")
+      setSelectedLabel(placeholder)
     }
-  }, [value, items])
+  }, [value, items, placeholder])
 
-  // Load items on initial render, search term change, or page change if fetchItems is provided
+  // Update the selected label if defaultItem changes
+  useEffect(() => {
+    if (defaultItem) {
+      setSelectedLabel(defaultItem.label)
+    }
+  }, [defaultItem])
+
+  // Load items on initial render, when the search term changes, or when the page changes (if fetchItems is provided)
   useEffect(() => {
     const loadItems = async () => {
       if (fetchItems) {
         setIsLoading(true)
         try {
           const newItems = await fetchItems(searchTerm, page)
-          
-          setItems(prev => 
-            page === 1 ? newItems : [...prev, ...newItems]
-          )
-          
+          setItems(prev => (page === 1 ? newItems : [...prev, ...newItems]))
           setHasMoreItems(newItems.length === itemsPerPage)
         } catch (error) {
           console.error("Failed to fetch items:", error)
@@ -96,7 +102,6 @@ export function SearchableCombobox({
         }
       }
     }
-
     if (open && fetchItems) {
       loadItems()
     }
@@ -128,7 +133,7 @@ export function SearchableCombobox({
           disabled={disabled}
         >
           <span className="truncate">
-            {selectedLabel || placeholder}
+            {selectedLabel}
           </span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -193,4 +198,3 @@ export function SearchableCombobox({
     </Popover>
   )
 }
-
