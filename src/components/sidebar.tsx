@@ -140,13 +140,13 @@ export function Sidebar({
         },
         {
           title: "Storage Room",
-          href: "/pages/room",
+          href: "/pages/rooms",
           icon: <Container className="h-5 w-5" />,
           roles: ["admin", "manager", "worker"],
         },
         {
           title: "Storage Location",
-          href: "/pages/location",
+          href: "/pages/locations",
           icon: <MapPin className="h-5 w-5" />,
           roles: ["admin", "manager", "worker"],
         },
