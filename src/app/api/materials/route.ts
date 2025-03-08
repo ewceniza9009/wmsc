@@ -4,7 +4,7 @@ import { authOptions } from '../auth/[...nextauth]/route';
 import dbConnect from '@/lib/mongoose';
 import MstMaterial from '@/models/MstMaterial';
 
-// GET /api/materials - Get all materials
+// GET /api/materials - Get all materials with pagination and search support
 export async function GET(request: NextRequest) {
   try {
     // Connect to database
@@ -21,8 +21,35 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 
-    // Fetch all materials
-    const materials = await MstMaterial.find({}).sort({ materialName: 1 });
+    // Get query parameters for pagination and search
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '1');
+    const limit = parseInt(url.searchParams.get('limit') || '10');
+    const searchTerm = url.searchParams.get('search') || '';
+    
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+    
+    // Build search query if search term is provided
+    let query = {};
+    if (searchTerm) {
+      query = {
+        $or: [
+          { materialNumber: { $regex: searchTerm, $options: 'i' } },
+          { brandCode: { $regex: searchTerm, $options: 'i' } },
+          { materialName: { $regex: searchTerm, $options: 'i' } }
+        ]
+      };
+    }
+
+    // Get total count for pagination
+    const totalItems = await MstMaterial.countDocuments(query);
+    
+    // Fetch materials with pagination and search
+    const materials = await MstMaterial.find(query)
+      .sort({ materialName: 1 })
+      .skip(skip)
+      .limit(limit);
 
     const transformedMaterials = materials.map(material => ({
       id: material._id.toString(),
@@ -42,7 +69,12 @@ export async function GET(request: NextRequest) {
       updatedDate: material.updatedDate
     }));
 
-    return NextResponse.json(transformedMaterials);
+    return NextResponse.json({
+      items: transformedMaterials,
+      totalItems,
+      currentPage: page,
+      itemsPerPage: limit
+    })
   } catch (error: any) {
     console.error('Error fetching materials:', error);
     return NextResponse.json({ message: error.message || 'Failed to fetch materials' }, { status: 500 });

@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { PlusCircle, Pencil, Trash2, Loader2, UserRoundSearch } from "lucide-react";
-import DataGrid from "@/components/DataGrid";
+import ServerDataGrid from "@/components/ServerDataGrid";
 import { TableRow, TableCell } from "@/components/ui/table";
 import usePage from "./usePage";
 import Link from "next/link";
@@ -27,6 +27,14 @@ export default function CustomersPage() {
     selectedCustomer,
     handleDelete,
     openDeleteDialog,
+    // Server-side pagination and search props
+    totalItems,
+    currentPage,
+    itemsPerPage,
+    searchTerm,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleSearchChange,
   } = usePage();
 
   if (isLoading) {
@@ -57,7 +65,7 @@ export default function CustomersPage() {
 
       <Card>
         <CardContent>
-          <DataGrid
+          <ServerDataGrid
             viewportHeight="60vh"
             data={customers}
             columns={[
@@ -70,6 +78,14 @@ export default function CustomersPage() {
               { header: "Actions" },
             ]}
             searchFields={["customerNumber", "customerName", "companyName", "contactPerson"]}
+            totalItems={totalItems}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            isLoading={isLoading}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+            onSearchChange={handleSearchChange}
+            searchTerm={searchTerm}
             renderRow={(customer) => (
               <TableRow key={customer.id}>
                 <TableCell>{customer.customerNumber}</TableCell>

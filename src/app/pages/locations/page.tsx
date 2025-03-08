@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { PlusCircle, Pencil, Trash2, MapPin } from "lucide-react";
-import DataGrid from "@/components/DataGrid";
+import ServerDataGrid from "@/components/ServerDataGrid";
 import { TableRow, TableCell } from "@/components/ui/table";
 import usePage from "./usePage";
 import Link from "next/link";
@@ -27,6 +27,14 @@ export default function LocationsPage() {
     selectedLocation,
     handleDelete,
     openDeleteDialog,
+    // Server-side pagination and search props
+    totalItems,
+    currentPage,
+    itemsPerPage,
+    searchTerm,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleSearchChange,
   } = usePage();
 
   if (isLoading) {
@@ -57,7 +65,7 @@ export default function LocationsPage() {
 
       <Card>
         <CardContent>
-          <DataGrid
+          <ServerDataGrid
             viewportHeight="60vh"
             data={locations}
             columns={[
@@ -71,6 +79,14 @@ export default function LocationsPage() {
               { header: "Actions" },
             ]}
             searchFields={["locationNumber", "locationName", "locBay", "locColumn", "locRow", "roomName"]}
+            totalItems={totalItems}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            isLoading={isLoading}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+            onSearchChange={handleSearchChange}
+            searchTerm={searchTerm}
             renderRow={(location) => (
               <TableRow key={location.id}>
                 <TableCell>{location.locationNumber}</TableCell>

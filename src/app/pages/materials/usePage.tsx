@@ -20,6 +20,12 @@ export default function usePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailLoading, setIsDetailLoading] = useState(true);
   
+  // Server-side pagination and search state
+  const [totalItems, setTotalItems] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+  
   const [form, setForm] = useState({
     materialNumber: "",
     brandCode: "",
@@ -39,11 +45,11 @@ export default function usePage() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      if (!["admin", "manager"].includes(session.user.role)) {
+      if (!['admin', 'manager'].includes(session.user.role)) {
         toast.error("You do not have permission to access this page");
         router.push("/pages");
       } else {
-        fetchMaterials();
+        fetchMaterials(currentPage, itemsPerPage, searchTerm);
         fetchMaterialCategories();
         fetchCustomers();
         fetchUnits();
@@ -51,7 +57,7 @@ export default function usePage() {
     } else if (status === "unauthenticated") {
       router.push("/login");
     }
-  }, [status, session, router]);
+  }, [status, session, router, currentPage, itemsPerPage, searchTerm]);
 
   useEffect(() => {
     if (isEdit && id) {
@@ -66,11 +72,12 @@ export default function usePage() {
     }
   }, [id, isEdit]);
 
-  const fetchMaterials = async () => {
+  const fetchMaterials = async (page: number, limit: number, search: string) => {
     setIsLoading(true);
     try {
-      const { data } = await axios.get("/api/materials");
-      setMaterials(data);
+      const { data } = await axios.get(`/api/materials?page=${page}&limit=${limit}&search=${search}`);
+      setMaterials(data.items);
+      setTotalItems(data.totalItems);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to load materials");
     } finally {
@@ -110,7 +117,7 @@ export default function usePage() {
     try {
       await axios.delete(`/api/materials/${selectedMaterial.id}`);
       toast.success("Material deleted successfully");
-      fetchMaterials();
+      fetchMaterials(currentPage, itemsPerPage, searchTerm);
       setIsDeleteDialogOpen(false);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to delete material");
@@ -146,6 +153,23 @@ export default function usePage() {
     }
   };
 
+  // Handle page change for ServerDataGrid
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  // Handle items per page change for ServerDataGrid
+  const handleItemsPerPageChange = (limit: number) => {
+    setItemsPerPage(limit);
+    setCurrentPage(1); // Reset to first page when changing items per page
+  };
+
+  // Handle search term change for ServerDataGrid
+  const handleSearchChange = (search: string) => {
+    setSearchTerm(search);
+    setCurrentPage(1); // Reset to first page when searching
+  };
+
   return {
     materials,
     materialCategories,
@@ -162,5 +186,13 @@ export default function usePage() {
     handleChange,
     handleSubmit,
     isSaving,
+    // Server-side pagination and search props
+    totalItems,
+    currentPage,
+    itemsPerPage,
+    searchTerm,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleSearchChange,
   };
 }

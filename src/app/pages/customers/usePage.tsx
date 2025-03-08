@@ -21,6 +21,12 @@ export default function usePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailLoading, setIsDetailLoading] = useState(true);
   
+  // Server-side pagination and search state
+  const [totalItems, setTotalItems] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+  
   const [form, setForm] = useState({
     customerNumber: "",
     customerName: "",
@@ -49,18 +55,18 @@ export default function usePage() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      if (!["admin", "manager"].includes(session.user.role)) {
+      if (!['admin', 'manager'].includes(session.user.role)) {
         toast.error("You do not have permission to access this page");
         router.push("/pages");
       } else {
-        fetchCustomers();
+        fetchCustomers(currentPage, itemsPerPage, searchTerm);
         fetchTerms();
         fetchTaxes();
       }
     } else if (status === "unauthenticated") {
       router.push("/login");
     }
-  }, [status, session, router]);
+  }, [status, session, router, currentPage, itemsPerPage, searchTerm]);
 
   useEffect(() => {
     if (isEdit && id) {
@@ -75,11 +81,12 @@ export default function usePage() {
     }
   }, [id, isEdit]);
 
-  const fetchCustomers = async () => {
+  const fetchCustomers = async (page: number, limit: number, search: string) => {
     setIsLoading(true);
     try {
-      const { data } = await axios.get("/api/customers");
-      setCustomers(data);
+      const { data } = await axios.get(`/api/customers?page=${page}&limit=${limit}&search=${search}`);
+      setCustomers(data.items);
+      setTotalItems(data.totalItems);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to load Customers");
     } finally {
@@ -110,15 +117,15 @@ export default function usePage() {
     try {
       await axios.delete(`/api/customers/${selectedCustomer.id}`);
       toast.success("Customer deleted successfully");
-      fetchCustomers();
+      fetchCustomers(currentPage, itemsPerPage, searchTerm);
       setIsDeleteDialogOpen(false);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to delete Customer");
     }
   };
 
-  const openDeleteDialog = (Customer: Customer) => {
-    setSelectedCustomer(Customer);
+  const openDeleteDialog = (customer: Customer) => {
+    setSelectedCustomer(customer);
     setIsDeleteDialogOpen(true);
   };
 
@@ -145,6 +152,23 @@ export default function usePage() {
     }
   };
 
+  // Handle page change for ServerDataGrid
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  // Handle items per page change for ServerDataGrid
+  const handleItemsPerPageChange = (limit: number) => {
+    setItemsPerPage(limit);
+    setCurrentPage(1); // Reset to first page when changing items per page
+  };
+
+  // Handle search term change for ServerDataGrid
+  const handleSearchChange = (search: string) => {
+    setSearchTerm(search);
+    setCurrentPage(1); // Reset to first page when searching
+  };
+
   return {
     customers,
     terms,
@@ -160,5 +184,13 @@ export default function usePage() {
     handleChange,
     handleSubmit,
     isSaving,
+    // Server-side pagination and search props
+    totalItems,
+    currentPage,
+    itemsPerPage,
+    searchTerm,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleSearchChange,
   };
 }

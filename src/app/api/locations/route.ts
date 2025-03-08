@@ -17,8 +17,38 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get all locations and populate room information
-    const locations = await MstLocation.find({}).populate("roomId", "roomName roomNumber");
+    // Get query parameters for pagination and search
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '1');
+    const limit = parseInt(url.searchParams.get('limit') || '10');
+    const searchTerm = url.searchParams.get('search') || '';
+    
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+    
+    // Build search query if search term is provided
+    let query = {};
+    if (searchTerm) {
+      query = {
+        $or: [
+          { locationNumber: { $regex: searchTerm, $options: 'i' } },
+          { locationName: { $regex: searchTerm, $options: 'i' } },
+          { locBay: { $regex: searchTerm, $options: 'i' } },
+          { locColumn: { $regex: searchTerm, $options: 'i' } },
+          { locRow: { $regex: searchTerm, $options: 'i' } }
+        ]
+      };
+    }
+
+    // Get total count for pagination
+    const totalItems = await MstLocation.countDocuments(query);
+    
+    // Get all locations and populate room information with pagination and search
+    const locations = await MstLocation.find(query)
+      .populate("roomId", "roomName roomNumber")
+      .sort({ locationName: 1 })
+      .skip(skip)
+      .limit(limit);
 
     // Transform the data for the frontend
     const transformedLocations = locations.map((location: any) => ({
@@ -41,7 +71,12 @@ export async function GET(request: NextRequest) {
       __v: location.__v,
     }));
 
-    return NextResponse.json(transformedLocations);
+    return NextResponse.json({
+      items: transformedLocations,
+      totalItems,
+      currentPage: page,
+      itemsPerPage: limit
+    })
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message || "Failed to fetch locations" },
