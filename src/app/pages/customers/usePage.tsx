@@ -6,6 +6,7 @@ import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
 import { Customer } from "@/models/MstCustomer";
+import { Term } from "@/models/MstTerm";
 
 export default function usePage() {
   const { data: session, status } = useSession();
@@ -14,6 +15,7 @@ export default function usePage() {
   const isEdit = id !== "new";
 
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [terms, setTerms] = useState<Term[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailLoading, setIsDetailLoading] = useState(true);
   
@@ -50,6 +52,7 @@ export default function usePage() {
         router.push("/pages");
       } else {
         fetchCustomers();
+        fetchTerms();
       }
     } else if (status === "unauthenticated") {
       router.push("/login");
@@ -78,6 +81,15 @@ export default function usePage() {
       toast.error(error?.response?.data?.message || "Failed to load Customers");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchTerms = async () => {
+    try {
+      const { data } = await axios.get("/api/terms");
+      setTerms(data);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to load terms");
     }
   };
 
@@ -123,6 +135,7 @@ export default function usePage() {
 
   return {
     customers,
+    terms,
     isLoading,
     isDetailLoading,
     isDeleteDialogOpen,

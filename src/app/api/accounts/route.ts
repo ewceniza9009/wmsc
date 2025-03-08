@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
-    const { accountNumber, accountName, remarks, status } = body;
+    const { accountNumber, accountName, remarks, isActive } = body;
 
     // Validate required fields
     if (!accountNumber || !accountName) {
@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
       accountNumber,
       accountName,
       remarks: remarks || "",
-      isActive: status || false,
+      isActive: isActive || false,
       createdBy: session.user.id,
       updatedBy: session.user.id,
     });

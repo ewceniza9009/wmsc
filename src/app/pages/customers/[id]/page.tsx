@@ -6,13 +6,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Loader2, Save, SaveAll, UserRoundSearch } from "lucide-react";
+import {
+  ArrowLeft,
+  Loader2,
+  Save,
+  SaveAll,
+  UserRoundSearch,
+} from "lucide-react";
 import Link from "next/link";
 import usePage from "../usePage";
 import { AccountCombobox } from "@/components/AccountCombobox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function CustomerDetailPage() {
-  const { form, handleChange, handleSubmit, isDetailLoading, isSaving } =
+  const { form, terms, handleChange, handleSubmit, isDetailLoading, isSaving } =
     usePage();
   const { id } = useParams();
   const isEdit = id !== "new";
@@ -42,7 +55,12 @@ export default function CustomerDetailPage() {
           </div>
         </div>
         <div className="flex gap-5">
-          <Button form="mainForm" type="submit" disabled={isSaving} className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white">
+          <Button
+            form="mainForm"
+            type="submit"
+            disabled={isSaving}
+            className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white"
+          >
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {!isSaving && <SaveAll className="mr-2 h-4 w-4" />}
             {isEdit ? "Save Changes" : "Add Customer"}
@@ -62,7 +80,9 @@ export default function CustomerDetailPage() {
                 <Input
                   id="customerNumber"
                   value={form.customerNumber}
-                  onChange={(e) => handleChange("customerNumber", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("customerNumber", e.target.value)
+                  }
                   placeholder="Enter customer number"
                   required
                 />
@@ -78,13 +98,33 @@ export default function CustomerDetailPage() {
                   required
                 />
               </div>
+
               <div className="space-y-2">
                 <Label htmlFor="accountId">Account</Label>
-                <AccountCombobox 
+                <AccountCombobox
                   value={form.accountId}
                   onValueChange={(value) => handleChange("accountId", value)}
                   placeholder="Select an account"
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="termId">Terms</Label>
+                <Select
+                  value={form.termId}
+                  onValueChange={(value) => handleChange("termId", value)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select term" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {terms.map((term) => (
+                      <SelectItem key={term.id} value={term.id}>
+                        {term.terms}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
@@ -102,7 +142,9 @@ export default function CustomerDetailPage() {
                 <Input
                   id="contactPerson"
                   value={form.contactPerson}
-                  onChange={(e) => handleChange("contactPerson", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("contactPerson", e.target.value)
+                  }
                   placeholder="Enter contact person"
                   required
                 />
@@ -113,7 +155,9 @@ export default function CustomerDetailPage() {
                 <Input
                   id="contactPosition"
                   value={form.contactPosition}
-                  onChange={(e) => handleChange("contactPosition", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("contactPosition", e.target.value)
+                  }
                   placeholder="Enter contact position"
                 />
               </div>
@@ -123,7 +167,9 @@ export default function CustomerDetailPage() {
                 <Input
                   id="contactNumber"
                   value={form.contactNumber}
-                  onChange={(e) => handleChange("contactNumber", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("contactNumber", e.target.value)
+                  }
                   placeholder="Enter contact number"
                   required
                 />
@@ -206,7 +252,9 @@ export default function CustomerDetailPage() {
                 <Input
                   id="billingAddress"
                   value={form.billingAddress}
-                  onChange={(e) => handleChange("billingAddress", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("billingAddress", e.target.value)
+                  }
                   placeholder="Enter billing address"
                 />
               </div>
@@ -216,7 +264,9 @@ export default function CustomerDetailPage() {
                 <Input
                   id="shippingAddress"
                   value={form.shippingAddress}
-                  onChange={(e) => handleChange("shippingAddress", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("shippingAddress", e.target.value)
+                  }
                   placeholder="Enter shipping address"
                 />
               </div>
