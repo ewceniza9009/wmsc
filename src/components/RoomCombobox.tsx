@@ -67,12 +67,12 @@ export function RoomCombobox({
           limit: "10",
           search: searchTerm,
         });
-        const response = await fetch(`/api/rooms?${params.toString()}`);
+        const response = await fetch(`/api/combobox-rooms?${params.toString()}`);
         if (!response.ok) {
           throw new Error("Failed to fetch rooms");
         }
         const data = await response.json();
-        return data.map((room: any) => ({
+        return data.rooms.map((room: any) => ({
           value: room.id,
           label: (
             <div className="flex items-center">

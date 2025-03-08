@@ -4,7 +4,7 @@ import MstLocation from "@/models/MstLocation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
   try {
     await dbConnect();
     const session = await getServerSession(authOptions);
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       );
     }
 
-    const { id } = params;
+    const { id } = await context.params;
 
     // Get location by ID and populate room information
     const location = await MstLocation.findById(id).populate("roomId", "roomName roomNumber");
