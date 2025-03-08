@@ -49,7 +49,7 @@ export default function CompaniesPage() {
         </div>
 
         <Link href="./companies/new">
-          <Button className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white">
+          <Button>
             <PlusCircle className="mr-2 h-4 w-4" /> Add
           </Button>
         </Link>

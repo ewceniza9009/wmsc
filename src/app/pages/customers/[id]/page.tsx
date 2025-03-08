@@ -55,11 +55,15 @@ export default function CustomerDetailPage() {
           </div>
         </div>
         <div className="flex gap-5">
+        <Button  
+          variant="outline"  
+          >           
+            {"Print"}
+          </Button>
           <Button
             form="mainForm"
             type="submit"
-            disabled={isSaving}
-            className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white"
+            disabled={isSaving}            
           >
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {!isSaving && <SaveAll className="mr-2 h-4 w-4" />}

@@ -41,7 +41,7 @@ export default function CompanyDetailPage() {
           </div>
         </div>
         <div className="flex gap-5">
-          <Button form="mainForm" type="submit" disabled={isSaving}  className="cursor-pointer hover:bg-accent-foreground hover:scale-105 transition transform duration-200 text-white">
+          <Button form="mainForm" type="submit" disabled={isSaving}>
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {!isSaving && <SaveAll className="mr-2 h-4 w-4" />}
             {isEdit ? "Save Changes" : "Add Company"}
