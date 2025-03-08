@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, ObjectId } from 'mongoose';
+import mongoose, { Schema, Document, ObjectId } from "mongoose";
 
 export interface IMstCustomer extends Document {
   customerNumber: string;
@@ -57,20 +57,19 @@ export interface Customer {
 
 // Define Customer Schema
 const MstCustomerSchema = new mongoose.Schema(
-  
   {
     customerNumber: {
       type: String,
-      required: [true, 'Please provide a customer number'],
+      required: [true, "Please provide a customer number"],
       unique: true,
     },
     customerName: {
       type: String,
-      required: [true, 'Please provide a customer name'],
+      required: [true, "Please provide a customer name"],
     },
     accountId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: [true, 'Please provide an account ID'],
+      required: [true, "Please provide an account ID"],
     },
     creditLimit: {
       type: Number,
@@ -81,13 +80,13 @@ const MstCustomerSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      required: [true, 'Please provide an address'],
+      required: [true, "Please provide an address"],
     },
     emailAddress: {
       type: String,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        'Please provide a valid email',
+        "Please provide a valid email",
       ],
     },
     tinNumber: {
@@ -126,7 +125,7 @@ const MstCustomerSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'Active',
+      default: "Active",
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -139,15 +138,16 @@ const MstCustomerSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { 
-    timestamps: { 
-      createdAt: 'createdDate', 
-      updatedAt: 'updatedDate' 
-    } 
+  {
+    timestamps: {
+      createdAt: "createdDate",
+      updatedAt: "updatedDate",
+    },
   }
-    
-  );
+);
 // Create Customer model
-const MstCustomer = mongoose.models.MstCustomer || mongoose.model('MstCustomer', MstCustomerSchema);
+const MstCustomer =
+  mongoose.models.MstCustomer ||
+  mongoose.model("MstCustomer", MstCustomerSchema);
 
 export default MstCustomer;
