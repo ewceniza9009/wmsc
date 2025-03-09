@@ -1,15 +1,15 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { RoomCombobox } from "@/components/RoomCombobox";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Loader2, SaveAll, MapPin } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RoomCombobox } from "@/components/RoomCombobox";
-import usePage from "../usePage";
+import { ArrowLeft, Loader2, MapPin, SaveAll } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import usePage from "../usePage";
 
 export default function LocationDetailPage() {
   const {
@@ -49,8 +49,7 @@ export default function LocationDetailPage() {
         <Button
           form="mainForm"
           type="submit"
-          disabled={isSaving}
-          className="bg-teal-600 hover:bg-teal-700"          
+          disabled={isSaving}    
         >
           {isSaving ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -1,7 +1,6 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import ServerDataGrid from "@/components/ServerDataGrid";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,11 +11,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { PlusCircle, Pencil, Trash2, Thermometer } from "lucide-react";
-import ServerDataGrid from "@/components/ServerDataGrid";
-import { TableRow, TableCell } from "@/components/ui/table";
-import usePage from "./usePage";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { Pencil, PlusCircle, Thermometer, Trash2 } from "lucide-react";
 import Link from "next/link";
+import usePage from "./usePage";
 
 export default function RoomsPage() {
   const {
@@ -56,7 +56,7 @@ export default function RoomsPage() {
         </div>
 
         <Link href="./rooms/new">
-          <Button className="bg-teal-600 hover:bg-teal-700">
+          <Button>
             <PlusCircle className="mr-2 h-4 w-4" /> Add
           </Button>
         </Link>
