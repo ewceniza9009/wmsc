@@ -162,31 +162,31 @@ export function Sidebar({
       children: [
         {
           title: "Storage Receiving",
-          href: "/pages/storage-receiving",
+          href: "/pages/storage-receivings",
           icon: <Truck className="h-5 w-5" />,
           roles: ["admin", "manager"],
         },
         {
           title: "Storage Transfer",
-          href: "/pages/storage-transfer",
+          href: "/pages/storage-transfers",
           icon: <ArrowLeftRight className="h-5 w-5" />,
           roles: ["admin", "manager"],
         },
         {
           title: "Storage Packing",
-          href: "/pages/storage-packing",
+          href: "/pages/storage-packings",
           icon: <PackageOpen className="h-5 w-5" />,
           roles: ["admin", "manager"],
         },
         {
           title: "Withdrawal Order",
-          href: "/pages/witdrawal-order",
+          href: "/pages/witdrawal-orders",
           icon: <ClipboardList className="h-5 w-5" />,
           roles: ["admin", "manager"],
         },
         {
           title: "Storage Pick",
-          href: "/pages/pick",
+          href: "/pages/storage-picks",
           icon: <Forklift className="h-5 w-5" />,
           roles: ["admin", "manager"],
         },

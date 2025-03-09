@@ -1,6 +1,6 @@
 import dbConnect from '@/lib/mongoose';
 import TrnStorageReceiving from '@/models/TrnStorageReceiving';
-import TrnStorageReceivingPallet from '@/models/TrnStorageReceivingDetail';
+import TrnStorageReceivingPallet from '@/models/TrnStorageReceivingPallet';
 import mongoose from 'mongoose';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
