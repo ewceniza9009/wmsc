@@ -125,13 +125,16 @@ export default function ServerDataGrid<T>(
       setWasFocused(false);
     };
 
+    // Store the current ref value in a variable
+    const currentSearchInputRef = searchInputRef.current;
+
     // Add event listeners to track focus
-    searchInputRef.current?.addEventListener('focusin', handleFocusIn);
-    searchInputRef.current?.addEventListener('focusout', handleFocusOut);
+    currentSearchInputRef?.addEventListener('focusin', handleFocusIn);
+    currentSearchInputRef?.addEventListener('focusout', handleFocusOut);
 
     return () => {
-      searchInputRef.current?.removeEventListener('focusin', handleFocusIn);
-      searchInputRef.current?.removeEventListener('focusout', handleFocusOut);
+      currentSearchInputRef?.removeEventListener('focusin', handleFocusIn);
+      currentSearchInputRef?.removeEventListener('focusout', handleFocusOut);
     };
   }, []);
 
@@ -163,9 +166,11 @@ export default function ServerDataGrid<T>(
 
   // Clean up timer on unmount
   useEffect(() => {
+    // Store ref value in a variable inside the effect
+    const timerRef = debounceTimerRef.current;
     return () => {
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
+      if (timerRef) {
+        clearTimeout(timerRef);
       }
     };
   }, []);

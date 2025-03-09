@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
+import { Sidebar } from "@/components/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function DashboardLayout({
   children,
@@ -65,9 +66,11 @@ export default function DashboardLayout({
           </main>
         </div>
         {/* Decorative background image */}
-        <img
+        <Image
           src="/images/coldstorage-updated.png"
           alt="Decorative Cold Storage"
+          width={250}
+          height={250}
           className="absolute bottom-0 right-0 opacity-[0.20] pointer-events-none"
         />
         {/* Toast notifications */}

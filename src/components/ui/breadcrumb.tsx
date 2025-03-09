@@ -44,9 +44,8 @@ BreadcrumbItem.displayName = "BreadcrumbItem";
 const BreadcrumbLink = React.forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-    asChild?: boolean;
   }
->(({ asChild, className, ...props }, ref) => {
+>(({ className, ...props }, _ref) => {
   return (
     <Link
       href="/"

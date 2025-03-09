@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter, useParams } from "next/navigation";
-import { toast } from "sonner";
-import axios from "axios";
 import { Company } from "@/models/MstCompany";
 import { Warehouse } from "@/models/MstWarehouse";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function usePage() {
   const { data: session, status } = useSession();
@@ -38,50 +38,16 @@ export default function usePage() {
   const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      if (!["admin", "manager"].includes(session.user.role)) {
-        toast.error("You do not have permission to access this page");
-        router.push("/pages");
-      } else {
-        fetchWarehouses();
-        fetchCompanies();
-      }
-    } else if (status === "unauthenticated") {
-      router.push("/login");
-    }
-  }, [status, session, router]);
-  
-  // Refetch warehouses when pagination or search changes
-  useEffect(() => {
-    if (status === "authenticated" && ["admin", "manager"].includes(session?.user.role)) {
-      fetchWarehouses();
-    }
-  }, [currentPage, itemsPerPage, searchTerm]);
-
-  useEffect(() => {
-    if (isEdit && id) {
-      setIsDetailLoading(true);
-      axios
-        .get(`/api/warehouses/${id}`)
-        .then((res) => setForm(res.data))
-        .catch((err) => console.error(err))
-        .finally(() => setIsDetailLoading(false));
-    } else {
-      setIsDetailLoading(false);
-    }
-  }, [id, isEdit]);
-
-  const fetchCompanies = async () => {
+  const fetchCompanies = useCallback(async () => {
     try {
       const { data } = await axios.get("/api/companies-select");
       setCompanies(data);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to load companies");
     }
-  };
+  }, []);
 
-  const fetchWarehouses = async () => {
+  const fetchWarehouses = useCallback(async () => {
     setIsLoading(true);
     try {
       const { data } = await axios.get("/api/warehouses", {
@@ -98,7 +64,41 @@ export default function usePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentPage, itemsPerPage, searchTerm]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      if (!["admin", "manager"].includes(session.user.role)) {
+        toast.error("You do not have permission to access this page");
+        router.push("/pages");
+      } else {
+        fetchWarehouses();
+        fetchCompanies();
+      }
+    } else if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, session, router, fetchWarehouses, fetchCompanies]);
+  
+  // Refetch warehouses when pagination or search changes
+  useEffect(() => {
+    if (status === "authenticated" && ["admin", "manager"].includes(session?.user.role)) {
+      fetchWarehouses();
+    }
+  }, [currentPage, itemsPerPage, searchTerm, status, session?.user.role, fetchWarehouses]);
+
+  useEffect(() => {
+    if (isEdit && id) {
+      setIsDetailLoading(true);
+      axios
+        .get(`/api/warehouses/${id}`)
+        .then((res) => setForm(res.data))
+        .catch((err) => console.error(err))
+        .finally(() => setIsDetailLoading(false));
+    } else {
+      setIsDetailLoading(false);
+    }
+  }, [id, isEdit]);
 
   const handleDelete = async () => {
     if (!selectedWarehouse) return;

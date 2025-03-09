@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongoose";
 import MstLocation from "@/models/MstLocation";
 import { getServerSession } from "next-auth";
+import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
@@ -103,7 +103,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Update location
-    const updatedLocation = await MstLocation.findByIdAndUpdate(
+    await MstLocation.findByIdAndUpdate(
       id,
       {
         ...data,

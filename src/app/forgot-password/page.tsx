@@ -22,7 +22,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
+  const _router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
     },
   });
 
-  async function onSubmit(data: FormValues) {
+  async function onSubmit(_data: FormValues) {
     setIsLoading(true);
     try {
       // In a real implementation, this would call an API endpoint to send a reset email
@@ -199,7 +199,7 @@ export default function ForgotPasswordPage() {
                   className="text-center py-4"
                 >
                   <p className="mb-4 text-teal-700 dark:text-teal-500">
-                    We've sent password reset instructions to your email address.
+                    We&apos;ve sent password reset instructions to your email address.
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     Please check your inbox and follow the instructions to reset your password.
