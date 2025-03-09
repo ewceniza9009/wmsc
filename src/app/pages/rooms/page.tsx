@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { Pencil, PlusCircle, Thermometer, Trash2 } from "lucide-react";
+import { Container, Pencil, PlusCircle, Trash2 } from "lucide-react";
 import Link from "next/link";
 import usePage from "./usePage";
 
@@ -49,7 +49,7 @@ export default function RoomsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Thermometer className="h-6 w-6 text-teal-500" />
+            <Container className="h-6 w-6 text-teal-500" />
             Rooms
           </h1>
           <p>Manage temperature-controlled rooms and their information</p>

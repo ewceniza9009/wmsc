@@ -1,45 +1,46 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
+  Activity,
+  ArrowLeftRight,
   Building2,
+  CalendarCheck,
+  CandlestickChart,
+  ChartBarStacked,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardList,
+  Combine,
   Container,
+  CopyMinus,
+  Forklift,
+  LayoutDashboard,
+  LucidePrinter,
   MapPin,
   Package,
   Package2,
   PackageOpen,
-  Combine,
-  Forklift,
-  ClipboardList,
-  Truck,
-  ArrowLeftRight,
-  Users,
-  UserRoundSearch,
+  Printer,
   Settings,
-  ChartBarStacked,
-  Warehouse,
-  Thermometer,
-  Activity,
-  CalendarCheck,
-  ChevronRight,
-  ChevronDown,
-  ChevronLeft,
-  CandlestickChart,
-  CopyMinus,
+  Truck,
+  UserRoundSearch,
+  Users,
+  Warehouse
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -197,15 +198,15 @@ export function Sidebar({
       roles: ["admin", "manager"],
       children: [
         {
-          title: "Shipments",
-          href: "/pages/shipments",
-          icon: <Truck className="h-5 w-5" />,
+          title: "Receiving Reports",
+          href: "/pages/storage-receiving-report",
+          icon: <Printer className="h-5 w-5" />,
           roles: ["admin", "manager"],
         },
         {
-          title: "Temperature Logs",
-          href: "/pages/temperature",
-          icon: <Thermometer className="h-5 w-5" />,
+          title: "Pick Reports",
+          href: "/pages/pick-reports",
+          icon: <LucidePrinter className="h-5 w-5" />,
           roles: ["admin", "manager"],
         },
       ],
