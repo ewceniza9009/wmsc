@@ -17,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Pencil, PlusCircle, Trash2, Truck } from "lucide-react";
 import Link from "next/link";
+import numeral from "numeral";
 import usePage from "./usePage";
 
 export default function StorageRecevingsPage() {
@@ -90,12 +91,12 @@ export default function StorageRecevingsPage() {
               <TableRow key={storageReceiving.id}>
                 <TableCell>{storageReceiving.receivingNumber}</TableCell>
                 <TableCell>
-                  {new Date(
-                    storageReceiving.receivingDate
-                  ).toLocaleDateString()}
+                  {new Date(storageReceiving.receivingDate).toLocaleDateString()}
                 </TableCell>
                 <TableCell>{storageReceiving.customerName}</TableCell>
-                <TableCell>{storageReceiving.weight}</TableCell>
+                <TableCell>
+                  {numeral(storageReceiving.weight).format("0.00")}
+                </TableCell>
                 <TableCell>
                   <Checkbox checked={storageReceiving.isFreezing} />
                 </TableCell>
