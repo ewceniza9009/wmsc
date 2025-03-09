@@ -3,6 +3,13 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Table,
   TableBody,
   TableCell,
@@ -210,19 +217,23 @@ export default function ServerDataGrid<T>(
           </form>
         </div>
         <div className="w-40">
-          <select
-            value={itemsPerPage}
-            onChange={(e) => {
-              onItemsPerPageChange(Number(e.target.value));
+          <Select
+            value={itemsPerPage.toString()}
+            onValueChange={(value) => {
+              onItemsPerPageChange(Number(value));
             }}
-            className="block w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {itemsPerPageOptions.map((option) => (
-              <option key={option} value={option}>
-                {option} per page
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Items per page" />
+            </SelectTrigger>
+            <SelectContent>
+              {itemsPerPageOptions.map((option) => (
+                <SelectItem key={option} value={option.toString()}>
+                  {option} per page
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
