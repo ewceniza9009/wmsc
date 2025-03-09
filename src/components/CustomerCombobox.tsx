@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import {
   SearchableCombobox,
   SearchableComboboxItem,
 } from "@/components/ui/searchable-combobox";
+import { useCallback, useEffect, useState } from "react";
 
 interface CustomerComboboxProps {
   value?: string;
@@ -22,7 +22,6 @@ export function CustomerCombobox({
   disabled = false,
   className,
 }: CustomerComboboxProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const [defaultItem, setDefaultItem] = useState<SearchableComboboxItem | null>(
     null
   );
@@ -30,7 +29,6 @@ export function CustomerCombobox({
   // Pre-fetch the customer details for the provided value
   useEffect(() => {
     if (value) {
-      setIsLoading(true);
       fetch(`/api/customers-lookup/${value}`)
         .then((res) => {
           if (!res.ok) {
@@ -54,20 +52,21 @@ export function CustomerCombobox({
           setDefaultItem(item);
         })
         .catch((error) => console.error(error))
-        .finally(() => setIsLoading(false));
+        .finally(() => {});
     }
   }, [value]);
 
   const fetchCustomers = useCallback(
     async (searchTerm: string, page: number) => {
-      setIsLoading(true);
       try {
         const params = new URLSearchParams({
           page: page.toString(),
           limit: "10",
           search: searchTerm,
         });
-        const response = await fetch(`/api/customers-lookup?${params.toString()}`);
+        const response = await fetch(
+          `/api/customers-lookup?${params.toString()}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch customers");
         }
@@ -87,7 +86,6 @@ export function CustomerCombobox({
         console.error("Error fetching customers:", error);
         return [];
       } finally {
-        setIsLoading(false);
       }
     },
     []

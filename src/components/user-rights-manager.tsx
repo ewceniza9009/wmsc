@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 interface Route {
   id: string;
@@ -35,7 +34,6 @@ interface UserRightsManagerProps {
 }
 
 export default function UserRightsManager({ userId, onClose }: UserRightsManagerProps) {
-  const [routes, setRoutes] = useState<Route[]>([]);
   const [userRights, setUserRights] = useState<UserRight[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -51,7 +49,6 @@ export default function UserRightsManager({ userId, onClose }: UserRightsManager
           throw new Error('Failed to fetch routes');
         }
         const routesData = await routesResponse.json();
-        setRoutes(routesData);
         
         // Fetch user rights for this user
         const userRightsResponse = await fetch(`/api/user-rights?userId=${userId}`);

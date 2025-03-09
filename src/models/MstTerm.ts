@@ -1,19 +1,18 @@
-import mongoose, { Schema, Document, ObjectId } from "mongoose";
-import { number } from "zod";
+import mongoose, { Document } from "mongoose";
 
 export interface IMstTerm extends Document {
   id: string;
   terms: string;
-  termsValue: Number;
+  termsValue: number;
   isLocked: boolean;
 }
 
 export interface Term {
   id: string;
   terms: string;
-  termsValue: Number;
+  termsValue: number;
   isLocked: boolean;
-  __v: Number;
+  __v: number;
 }
 
 const MstTermSchema = new mongoose.Schema(

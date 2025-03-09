@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { toast } from 'sonner';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Warehouse, ArrowLeft, Loader2, UserPlus } from 'lucide-react';
+import { ArrowLeft, Loader2, UserPlus } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const formSchema = z.object({

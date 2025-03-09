@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import {
   SearchableCombobox,
   SearchableComboboxItem,
 } from "@/components/ui/searchable-combobox";
+import { useCallback, useEffect, useState } from "react";
 
 interface MaterialCategoryComboboxProps {
   value?: string;
@@ -22,7 +22,6 @@ export function MaterialCategoryCombobox({
   disabled = false,
   className,
 }: MaterialCategoryComboboxProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const [defaultItem, setDefaultItem] = useState<SearchableComboboxItem | null>(
     null
   );
@@ -30,7 +29,6 @@ export function MaterialCategoryCombobox({
   // Pre-fetch the account details for the provided value
   useEffect(() => {
     if (value) {
-      setIsLoading(true);
       fetch(`/api/material-categories-lookup/${value}`)
         .then((res) => {
           if (!res.ok) {
@@ -54,13 +52,12 @@ export function MaterialCategoryCombobox({
           setDefaultItem(item);
         })
         .catch((error) => console.error(error))
-        .finally(() => setIsLoading(false));
+        .finally(() => {});
     }
   }, [value]);
 
   const fetchMaterialCategories = useCallback(
     async (searchTerm: string, page: number) => {
-      setIsLoading(true);
       try {
         const params = new URLSearchParams({
           page: page.toString(),
@@ -87,7 +84,6 @@ export function MaterialCategoryCombobox({
         console.error("Error fetching material categories:", error);
         return [];
       } finally {
-        setIsLoading(false);
       }
     },
     []

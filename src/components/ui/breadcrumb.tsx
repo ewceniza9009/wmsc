@@ -1,6 +1,6 @@
-import * as React from "react";
-import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -85,10 +85,6 @@ const BreadcrumbPage = React.forwardRef<
 BreadcrumbPage.displayName = "BreadcrumbPage";
 
 export {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
+  Breadcrumb, BreadcrumbItem,
+  BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator
 };

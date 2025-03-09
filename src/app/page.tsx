@@ -2,21 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
+
 import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
   Box,
   Truck,
-  Users,
   ChevronLeft,
   ChevronRight,
   Warehouse,

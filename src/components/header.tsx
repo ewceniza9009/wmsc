@@ -19,7 +19,6 @@ import {
   LogOut,
   User,
   LayoutDashboard,
-  Package,
   Activity,
   Warehouse,
   Calendar1,

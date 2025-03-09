@@ -1,6 +1,7 @@
 'use client';
 
-import React, { JSX, useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -9,9 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, Search } from 'lucide-react';
+import React, { JSX, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 // Helper type for elements that support className
 type WithClassName = {
@@ -73,7 +73,6 @@ export default function ServerDataGrid<T>(
   {
     data,
     columns,
-    searchFields,
     renderRow,
     mobileRenderRow,
     itemsPerPageOptions = [5, 10, 25, 50],

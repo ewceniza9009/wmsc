@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, ObjectId } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export interface IMstCompany extends Document {
     companyName: string;

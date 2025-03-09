@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter, useParams } from "next/navigation";
-import { toast } from "sonner";
-import axios from "axios";
 import { Material } from "@/models/MstMaterial";
-import { SearchableComboboxItem } from "@/components/ui/searchable-combobox";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function usePage() {
   const { data: session, status } = useSession();
@@ -15,8 +14,6 @@ export default function usePage() {
   const isEdit = id !== "new";
 
   const [materials, setMaterials] = useState<Material[]>([]);
-  const [materialCategories, setMaterialCategories] = useState([]);
-  const [customers, setCustomers] = useState<SearchableComboboxItem[]>([]);
   const [units, setUnits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailLoading, setIsDetailLoading] = useState(true);
@@ -163,8 +160,6 @@ export default function usePage() {
 
   return {
     materials,
-    materialCategories,
-    customers,
     units,
     isLoading,
     isDetailLoading,

@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import dbConnect from "@/lib/mongoose";
 import MstAccount from "@/models/MstAccount";
-import mongoose, { isValidObjectId } from "mongoose";
+import { isValidObjectId } from "mongoose";
 
 // GET /api/accounts - Get accounts with pagination and search
 export async function GET(request: NextRequest) {

@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import  {authOptions} from '../auth/[...nextauth]/route';
 import dbConnect from '@/lib/mongoose';
 import MstCompany from '@/models/MstCompany';
+import { getServerSession } from 'next-auth';
+import { NextResponse } from 'next/server';
+import { authOptions } from '../auth/[...nextauth]/route';
 
 // GET /api/companies - Get all companies with pagination and search support
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Connect to database
     await dbConnect();

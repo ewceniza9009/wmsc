@@ -1,11 +1,10 @@
-import mongoose, { Schema, Document, ObjectId } from "mongoose";
-import { number } from "zod";
+import mongoose, { Document } from "mongoose";
 
 export interface IMstTax extends Document {
   id: string;
   taxType: string;
   taxCode: string;
-  rate: Number;
+  rate: number;
   accountId: string;
 }
 
@@ -13,9 +12,9 @@ export interface Tax {
   id: string;
   taxType: string;
   taxCode: string;
-  rate: Number;
+  rate: number;
   accountId: string;
-  __v: Number;
+  __v: number;
 }
 
 const MstTaxSchema = new mongoose.Schema(
