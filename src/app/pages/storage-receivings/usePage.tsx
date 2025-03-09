@@ -93,6 +93,7 @@ export default function usePage() {
         error?.response?.data?.message || "Failed to load storage receiving"
       );
     } finally {
+      console.log(storageReceivings)
       setIsLoading(false);
     }
   };
@@ -100,7 +101,7 @@ export default function usePage() {
   const handleDelete = async () => {
     if (!selectedStorageReceving) return;
     try {
-      await axios.delete(`/api/storageReceivings/${selectedStorageReceving.id}`);
+      await axios.delete(`/api/storage-receivings/${selectedStorageReceving.id}`);
       toast.success("Storage receving deleted successfully");
       fetchStorageRecevings(currentPage, itemsPerPage, searchTerm);
       setIsDeleteDialogOpen(false);

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Pencil, PlusCircle, Trash2, Truck } from "lucide-react";
 import Link from "next/link";
@@ -52,7 +53,7 @@ export default function StorageRecevingsPage() {
             <Truck className="h-6 w-6 text-teal-500" />
             Storage Recevings
           </h1>
-          <p>Manage storageReceivings and their information</p>
+          <p>Manage storage receivings and their information</p>
         </div>
 
         <Link href="./storageReceivings/new">
@@ -70,12 +71,13 @@ export default function StorageRecevingsPage() {
             columns={[
               { header: "Receiving No." },
               { header: "Receiving Date" },
+              { header: "Customer" },
               { header: "Weight (Kg)" },
               { header: "Is Freezing" },
               { header: "Locked" },
               { header: "Actions" },
             ]}
-            searchFields={["receivingNumber"]}
+            searchFields={["receivingNumber, customerName"]}
             totalItems={totalItems}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
@@ -92,9 +94,14 @@ export default function StorageRecevingsPage() {
                     storageReceiving.receivingDate
                   ).toLocaleDateString()}
                 </TableCell>
+                <TableCell>{storageReceiving.customerName}</TableCell>
                 <TableCell>{storageReceiving.weight}</TableCell>
-                <TableCell>{storageReceiving.isFreezing}</TableCell>
-                <TableCell>{storageReceiving.isLocked}</TableCell>
+                <TableCell>
+                  <Checkbox checked={storageReceiving.isFreezing} />
+                </TableCell>
+                <TableCell>
+                  <Checkbox checked={storageReceiving.isLocked} />
+                </TableCell>
                 <TableCell className="text-right">
                   <Link href={`./storage-receivings/${storageReceiving.id}`}>
                     <Button variant="ghost" size="icon">

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface ITrnStorageReceiving extends Document {
   receivingOrderId: Schema.Types.ObjectId | null;
@@ -43,6 +43,7 @@ export interface StorageReceiving {
   containerNumber: string;
   remarks: string;
   customerId: string;
+  customerName?: string;
   isFreezing: boolean;
   receivedBy: string;
   createdBy: string;
@@ -111,6 +112,7 @@ const TrnStorageReceivingSchema = new mongoose.Schema(
     },
     customerId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "MstCustomer",
       required: [true, "Please provide a customer ID"],
     },
     isFreezing: {

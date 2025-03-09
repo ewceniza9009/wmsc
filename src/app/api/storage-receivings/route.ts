@@ -1,4 +1,5 @@
 import dbConnect from '@/lib/mongoose';
+import MstCustomer from '@/models/MstCustomer';
 import TrnStorageReceiving from '@/models/TrnStorageReceiving';
 import TrnStorageReceivingPallet from '@/models/TrnStorageReceivingPallet';
 import mongoose from 'mongoose';
@@ -49,6 +50,7 @@ export async function GET(request: NextRequest) {
     
     // Fetch storage receiving records with pagination and search
     const storageReceivings = await TrnStorageReceiving.find(query)
+      .populate("customerId", "customerNumber customerName")
       .sort({ receivingDate: -1 })
       .skip(skip)
       .limit(limit);
@@ -69,7 +71,8 @@ export async function GET(request: NextRequest) {
       weight: receiving.weight,
       containerNumber: receiving.containerNumber,
       remarks: receiving.remarks,
-      customerId: receiving.customerId.toString(),
+      customerId: receiving.customerId?._id.toString(),
+      customerName: receiving.customerId?.customerName,
       isFreezing: receiving.isFreezing,
       receivedBy: receiving.receivedBy,
       createdBy: receiving.createdBy.toString(),
@@ -124,6 +127,15 @@ export async function POST(request: NextRequest) {
     const existingReceiving = await TrnStorageReceiving.findOne({ 
       receivingNumber: body.receivingNumber 
     });
+
+    // Check if the room exists
+    const customer = await MstCustomer.findById(body.customerId);
+    if (!customer) {
+      return NextResponse.json(
+        { message: "Room not found" },
+        { status: 404 }
+      );
+    }
     
     if (existingReceiving) {
       return NextResponse.json({ 
