@@ -21,6 +21,7 @@ import {
   ChevronRight,
   Clock,
   FileText,
+  LogIn,
   Shield,
   Thermometer,
   Truck,
@@ -111,7 +112,10 @@ export default function Home() {
               asChild
               className="w-full bg-teal-600 hover:bg-teal-700 text-white"
             >
+              <div className="flex flex-row">
+              <LogIn />
               <Link href="/login">Login</Link>
+              </div>
             </Button>
           </motion.div>
         </div>
