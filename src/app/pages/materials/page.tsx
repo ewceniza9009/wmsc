@@ -57,7 +57,7 @@ export default function MaterialsPage() {
         </div>
 
         <Link href="./materials/new">
-          <Button className="bg-teal-600 hover:bg-teal-700">
+          <Button>
             <PlusCircle className="mr-2 h-4 w-4" /> Add
           </Button>
         </Link>

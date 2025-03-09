@@ -20,14 +20,8 @@ import { CustomerCombobox } from "@/components/CustomerCombobox";
 import { MaterialCategoryCombobox } from "@/components/MaterialCategoryCombobox";
 
 export default function MaterialDetailPage() {
-  const {
-    form,
-    units,
-    handleChange,
-    handleSubmit,
-    isDetailLoading,
-    isSaving,
-  } = usePage();
+  const { form, units, handleChange, handleSubmit, isDetailLoading, isSaving } =
+    usePage();
   const { id } = useParams();
   const isEdit = id !== "new";
 
@@ -44,11 +38,7 @@ export default function MaterialDetailPage() {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Link href="../materials">
-            <Button
-              variant="outline"
-              size="icon"
-              className="cursor-pointer text-teal-500 hover:text-teal-600 hover:bg-teal-50 hover:border-teal-200"
-            >
+            <Button variant="outline" size="icon">
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
@@ -60,18 +50,8 @@ export default function MaterialDetailPage() {
           </div>
         </div>
         <div className="flex gap-5">
-          <Button
-            variant="outline"
-            className="border-teal-200 text-teal-500 hover:text-teal-600 hover:bg-teal-50"
-          >
-            {"Print"}
-          </Button>
-          <Button
-            form="mainForm"
-            type="submit"
-            disabled={isSaving}
-            className="bg-teal-600 hover:bg-teal-700"
-          >
+          <Button variant="outline">{"Print"}</Button>
+          <Button form="mainForm" type="submit" disabled={isSaving}>
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {!isSaving && <SaveAll className="mr-2 h-4 w-4" />}
             {isEdit ? "Save Changes" : "Add Material"}
@@ -125,7 +105,9 @@ export default function MaterialDetailPage() {
                 <Label htmlFor="materialCategoryId">Material Category *</Label>
                 <MaterialCategoryCombobox
                   value={form.materialCategoryId}
-                  onValueChange={(value) => handleChange("materialCategoryId", value)}
+                  onValueChange={(value) =>
+                    handleChange("materialCategoryId", value)
+                  }
                   placeholder="Select category"
                 />
               </div>
