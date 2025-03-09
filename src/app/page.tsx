@@ -1,25 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 
-import Image from "next/image";
-import Link from "next/link";
-import {
-  ArrowRight,
-  Box,
-  Truck,
-  ChevronLeft,
-  ChevronRight,
-  Warehouse,
-  Thermometer,
-  Clock,
-  Shield,
-  BarChart,
-  FileText,
-} from "lucide-react";
-import { motion } from "framer-motion";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -28,6 +12,22 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  BarChart,
+  Box,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  FileText,
+  Shield,
+  Thermometer,
+  Truck,
+  Warehouse,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -172,7 +172,6 @@ export default function Home() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-teal-600 text-teal-700 hover:bg-teal-50"
                   asChild
                 >
                   <a href="#features">Learn More</a>
