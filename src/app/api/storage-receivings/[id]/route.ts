@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
 import dbConnect from '@/lib/mongoose';
 import TrnStorageReceiving from '@/models/TrnStorageReceiving';
 import TrnStorageReceivingPallet from '@/models/TrnStorageReceivingDetail';
 import mongoose from 'mongoose';
+import { getServerSession } from 'next-auth';
+import { NextRequest, NextResponse } from 'next/server';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 // GET /api/storage-receiving/[id] - Get a specific storage receiving record with its pallets
 export async function GET(req: NextRequest, context: { params: { id: string } }) {
