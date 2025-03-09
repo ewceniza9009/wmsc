@@ -133,7 +133,7 @@ export default function MaterialDetailPage() {
                   <SelectContent>
                     {units.map((unit) => (
                       <SelectItem key={unit.id} value={unit.id}>
-                        {unit.unitCode} - {unit.unitName}
+                       {unit.unitName} ({unit.unitCode})
                       </SelectItem>
                     ))}
                   </SelectContent>
