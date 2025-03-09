@@ -6,6 +6,7 @@ import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
 import { Material } from "@/models/MstMaterial";
+import { SearchableComboboxItem } from "@/components/ui/searchable-combobox";
 
 export default function usePage() {
   const { data: session, status } = useSession();
@@ -15,17 +16,17 @@ export default function usePage() {
 
   const [materials, setMaterials] = useState<Material[]>([]);
   const [materialCategories, setMaterialCategories] = useState([]);
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState<SearchableComboboxItem[]>([]);
   const [units, setUnits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailLoading, setIsDetailLoading] = useState(true);
-  
+
   // Server-side pagination and search state
   const [totalItems, setTotalItems] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [searchTerm, setSearchTerm] = useState('');
-  
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [form, setForm] = useState({
     materialNumber: "",
     brandCode: "",
@@ -36,22 +37,22 @@ export default function usePage() {
     unitId: "",
     fixedWeight: 0,
     weightType: "Fixed",
-    isLocked: false
+    isLocked: false,
   });
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
+  const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(
+    null
+  );
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
-      if (!['admin', 'manager'].includes(session.user.role)) {
+      if (!["admin", "manager"].includes(session.user.role)) {
         toast.error("You do not have permission to access this page");
         router.push("/pages");
       } else {
         fetchMaterials(currentPage, itemsPerPage, searchTerm);
-        fetchMaterialCategories();
-        fetchCustomers();
         fetchUnits();
       }
     } else if (status === "unauthenticated") {
@@ -72,34 +73,22 @@ export default function usePage() {
     }
   }, [id, isEdit]);
 
-  const fetchMaterials = async (page: number, limit: number, search: string) => {
+  const fetchMaterials = async (
+    page: number,
+    limit: number,
+    search: string
+  ) => {
     setIsLoading(true);
     try {
-      const { data } = await axios.get(`/api/materials?page=${page}&limit=${limit}&search=${search}`);
+      const { data } = await axios.get(
+        `/api/materials?page=${page}&limit=${limit}&search=${search}`
+      );
       setMaterials(data.items);
       setTotalItems(data.totalItems);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to load materials");
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const fetchMaterialCategories = async () => {
-    try {
-      const { data } = await axios.get("/api/material-categories");
-      setMaterialCategories(data);
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Failed to load material categories");
-    }
-  };
-
-  const fetchCustomers = async () => {
-    try {
-      const { data } = await axios.get("/api/customers");
-      setCustomers(data);
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Failed to load customers");
     }
   };
 
@@ -120,7 +109,9 @@ export default function usePage() {
       fetchMaterials(currentPage, itemsPerPage, searchTerm);
       setIsDeleteDialogOpen(false);
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Failed to delete material");
+      toast.error(
+        error?.response?.data?.message || "Failed to delete material"
+      );
     }
   };
 

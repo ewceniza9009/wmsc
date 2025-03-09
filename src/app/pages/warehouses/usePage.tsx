@@ -74,7 +74,7 @@ export default function usePage() {
 
   const fetchCompanies = async () => {
     try {
-      const { data } = await axios.get("/api/companies");
+      const { data } = await axios.get("/api/companies-select");
       setCompanies(data);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to load companies");

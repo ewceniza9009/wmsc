@@ -6,7 +6,7 @@ import {
   SearchableComboboxItem,
 } from "@/components/ui/searchable-combobox";
 
-interface RoomComboboxProps {
+interface MaterialCategoryComboboxProps {
   value?: string;
   onValueChange?: (value: string) => void;
   placeholder?: string;
@@ -15,26 +15,26 @@ interface RoomComboboxProps {
   defaultItem?: SearchableComboboxItem | null;
 }
 
-export function RoomCombobox({
+export function MaterialCategoryCombobox({
   value,
   onValueChange,
-  placeholder = "Select a room",
+  placeholder = "Select an account",
   disabled = false,
   className,
-}: RoomComboboxProps) {
+}: MaterialCategoryComboboxProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [defaultItem, setDefaultItem] = useState<SearchableComboboxItem | null>(
     null
   );
 
-  // Pre-fetch the room details for the provided value
+  // Pre-fetch the account details for the provided value
   useEffect(() => {
     if (value) {
       setIsLoading(true);
-      fetch(`/api/rooms/${value}`)
+      fetch(`/api/material-categories-lookup/${value}`)
         .then((res) => {
           if (!res.ok) {
-            throw new Error("Failed to fetch room");
+            throw new Error("Failed to fetch account");
           }
           return res.json();
         })
@@ -44,9 +44,9 @@ export function RoomCombobox({
             value: data.id,
             label: (
               <div className="flex items-center">
-                <span className="font-medium">{data.roomName}</span>
+                <span className="font-medium">{data.description}</span>
                 <span className="ml-1 text-muted-foreground text-sm font-normal">
-                  ({data.roomNumber})
+                  ({data.code})
                 </span>
               </div>
             ),
@@ -58,7 +58,7 @@ export function RoomCombobox({
     }
   }, [value]);
 
-  const fetchRooms = useCallback(
+  const fetchMaterialCategories = useCallback(
     async (searchTerm: string, page: number) => {
       setIsLoading(true);
       try {
@@ -67,24 +67,24 @@ export function RoomCombobox({
           limit: "10",
           search: searchTerm,
         });
-        const response = await fetch(`/api/rooms-lookup?${params.toString()}`);
+        const response = await fetch(`/api/material-categories-lookup?${params.toString()}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch rooms");
+          throw new Error("Failed to fetch material categories");
         }
         const data = await response.json();
-        return data.rooms.map((room: any) => ({
-          value: room.id,
+        return data.materialCategories.map((materialCategory: any) => ({
+          value: materialCategory.id,
           label: (
             <div className="flex items-center">
-              <span className="font-medium">{room.roomName}</span>
+              <span className="font-medium">{materialCategory.description}</span>
               <span className="ml-1 text-muted-foreground text-sm font-normal">
-                ({room.roomNumber})
+                ({materialCategory.code})
               </span>
             </div>
           ),
         }));
       } catch (error) {
-        console.error("Error fetching rooms:", error);
+        console.error("Error fetching material categories:", error);
         return [];
       } finally {
         setIsLoading(false);
@@ -98,11 +98,11 @@ export function RoomCombobox({
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder="Search rooms..."
-      emptyMessage="No rooms found."
+      searchPlaceholder="Search material categories..."
+      emptyMessage="No material categories found."
       disabled={disabled}
       className={className}
-      fetchItems={fetchRooms}
+      fetchItems={fetchMaterialCategories}
       defaultItem={defaultItem}
       itemsPerPage={10}
       hasMoreItems={true}

@@ -94,6 +94,7 @@ export default function WarehouseDetailPage() {
                   onChange={(e) =>
                     handleChange("warehouseName", e.target.value)
                   }
+                  placeholder="e.g. Warehouse 1"
                   className="w-full"
                 />
               </div>
