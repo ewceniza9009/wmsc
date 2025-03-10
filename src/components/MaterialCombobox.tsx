@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/searchable-combobox";
 import { useCallback, useEffect, useState } from "react";
 
-interface MaterialCategoryComboboxProps {
+interface MaterialComboboxProps {
   value?: string;
   onValueChange?: (value: string) => void;
   placeholder?: string;
@@ -15,24 +15,24 @@ interface MaterialCategoryComboboxProps {
   defaultItem?: SearchableComboboxItem | null;
 }
 
-export function MaterialCategoryCombobox({
+export function MaterialCombobox({
   value,
   onValueChange,
-  placeholder = "Select an material catergory",
+  placeholder = "Select material",
   disabled = false,
   className,
-}: MaterialCategoryComboboxProps) {
+}: MaterialComboboxProps) {
   const [defaultItem, setDefaultItem] = useState<SearchableComboboxItem | null>(
     null
   );
 
-  // Pre-fetch the account details for the provided value
+  // Pre-fetch the material details for the provided value
   useEffect(() => {
     if (value) {
-      fetch(`/api/material-categories-lookup/${value}`)
+      fetch(`/api/materials-lookup/${value}`)
         .then((res) => {
           if (!res.ok) {
-            throw new Error("Failed to fetch material category");
+            throw new Error("Failed to fetch material");
           }
           return res.json();
         })
@@ -42,9 +42,9 @@ export function MaterialCategoryCombobox({
             value: data.id,
             label: (
               <div className="flex items-center">
-                <span className="font-medium">{data.description}</span>
+                <span className="font-medium">{data.materialName}</span>
                 <span className="ml-1 text-muted-foreground text-sm font-normal">
-                  ({data.code})
+                  ({data.materialNumber})
                 </span>
               </div>
             ),
@@ -56,7 +56,7 @@ export function MaterialCategoryCombobox({
     }
   }, [value]);
 
-  const fetchMaterialCategories = useCallback(
+  const fetchMaterials = useCallback(
     async (searchTerm: string, page: number) => {
       try {
         const params = new URLSearchParams({
@@ -64,24 +64,24 @@ export function MaterialCategoryCombobox({
           limit: "10",
           search: searchTerm,
         });
-        const response = await fetch(`/api/material-categories-lookup?${params.toString()}`);
+        const response = await fetch(`/api/materials-lookup?${params.toString()}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch material categories");
+          throw new Error("Failed to fetch materials");
         }
         const data = await response.json();
-        return data.materialCategories.map((materialCategory: any) => ({
-          value: materialCategory.id,
+        return data.materials.map((material: any) => ({
+          value: material.id,
           label: (
             <div className="flex items-center">
-              <span className="font-medium">{materialCategory.description}</span>
+              <span className="font-medium">{material.materialName}</span>
               <span className="ml-1 text-muted-foreground text-sm font-normal">
-                ({materialCategory.code})
+                ({material.materialNumber})
               </span>
             </div>
           ),
         }));
       } catch (error) {
-        console.error("Error fetching material categories:", error);
+        console.error("Error fetching materials:", error);
         return [];
       } finally {
       }
@@ -94,11 +94,11 @@ export function MaterialCategoryCombobox({
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder="Search material categories..."
-      emptyMessage="No material categories found."
+      searchPlaceholder="Search materials..."
+      emptyMessage="No materials found."
       disabled={disabled}
       className={className}
-      fetchItems={fetchMaterialCategories}
+      fetchItems={fetchMaterials}
       defaultItem={defaultItem}
       itemsPerPage={10}
       hasMoreItems={true}

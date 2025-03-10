@@ -1,13 +1,11 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CustomerCombobox } from "@/components/CustomerCombobox";
+import { MaterialCategoryCombobox } from "@/components/MaterialCategoryCombobox";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Loader2, SaveAll, Package } from "lucide-react";
-import Link from "next/link";
-import usePage from "../usePage";
 import {
   Select,
   SelectContent,
@@ -15,8 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CustomerCombobox } from "@/components/CustomerCombobox";
-import { MaterialCategoryCombobox } from "@/components/MaterialCategoryCombobox";
+import { ArrowLeft, Loader2, Package, SaveAll } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import usePage from "../usePage";
 
 export default function MaterialDetailPage() {
   const { form, units, handleChange, handleSubmit, isDetailLoading, isSaving } =
@@ -132,7 +132,7 @@ export default function MaterialDetailPage() {
                   <SelectContent>
                     {units.map((unit) => (
                       <SelectItem key={unit.id} value={unit.id}>
-                       {unit.unitName} ({unit.unitCode})
+                       {unit.unitName} ({unit.unitName})
                       </SelectItem>
                     ))}
                   </SelectContent>
