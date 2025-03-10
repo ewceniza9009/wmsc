@@ -16,7 +16,7 @@ import { Stepper } from "@/components/ui/stepper";
 import { StorageReceiving } from "@/models/TrnStorageReceiving";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
 import axios from "axios";
-import { ListPlus } from "lucide-react";
+import { Grid2X2Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -274,7 +274,7 @@ export default function StorageReceivingDetail() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
-          <ListPlus className="h-6 w-6 text-teal-500" />Storage Receiving Pallet</h1>
+          <Grid2X2Plus className="h-6 w-6 text-teal-500" />Storage Receiving Pallet</h1>
           <p>Receiving Number: {storageReceiving.receivingNumber}</p>
         </div>
         <Button variant="outline" onClick={() => router.push("/pages/storage-receivings")}>
