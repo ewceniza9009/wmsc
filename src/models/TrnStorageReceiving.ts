@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { ITrnStorageReceivingPallet, StorageReceivingPallet } from "./TrnStorageReceivingPallet";
 
 export interface ITrnStorageReceiving extends Document {
   receivingOrderId: Schema.Types.ObjectId | null;
@@ -24,6 +25,8 @@ export interface ITrnStorageReceiving extends Document {
   updatedDate: Date;
   isLocked: boolean;
   __v: number;
+  // Virtual property to hold an array of related pallets
+  pallets?: ITrnStorageReceivingPallet[];
 }
 
 export interface StorageReceiving {
@@ -52,6 +55,8 @@ export interface StorageReceiving {
   updatedDate: Date;
   isLocked: boolean;
   __v: number;
+  // Virtual property to hold an array of related pallet objects
+  pallets?: StorageReceivingPallet[];
 }
 
 // Define Storage Receiving Schema
@@ -145,9 +150,24 @@ const TrnStorageReceivingSchema = new mongoose.Schema(
   }
 );
 
+// Add a virtual property for related pallets
+TrnStorageReceivingSchema.virtual("pallets", {
+  ref: "TrnStorageReceivingPallet",   // The model to use
+  localField: "_id",                  // Field in this schema to match
+  foreignField: "storageReceivingId", // Field in the pallet schema
+  justOne: false,                     // Indicates an array of pallets
+});
+
+// Ensure that virtual fields are serialized.
+TrnStorageReceivingSchema.set("toObject", { virtuals: true });
+TrnStorageReceivingSchema.set("toJSON", { virtuals: true });
+
 // Create Storage Receiving model
 const TrnStorageReceiving =
   mongoose.models.TrnStorageReceiving ||
-  mongoose.model("TrnStorageReceiving", TrnStorageReceivingSchema);
+  mongoose.model<ITrnStorageReceiving>(
+    "TrnStorageReceiving",
+    TrnStorageReceivingSchema
+  );
 
 export default TrnStorageReceiving;
