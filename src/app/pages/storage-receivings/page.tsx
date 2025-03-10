@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { Pencil, PlusCircle, Trash2, Truck } from "lucide-react";
+import { Pencil, PlusCircle, Trash2, Truck, Eye } from "lucide-react";
 import Link from "next/link";
 import numeral from "numeral";
 import usePage from "./usePage";
@@ -52,12 +52,12 @@ export default function StorageRecevingsPage() {
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             <Truck className="h-6 w-6 text-teal-500" />
-            Storage Recevings
+            Storage Receivings
           </h1>
           <p>Manage storage receivings and their information</p>
         </div>
 
-        <Link href="./storageReceivings/new">
+        <Link href="./storage-receivings/new">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" /> Add
           </Button>
@@ -104,7 +104,12 @@ export default function StorageRecevingsPage() {
                   <Checkbox checked={storageReceiving.isLocked} />
                 </TableCell>
                 <TableCell className="text-right">
-                  <Link href={`./storage-receivings/${storageReceiving.id}`}>
+                  <Link href={`/pages/storage-receivings/${storageReceiving.id}/page-detail`}>
+                    <Button variant="ghost" size="icon">
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href={`/pages/storage-receivings/${storageReceiving.id}`}>
                     <Button variant="ghost" size="icon">
                       <Pencil className="h-4 w-4" />
                     </Button>

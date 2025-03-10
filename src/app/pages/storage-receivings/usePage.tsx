@@ -102,12 +102,12 @@ export default function usePage() {
     if (!selectedStorageReceving) return;
     try {
       await axios.delete(`/api/storage-receivings/${selectedStorageReceving.id}`);
-      toast.success("Storage receving deleted successfully");
+      toast.success("Storage receiving deleted successfully");
       fetchStorageRecevings(currentPage, itemsPerPage, searchTerm);
       setIsDeleteDialogOpen(false);
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.message || "Failed to delete storage receving"
+        error?.response?.data?.message || "Failed to delete storage receiving"
       );
     }
   };
@@ -126,16 +126,16 @@ export default function usePage() {
     setIsSaving(true);
     try {
       if (isEdit) {
-        await axios.put(`/api/storage-recevings/${id}`, form);
-        toast.success("Storage receving updated successfully");
+        await axios.put(`/api/storage-receivings/${id}`, form);
+        toast.success("Storage receiving updated successfully");
       } else {
         await axios.post("/api/storage-receivings", form);
-        router.push("./");
-        toast.success("Storage receving added successfully");
+        router.push("/pages/storage-receivings");
+        toast.success("Storage receiving added successfully");
       }
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.message || "Failed to save storage receving"
+        error?.response?.data?.message || "Failed to save storage receiving"
       );
       console.error(error);
     } finally {
