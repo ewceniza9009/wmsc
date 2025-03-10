@@ -22,7 +22,7 @@ export function Stepper({
 }: StepperProps) {
   return (
     <div className={cn("w-full", className)}>
-      <div className="flex justify-between">
+      <div className="flex flex-col md:flex-row md:justify-between">
         {steps.map((step, index) => {
           const isActive = index === activeStep;
           const isCompleted = index < activeStep;
@@ -30,16 +30,16 @@ export function Stepper({
 
           return (
             <React.Fragment key={step.id}>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-row md:flex-col items-center mb-4 md:mb-0">
                 <button
                   type="button"
                   onClick={() => onStepChange && onStepChange(index)}
                   disabled={!isCompleted && !isActive}
                   className={cn(
-                    "flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all",
+                    "flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 transition-all",
                     {
                       "border-primary bg-primary text-primary-foreground": isActive,
-                      "border-primary bg-primary/20 text-primary": isCompleted,
+                      "border-primary bg-primary/20 text-primary-foreground": isCompleted,
                       "border-border bg-background text-muted-foreground": !isActive && !isCompleted,
                     }
                   )}
@@ -47,7 +47,7 @@ export function Stepper({
                   {isCompleted ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
+                      className="h-5 w-5 md:h-6 md:w-6"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -60,12 +60,12 @@ export function Stepper({
                       />
                     </svg>
                   ) : (
-                    <span>{index + 1}</span>
+                    <span className="text-sm md:text-base">{index + 1}</span>
                   )}
                 </button>
-                <div className="mt-2 text-center">
+                <div className="ml-3 md:ml-0 md:mt-2 text-left md:text-center">
                   <div
-                    className={cn("text-sm font-medium", {
+                    className={cn("text-xs md:text-sm font-medium", {
                       "text-primary": isActive || isCompleted,
                       "text-muted-foreground": !isActive && !isCompleted,
                     })}
@@ -73,7 +73,7 @@ export function Stepper({
                     {step.title}
                   </div>
                   {step.description && (
-                    <div className="text-xs text-muted-foreground mt-1">
+                    <div className="text-xs text-muted-foreground mt-0 md:mt-1 hidden md:block">
                       {step.description}
                     </div>
                   )}
@@ -82,7 +82,18 @@ export function Stepper({
               {!isLast && (
                 <div
                   className={cn(
-                    "flex-1 border-t-2 transition-colors mt-5",
+                    "hidden md:block md:flex-1 border-t-2 transition-colors md:mt-5",
+                    {
+                      "border-primary": isCompleted,
+                      "border-border": !isCompleted,
+                    }
+                  )}
+                />
+              )}
+              {!isLast && (
+                <div 
+                  className={cn(
+                    "md:hidden h-6 border-l-2 transition-colors ml-4 mb-1",
                     {
                       "border-primary": isCompleted,
                       "border-border": !isCompleted,

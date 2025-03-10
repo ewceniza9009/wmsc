@@ -5,11 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Stepper } from "@/components/ui/stepper";
 import { StorageReceiving } from "@/models/TrnStorageReceiving";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
 import axios from "axios";
+import { ListPlus } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -266,10 +273,11 @@ export default function StorageReceivingDetail() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">Storage Receiving Detail</h1>
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+          <ListPlus className="h-6 w-6 text-teal-500" />Storage Receiving Pallet</h1>
           <p>Receiving Number: {storageReceiving.receivingNumber}</p>
         </div>
-        <Button onClick={() => router.push("/pages/storage-receivings")}>
+        <Button variant="outline" onClick={() => router.push("/pages/storage-receivings")}>
           Back to List
         </Button>
       </div>
@@ -286,18 +294,6 @@ export default function StorageReceivingDetail() {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Pallet Information</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="palletNumber">Pallet Number *</Label>
-                    <Input
-                      id="palletNumber"
-                      value={palletData.palletNumber}
-                      disabled
-                      onChange={(e) =>
-                        handleInputChange("palletNumber", e.target.value)
-                      }
-                      placeholder="Generated..."
-                    />
-                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="locationId">Location ID *</Label>
                     <Input
@@ -337,7 +333,10 @@ export default function StorageReceivingDetail() {
                   <div className="space-y-2">
                     <Label htmlFor="unitId">Unit *</Label>
                     <Select
-                      onValueChange={(value) => handleInputChange("unitId", value)}
+                      value={palletData.unitId}
+                      onValueChange={(value) =>
+                        handleInputChange("unitId", value)
+                      }
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select unit" />
@@ -425,6 +424,18 @@ export default function StorageReceivingDetail() {
             {activeStep === 2 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Barcode Generation</h3>
+                <div className="space-y-2">
+                  <Label htmlFor="palletNumber">Pallet Number *</Label>
+                  <Input
+                    id="palletNumber"
+                    value={palletData.palletNumber}
+                    disabled
+                    onChange={(e) =>
+                      handleInputChange("palletNumber", e.target.value)
+                    }
+                    placeholder="Generated..."
+                  />
+                </div>
                 <p className="text-sm text-muted-foreground">
                   Click "Generate Barcode" to create a barcode based on the
                   receiving number, customer ID, material ID, date, weight, and
