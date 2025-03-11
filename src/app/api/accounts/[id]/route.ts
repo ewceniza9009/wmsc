@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
 import dbConnect from '@/lib/mongoose';
 import MstAccount from '@/models/MstAccount';
+import { getServerSession } from 'next-auth';
+import { NextRequest, NextResponse } from 'next/server';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 // GET /api/customers/[id] - Get a specific customer
-export async function GET(req: NextRequest, context : { params: { id: string } }) {
+export async function GET(req: NextRequest, context : { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     

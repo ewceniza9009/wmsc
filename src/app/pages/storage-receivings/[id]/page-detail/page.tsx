@@ -9,14 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Loader2, SaveAll, Truck } from "lucide-react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import usePage from "../../usePage";
 
 export default function StorageReceivingDetailPage() {
   const { form, handleChange, handleSubmit, isDetailLoading, isSaving } =
     usePage();
   const { id } = useParams();
-  const router = useRouter();
   const isEdit = id !== "new";
 
   if (isDetailLoading) {

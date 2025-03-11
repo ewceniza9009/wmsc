@@ -1,7 +1,7 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
 import dbConnect from '@/lib/mongoose';
 import User from '@/models/User';
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -18,21 +18,12 @@ export const authOptions: NextAuthOptions = {
 
         await dbConnect();
 
-        // Find user by email and explicitly select the password field
         const user = await User.findOne({ email: credentials.email }).select('+password');
-        
-        if (!user) {
-          return null;
-        }
+        if (!user) return null;
 
-        // Verify password
         const isPasswordValid = await user.comparePassword(credentials.password);
-        
-        if (!isPasswordValid) {
-          return null;
-        }
+        if (!isPasswordValid) return null;
 
-        // Return user without password
         return {
           id: user._id.toString(),
           email: user.email,
@@ -69,5 +60,8 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
+// Correctly export GET and POST as route handlers for Next.js 13+ App Router
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+
+export const GET = handler;
+export const POST = handler;
