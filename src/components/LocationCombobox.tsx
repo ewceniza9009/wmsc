@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 
 interface LocationComboboxProps {
   value?: string;
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: string, item: any) => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
@@ -38,8 +38,10 @@ export function LocationCombobox({
         })
         .then((data) => {
           // Map the fetched data into the same format as your items
+          console.log(data);
           const item = {
             value: data.id,
+            item: data,
             label: (
               <div className="flex items-center">
                 <span className="font-medium">{data.locationName}</span>
@@ -71,6 +73,7 @@ export function LocationCombobox({
         const data = await response.json();
         return data.materialCategories.map((location: any) => ({
           value: location.id,
+          item: location,
           label: (
             <div className="flex items-center">
               <span className="font-medium">{location.locationName}</span>

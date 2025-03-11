@@ -9,14 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Loader2, SaveAll, Truck } from "lucide-react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import usePage from "../../usePage";
 
 export default function StorageReceivingDetailPage() {
   const { form, handleChange, handleSubmit, isDetailLoading, isSaving } =
     usePage();
   const { id } = useParams();
-  const router = useRouter();
   const isEdit = id !== "new";
 
   if (isDetailLoading) {
@@ -125,14 +124,14 @@ export default function StorageReceivingDetailPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="noOfDaysToPrompAlertHeader">Days to Alert</Label>
+                <Label htmlFor="noDaysToPrompAlertHeader">Days to Alert</Label>
                 <Input
-                  id="noOfDaysToPrompAlertHeader"
+                  id="noDaysToPrompAlertHeader"
                   type="number"
-                  value={form.noOfDaysToPrompAlertHeader}
+                  value={form.noDaysToPrompAlertHeader}
                   onChange={(e) =>
                     handleChange(
-                      "noOfDaysToPrompAlertHeader",
+                      "noDaysToPrompAlertHeader",
                       parseInt(e.target.value)
                     )
                   }
@@ -177,11 +176,11 @@ export default function StorageReceivingDetailPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="receivingBy">Received By</Label>
+                <Label htmlFor="receivedBy">Received By</Label>
                 <Input
-                  id="receivingBy"
-                  value={form.receivingBy}
-                  onChange={(e) => handleChange("receivingBy", e.target.value)}
+                  id="receivedBy"
+                  value={form.receivedBy}
+                  onChange={(e) => handleChange("receivedBy", e.target.value)}
                   placeholder="Enter receiver name"
                 />
               </div>

@@ -1,9 +1,7 @@
 "use client"
 
-import * as React from "react"
-import { useCallback, useEffect, useState } from "react"
-import { Check, ChevronsUpDown, Loader2 } from "lucide-react"
-import { 
+import { Button } from "@/components/ui/button"
+import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -12,25 +10,28 @@ import {
   CommandList,
   CommandSeparator
 } from "@/components/ui/command"
-import { 
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react"
 import { useTheme } from "next-themes"
+import * as React from "react"
+import { useCallback, useEffect, useState } from "react"
 
 // Allow the label to be a React node (JSX element or string)
 export interface SearchableComboboxItem {
   value: string
+  item: any
   label: React.ReactNode
 }
 
 interface SearchableComboboxProps {
   items?: SearchableComboboxItem[]
   value?: string
-  onValueChange?: (value: string) => void
+  onValueChange?: (value: string, item: any) => void
   placeholder?: string
   searchPlaceholder?: string
   emptyMessage?: string
@@ -161,7 +162,7 @@ export function SearchableCombobox({
                   key={item.value}
                   value={item.value}
                   onSelect={(currentValue) => {
-                    onValueChange?.(currentValue)
+                    onValueChange?.(currentValue, item.item)
                     setSelectedLabel(item.label)
                     setOpen(false)
                   }}

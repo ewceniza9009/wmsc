@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 
 interface RoomComboboxProps {
   value?: string;
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: string, item: any) => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
@@ -40,6 +40,7 @@ export function RoomCombobox({
           // Map the fetched data into the same format as your items
           const item = {
             value: data.id,
+            item: data,
             label: (
               <div className="flex items-center">
                 <span className="font-medium">{data.roomName}</span>
@@ -70,6 +71,7 @@ export function RoomCombobox({
       const data = await response.json();
       return data.rooms.map((room: any) => ({
         value: room.id,
+        item: room,
         label: (
           <div className="flex items-center">
             <span className="font-medium">{room.roomName}</span>

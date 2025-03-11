@@ -38,9 +38,12 @@ export default function StorageReceivingDetail() {
     palletNumber: "",
     manualPalletNumber: "",
     locationId: "",
+    locationName: "",
     materialId: "",
+    materialName: "",
     quantity: 0,
     unitId: "",
+    unitName: "",
     boxNumber: "",
     vendorBatchNumber: "",
     batchCode: "",
@@ -178,12 +181,15 @@ export default function StorageReceivingDetail() {
         palletNumber: palletData.palletNumber,
         manualPalletNumber: palletData.manualPalletNumber,
         locationId: palletData.locationId,
+        locationName: palletData.locationName,
         materialId: palletData.materialId,
+        materalName: palletData.materialName,
         quantity: palletData.quantity,
         unitId: palletData.unitId,
-        boxNumber: "",
-        vendorBatchNumber: "",
-        batchCode: "",
+        unitName: palletData.unitName,
+        boxNumber: palletData.boxNumber,
+        vendorBatchNumber: palletData.vendorBatchNumber,
+        batchCode: palletData.batchCode,
         expiryDate: new Date(),
         manufactureDate: new Date(),
         grossWeight: palletData.grossWeight,
@@ -209,9 +215,12 @@ export default function StorageReceivingDetail() {
         palletNumber: "",
         manualPalletNumber: "",
         locationId: "",
+        locationName: "",
         materialId: "",
+        materialName: "",
         quantity: 0,
         unitId: "",
+        unitName: "",
         boxNumber: "",
         vendorBatchNumber: "",
         batchCode: "",
@@ -323,9 +332,12 @@ export default function StorageReceivingDetail() {
                     <Label htmlFor="materialId">Material *</Label>
                     <MaterialCombobox
                       value={palletData.materialId}
-                      onValueChange={(value) =>
-                        handleInputChange("materialId", value)
-                      }
+                      onValueChange={(value, item) => {
+                        handleInputChange("materialId", value);
+                        if (item) {
+                          handleInputChange("materialName", item.materialName);
+                        }
+                      }}
                       placeholder="Search a material"
                     />
                   </div>
@@ -348,9 +360,20 @@ export default function StorageReceivingDetail() {
                     <Label htmlFor="unitId">Unit *</Label>
                     <Select
                       value={palletData.unitId}
-                      onValueChange={(value) =>
-                        handleInputChange("unitId", value)
-                      }
+                      onValueChange={(value) => {
+                        handleInputChange("unitId", value);
+                        if (value) {
+                          const selectedUnit = units.find(
+                            (unit) => unit.id === value
+                          );
+                          if (selectedUnit) {
+                            handleInputChange(
+                              "unitName",
+                              selectedUnit.unitName
+                            );
+                          }
+                        }
+                      }}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select unit" />
@@ -419,7 +442,9 @@ export default function StorageReceivingDetail() {
                           ? new Date(palletData.manufactureDate)
                           : undefined
                       }
-                      onSelect={(date) => handleInputChange("manufactureDate", date)}
+                      onSelect={(date) =>
+                        handleInputChange("manufactureDate", date)
+                      }
                       placeholder="Select date"
                     />
                   </div>
@@ -510,7 +535,9 @@ export default function StorageReceivingDetail() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="manualPalletNumber">Manual Pallet Number </Label>
+                  <Label htmlFor="manualPalletNumber">
+                    Manual Pallet Number{" "}
+                  </Label>
                   <Input
                     id="manualPalletNumber"
                     value={palletData.manualPalletNumber}
@@ -521,15 +548,18 @@ export default function StorageReceivingDetail() {
                   />
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="locationId">Location </Label>
-                    <LocationCombobox
-                      value={palletData.locationId}
-                      onValueChange={(value) =>
-                        handleInputChange("locationId", value)
+                  <Label htmlFor="locationId">Location </Label>
+                  <LocationCombobox
+                    value={palletData.locationId}
+                    onValueChange={(value, item) => {
+                      handleInputChange("locationId", value);
+                      if (item) {
+                        handleInputChange("locationName", item.locationName);
                       }
-                      placeholder="Search a location"
-                    />
-                  </div>
+                    }}
+                    placeholder="Search a location"
+                  />
+                </div>
                 <p className="text-sm text-muted-foreground">
                   Click "Generate Barcode" to create a barcode based on the
                   receiving number, customer ID, material ID, date, weight, and
@@ -553,20 +583,20 @@ export default function StorageReceivingDetail() {
                     <p>{palletData.palletNumber}</p>
                   </div>
                   <div>
-                    <p className="font-medium">Location ID:</p>
-                    <p>{palletData.locationId}</p>
+                    <p className="font-medium">Location:</p>
+                    <p>{palletData.locationName}</p>
                   </div>
                   <div>
-                    <p className="font-medium">Material ID:</p>
-                    <p>{palletData.materialId}</p>
+                    <p className="font-medium">Material:</p>
+                    <p>{palletData.materialName}</p>
                   </div>
                   <div>
                     <p className="font-medium">Quantity:</p>
                     <p>{palletData.quantity}</p>
                   </div>
                   <div>
-                    <p className="font-medium">Unit ID:</p>
-                    <p>{palletData.unitId}</p>
+                    <p className="font-medium">Qty Unit:</p>
+                    <p>{palletData.unitName}</p>
                   </div>
                   <div>
                     <p className="font-medium">Gross Weight:</p>

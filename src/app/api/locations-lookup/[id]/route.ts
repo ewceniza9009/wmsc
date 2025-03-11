@@ -31,8 +31,8 @@ export async function GET(req: NextRequest, context : { params: { id: string } }
     
     const transformedLocation = {
       id: location._id.toString(),
-      code: location.locationNumber,
-      description: location.locationName
+      locationNumber: location.locationNumber,
+      locationName: location.locationName
     };
     
     return NextResponse.json(transformedLocation);

@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 
 interface AccountComboboxProps {
   value?: string;
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: string, item: any) => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
@@ -40,6 +40,7 @@ export function AccountCombobox({
           // Map the fetched data into the same format as your items
           const item = {
             value: data.id,
+            item: data,
             label: (
               <div className="flex items-center">
                 <span className="font-medium">{data.accountName}</span>
@@ -71,6 +72,7 @@ export function AccountCombobox({
         const data = await response.json();
         return data.accounts.map((account: any) => ({
           value: account.id,
+          item: account,
           label: (
             <div className="flex items-center">
               <span className="font-medium">{account.accountName}</span>

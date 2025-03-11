@@ -13,7 +13,7 @@ export default function usePage() {
   const { id } = useParams();
   const isEdit = id !== "new";
 
-  const [storageReceivings, setStorageRecevings] = useState<StorageReceiving[]>(
+  const [storageReceivings, setStorageReceivings] = useState<StorageReceiving[]>(
     []
   );
   const [isLoading, setIsLoading] = useState(true);
@@ -34,14 +34,14 @@ export default function usePage() {
     receivingTime: new Date(),
     truckPlateNumber: "",
     manufactureDateHeader: new Date(),
-    noOfDaysToPrompAlertHeader: 0,
+    noDaysToPrompAlertHeader: 0,
     quantity: 0,
     weight: 0,
     containerNumber: "",
     remarks: "",
     customerId: "",
     isFreezing: false,
-    receivingBy: "",
+    receivedBy: "",
     isLocked: false,
   });
 
@@ -56,7 +56,7 @@ export default function usePage() {
         toast.error("You do not have permission to access this page");
         router.push("/pages");
       } else {
-        fetchStorageRecevings(currentPage, itemsPerPage, searchTerm);
+        fetchStorageReceivings(currentPage, itemsPerPage, searchTerm);
       }
     } else if (status === "unauthenticated") {
       router.push("/login");
@@ -76,7 +76,7 @@ export default function usePage() {
     }
   }, [id, isEdit]);
 
-  const fetchStorageRecevings = async (
+  const fetchStorageReceivings = async (
     page: number,
     limit: number,
     search: string
@@ -86,7 +86,7 @@ export default function usePage() {
       const { data } = await axios.get(
         `/api/storage-receivings?page=${page}&limit=${limit}&search=${search}`
       );
-      setStorageRecevings(data.items);
+      setStorageReceivings(data.items);
       setTotalItems(data.totalItems);
     } catch (error: any) {
       toast.error(
@@ -103,7 +103,7 @@ export default function usePage() {
     try {
       await axios.delete(`/api/storage-receivings/${selectedStorageReceving.id}`);
       toast.success("Storage receiving deleted successfully");
-      fetchStorageRecevings(currentPage, itemsPerPage, searchTerm);
+      fetchStorageReceivings(currentPage, itemsPerPage, searchTerm);
       setIsDeleteDialogOpen(false);
     } catch (error: any) {
       toast.error(

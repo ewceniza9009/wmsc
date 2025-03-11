@@ -1,4 +1,7 @@
 import dbConnect from '@/lib/mongoose';
+import MstLocation from '@/models/MstLocation';
+import MstMaterial from '@/models/MstMaterial';
+import MstUnit from '@/models/MstUnit';
 import TrnStorageReceiving from '@/models/TrnStorageReceiving';
 import TrnStorageReceivingPallet from '@/models/TrnStorageReceivingPallet';
 import mongoose from 'mongoose';
@@ -34,6 +37,9 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
     
     // Find all pallets associated with this storage receiving
     const pallets = await TrnStorageReceivingPallet.find({ storageReceivingId: id });
+    const loc = MstLocation;
+    const mat = MstMaterial;
+    const unt = MstUnit;
     
     // Transform the storage receiving data
     const transformedStorageReceiving = {
@@ -67,9 +73,12 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
         palletNumber: pallet.palletNumber,
         manualPalletNumber: pallet.manualPalletNumber,
         locationId: pallet.locationId.toString(),
+        locationName: pallet.locationId?.locationName,
         materialId: pallet.materialId.toString(),
+        materialName: pallet.materialId?.materialName,
         quantity: pallet.quantity,
         unitId: pallet.unitId.toString(),
+        unitName: pallet.unitId?.unitName,
         remarks: pallet.remarks,
         boxNumber: pallet.boxNumber,
         vendorBatchNumber: pallet.vendorBatchNumber,
