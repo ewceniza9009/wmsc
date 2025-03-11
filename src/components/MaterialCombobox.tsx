@@ -18,7 +18,7 @@ interface MaterialComboboxProps {
 export function MaterialCombobox({
   value,
   onValueChange,
-  placeholder = "Select material",
+  placeholder = "Search a material",
   disabled = false,
   className,
 }: MaterialComboboxProps) {

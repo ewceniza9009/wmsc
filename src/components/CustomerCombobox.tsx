@@ -18,7 +18,7 @@ interface CustomerComboboxProps {
 export function CustomerCombobox({
   value,
   onValueChange,
-  placeholder = "Select a customer",
+  placeholder = "Search a customer",
   disabled = false,
   className,
 }: CustomerComboboxProps) {

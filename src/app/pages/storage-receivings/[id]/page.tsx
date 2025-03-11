@@ -1,5 +1,6 @@
 "use client";
 
+import { LocationCombobox } from "@/components/LocationCombobox";
 import { MaterialCombobox } from "@/components/MaterialCombobox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,6 +36,7 @@ export default function StorageReceivingDetail() {
   const [activeStep, setActiveStep] = useState(0);
   const [palletData, setPalletData] = useState({
     palletNumber: "",
+    manualPalletNumber: "",
     locationId: "",
     materialId: "",
     quantity: 0,
@@ -174,10 +176,16 @@ export default function StorageReceivingDetail() {
       const newPallet: Partial<StorageReceivingPallet> = {
         storageReceivingId: storageReceiving.id,
         palletNumber: palletData.palletNumber,
+        manualPalletNumber: palletData.manualPalletNumber,
         locationId: palletData.locationId,
         materialId: palletData.materialId,
         quantity: palletData.quantity,
         unitId: palletData.unitId,
+        boxNumber: "",
+        vendorBatchNumber: "",
+        batchCode: "",
+        expiryDate: new Date(),
+        manufactureDate: new Date(),
         grossWeight: palletData.grossWeight,
         packageTareWeight: palletData.packageTareWeight,
         palletTareWeight: palletData.palletTareWeight,
@@ -199,6 +207,7 @@ export default function StorageReceivingDetail() {
       // Reset form and go back to first step for adding another pallet
       setPalletData({
         palletNumber: "",
+        manualPalletNumber: "",
         locationId: "",
         materialId: "",
         quantity: 0,
@@ -317,7 +326,7 @@ export default function StorageReceivingDetail() {
                       onValueChange={(value) =>
                         handleInputChange("materialId", value)
                       }
-                      placeholder="Select material"
+                      placeholder="Search a material"
                     />
                   </div>
                   <div className="space-y-2">
@@ -501,16 +510,26 @@ export default function StorageReceivingDetail() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="locationId">Location ID *</Label>
+                  <Label htmlFor="manualPalletNumber">Manual Pallet Number </Label>
                   <Input
-                    id="locationId"
-                    value={palletData.locationId}
+                    id="manualPalletNumber"
+                    value={palletData.manualPalletNumber}
                     onChange={(e) =>
-                      handleInputChange("locationId", e.target.value)
+                      handleInputChange("manualPalletNumber", e.target.value)
                     }
-                    placeholder="Enter location ID"
+                    placeholder="Enter manual pallet number"
                   />
                 </div>
+                <div className="space-y-2">
+                    <Label htmlFor="locationId">Location </Label>
+                    <LocationCombobox
+                      value={palletData.locationId}
+                      onValueChange={(value) =>
+                        handleInputChange("locationId", value)
+                      }
+                      placeholder="Search a location"
+                    />
+                  </div>
                 <p className="text-sm text-muted-foreground">
                   Click "Generate Barcode" to create a barcode based on the
                   receiving number, customer ID, material ID, date, weight, and
@@ -617,7 +636,7 @@ export default function StorageReceivingDetail() {
                     </div>
                     <div>
                       <p className="font-medium">Net Weight:</p>
-                      <p>{pallet.netWeight} kg</p>
+                      <p>{pallet.netWeight} Kg</p>
                     </div>
                     <div className="col-span-2">
                       <p className="font-medium">Barcode:</p>

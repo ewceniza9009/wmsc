@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/searchable-combobox";
 import { useCallback, useEffect, useState } from "react";
 
-interface AccountComboboxProps {
+interface LocationComboboxProps {
   value?: string;
   onValueChange?: (value: string) => void;
   placeholder?: string;
@@ -15,13 +15,13 @@ interface AccountComboboxProps {
   defaultItem?: SearchableComboboxItem | null;
 }
 
-export function AccountCombobox({
+export function LocationCombobox({
   value,
   onValueChange,
-  placeholder = "Search an account",
+  placeholder = "Search a location",
   disabled = false,
   className,
-}: AccountComboboxProps) {
+}: LocationComboboxProps) {
   const [defaultItem, setDefaultItem] = useState<SearchableComboboxItem | null>(
     null
   );
@@ -29,10 +29,10 @@ export function AccountCombobox({
   // Pre-fetch the account details for the provided value
   useEffect(() => {
     if (value) {
-      fetch(`/api/accounts/${value}`)
+      fetch(`/api/locations-lookup/${value}`)
         .then((res) => {
           if (!res.ok) {
-            throw new Error("Failed to fetch account");
+            throw new Error("Failed to fetch material category");
           }
           return res.json();
         })
@@ -42,9 +42,9 @@ export function AccountCombobox({
             value: data.id,
             label: (
               <div className="flex items-center">
-                <span className="font-medium">{data.accountName}</span>
+                <span className="font-medium">{data.locationName}</span>
                 <span className="ml-1 text-muted-foreground text-sm font-normal">
-                  ({data.accountNumber})
+                  ({data.locationNumber})
                 </span>
               </div>
             ),
@@ -56,7 +56,7 @@ export function AccountCombobox({
     }
   }, [value]);
 
-  const fetchAccounts = useCallback(
+  const fetchLocations = useCallback(
     async (searchTerm: string, page: number) => {
       try {
         const params = new URLSearchParams({
@@ -64,24 +64,24 @@ export function AccountCombobox({
           limit: "10",
           search: searchTerm,
         });
-        const response = await fetch(`/api/accounts?${params.toString()}`);
+        const response = await fetch(`/api/locations-lookup?${params.toString()}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch accounts");
+          throw new Error("Failed to fetch locations");
         }
         const data = await response.json();
-        return data.accounts.map((account: any) => ({
-          value: account.id,
+        return data.materialCategories.map((location: any) => ({
+          value: location.id,
           label: (
             <div className="flex items-center">
-              <span className="font-medium">{account.accountName}</span>
+              <span className="font-medium">{location.locationName}</span>
               <span className="ml-1 text-muted-foreground text-sm font-normal">
-                ({account.accountNumber})
+                ({location.locationNumber})
               </span>
             </div>
           ),
         }));
       } catch (error) {
-        console.error("Error fetching accounts:", error);
+        console.error("Error fetching locations:", error);
         return [];
       } finally {
       }
@@ -94,11 +94,11 @@ export function AccountCombobox({
       value={value}
       onValueChange={onValueChange}
       placeholder={placeholder}
-      searchPlaceholder="Search accounts..."
-      emptyMessage="No accounts found."
+      searchPlaceholder="Search locations..."
+      emptyMessage="No locations found."
       disabled={disabled}
       className={className}
-      fetchItems={fetchAccounts}
+      fetchItems={fetchLocations}
       defaultItem={defaultItem}
       itemsPerPage={10}
       hasMoreItems={true}

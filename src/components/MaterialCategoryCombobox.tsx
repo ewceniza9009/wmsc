@@ -18,7 +18,7 @@ interface MaterialCategoryComboboxProps {
 export function MaterialCategoryCombobox({
   value,
   onValueChange,
-  placeholder = "Select an material catergory",
+  placeholder = "Search a material catergory",
   disabled = false,
   className,
 }: MaterialCategoryComboboxProps) {

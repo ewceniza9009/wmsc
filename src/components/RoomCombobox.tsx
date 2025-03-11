@@ -18,7 +18,7 @@ interface RoomComboboxProps {
 export function RoomCombobox({
   value,
   onValueChange,
-  placeholder = "Select a room",
+  placeholder = "Search a room",
   disabled = false,
   className,
 }: RoomComboboxProps) {
