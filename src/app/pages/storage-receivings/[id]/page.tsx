@@ -3,6 +3,7 @@
 import { MaterialCombobox } from "@/components/MaterialCombobox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import DateSelector from "@/components/ui/date-selector";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -13,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Stepper } from "@/components/ui/stepper";
+import { Unit } from "@/models/MstUnit";
 import { StorageReceiving } from "@/models/TrnStorageReceiving";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
 import axios from "axios";
@@ -37,14 +39,19 @@ export default function StorageReceivingDetail() {
     materialId: "",
     quantity: 0,
     unitId: "",
+    boxNumber: "",
+    vendorBatchNumber: "",
+    batchCode: "",
     grossWeight: 0,
+    expiryDate: new Date().toLocaleDateString(),
+    manufactureDate: new Date().toLocaleDateString(),
     packageTareWeight: 0,
     palletTareWeight: 0,
     netWeight: 0,
     barCode: "",
   });
 
-  const [units, setUnits] = useState([]);
+  const [units, setUnits] = useState<Unit[]>([]);
 
   const steps = [
     {
@@ -196,6 +203,11 @@ export default function StorageReceivingDetail() {
         materialId: "",
         quantity: 0,
         unitId: "",
+        boxNumber: "",
+        vendorBatchNumber: "",
+        batchCode: "",
+        expiryDate: new Date().toLocaleDateString(),
+        manufactureDate: new Date().toLocaleDateString(),
         grossWeight: 0,
         packageTareWeight: 0,
         palletTareWeight: 0,
@@ -216,7 +228,6 @@ export default function StorageReceivingDetail() {
     if (activeStep === 0) {
       // Validate pallet information
       if (
-        !palletData.locationId ||
         !palletData.materialId ||
         !palletData.quantity ||
         !palletData.unitId
@@ -274,10 +285,15 @@ export default function StorageReceivingDetail() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Grid2X2Plus className="h-6 w-6 text-teal-500" />Storage Receiving Pallet</h1>
+            <Grid2X2Plus className="h-6 w-6 text-teal-500" />
+            Storage Receiving Pallet
+          </h1>
           <p>Receiving Number: {storageReceiving.receivingNumber}</p>
         </div>
-        <Button variant="outline" onClick={() => router.push("/pages/storage-receivings")}>
+        <Button
+          variant="outline"
+          onClick={() => router.push("/pages/storage-receivings")}
+        >
           Back to List
         </Button>
       </div>
@@ -294,17 +310,6 @@ export default function StorageReceivingDetail() {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Pallet Information</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="locationId">Location ID *</Label>
-                    <Input
-                      id="locationId"
-                      value={palletData.locationId}
-                      onChange={(e) =>
-                        handleInputChange("locationId", e.target.value)
-                      }
-                      placeholder="Enter location ID"
-                    />
-                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="materialId">Material *</Label>
                     <MaterialCombobox
@@ -344,11 +349,70 @@ export default function StorageReceivingDetail() {
                       <SelectContent>
                         {units.map((unit) => (
                           <SelectItem key={unit.id} value={unit.id}>
-                            {unit.unitName} ({unit.unitCode})
+                            {unit.unitName} ({unit.unitNumber})
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="boxNumber">Box # *</Label>
+                    <Input
+                      id="boxNumber"
+                      value={palletData.boxNumber}
+                      onChange={(e) =>
+                        handleInputChange("boxNumber", e.target.value)
+                      }
+                      placeholder="Enter box number"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="vendorBatchNumber">Vendor Batch # *</Label>
+                    <Input
+                      id="vendorBatchNumber"
+                      value={palletData.vendorBatchNumber}
+                      onChange={(e) =>
+                        handleInputChange("vendorBatchNumber", e.target.value)
+                      }
+                      placeholder="Enter vendor batch number"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="batchCode">Batch Code</Label>
+                    <Input
+                      id="batchCode"
+                      value={palletData.batchCode}
+                      onChange={(e) =>
+                        handleInputChange("batchCode", e.target.value)
+                      }
+                      placeholder="Enter batch code"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="expiryDate">Expiry Date</Label>
+                    <DateSelector
+                      date={
+                        palletData.expiryDate
+                          ? new Date(palletData.expiryDate)
+                          : undefined
+                      }
+                      onSelect={(date) => handleInputChange("expiryDate", date)}
+                      placeholder="Select date"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="manufactureDate">Manufacture Date</Label>
+                    <DateSelector
+                      date={
+                        palletData.manufactureDate
+                          ? new Date(palletData.manufactureDate)
+                          : undefined
+                      }
+                      onSelect={(date) => handleInputChange("manufactureDate", date)}
+                      placeholder="Select date"
+                    />
                   </div>
                 </div>
               </div>
@@ -434,6 +498,17 @@ export default function StorageReceivingDetail() {
                       handleInputChange("palletNumber", e.target.value)
                     }
                     placeholder="Generated..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="locationId">Location ID *</Label>
+                  <Input
+                    id="locationId"
+                    value={palletData.locationId}
+                    onChange={(e) =>
+                      handleInputChange("locationId", e.target.value)
+                    }
+                    placeholder="Enter location ID"
                   />
                 </div>
                 <p className="text-sm text-muted-foreground">

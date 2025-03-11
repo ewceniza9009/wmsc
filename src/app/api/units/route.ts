@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
     // Format the response
     const formattedUnits = units.map(unit => ({
       id: unit._id.toString(),
-      unitCode: unit.unitNumber,
+      unitNumber: unit.unitNumber,
       unitName: unit.unitName
     }));
 
