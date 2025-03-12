@@ -25,7 +25,7 @@ import { Unit } from "@/models/MstUnit";
 import { StorageReceiving } from "@/models/TrnStorageReceiving";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
 import axios from "axios";
-import { Grid2X2Plus, ListCollapse } from "lucide-react";
+import { ArrowLeft, Grid2X2Plus, ListCollapse } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -325,18 +325,17 @@ export default function StorageReceivingDetail() {
             <Grid2X2Plus className="h-6 w-6 text-teal-500" />
             Storage Receiving Pallet
           </h1>
-          <p className="font-medium italic">
-            Receiving Number: {storageReceiving.receivingNumber}
-          </p>
-          <p className="font-medium italic">
-            Customer: {storageReceiving.customerName}
+          <p className="text-primary italic">
+            Receiving Number: {storageReceiving.receivingNumber}, Customer: {storageReceiving.customerName}
           </p>
         </div>
         <Button
           variant="outline"
           onClick={() => router.push("/pages/storage-receivings")}
+          className="flex align-top"
         >
-          Back to List
+          <ArrowLeft className="h-4 w-4" />
+          Back
         </Button>
       </div>
 
