@@ -1,6 +1,6 @@
-import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -51,7 +51,7 @@ function Button({
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }), 
-      "cursor-pointer hover:scale-105 transition transform duration-200")}
+      "cursor-pointer hover:scale-102 transition transform duration-200")}
       {...props}
     />
   );
@@ -59,3 +59,4 @@ function Button({
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
+
