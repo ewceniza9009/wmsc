@@ -4,7 +4,11 @@ import { LocationCombobox } from "@/components/LocationCombobox";
 import { MaterialCombobox } from "@/components/MaterialCombobox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import DateSelector from "@/components/ui/date-selector";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -302,8 +306,14 @@ export default function StorageReceivingDetail() {
   }
 
   const filteredPallets = storageReceiving.pallets
-    ? storageReceiving.pallets.filter((pallet) =>
-        pallet.palletNumber.toLowerCase().includes(searchTerm.toLowerCase())
+    ? storageReceiving.pallets.filter(
+        (pallet) =>
+          pallet.palletNumber
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          pallet.materialName
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase())
       )
     : [];
 
@@ -315,8 +325,12 @@ export default function StorageReceivingDetail() {
             <Grid2X2Plus className="h-6 w-6 text-teal-500" />
             Storage Receiving Pallet
           </h1>
-          <p className="font-medium italic">Receiving Number: {storageReceiving.receivingNumber}</p>
-          <p className="font-medium italic">Customer: {storageReceiving.customerName}</p>
+          <p className="font-medium italic">
+            Receiving Number: {storageReceiving.receivingNumber}
+          </p>
+          <p className="font-medium italic">
+            Customer: {storageReceiving.customerName}
+          </p>
         </div>
         <Button
           variant="outline"
@@ -344,7 +358,9 @@ export default function StorageReceivingDetail() {
               <div className="mt-8">
                 {activeStep === 0 && (
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Pallet Information</h3>
+                    <h3 className="text-lg font-semibold">
+                      Pallet Information
+                    </h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="materialId">Material *</Label>
@@ -353,7 +369,10 @@ export default function StorageReceivingDetail() {
                           onValueChange={(value, item) => {
                             handleInputChange("materialId", value);
                             if (item) {
-                              handleInputChange("materialName", item.materialName);
+                              handleInputChange(
+                                "materialName",
+                                item.materialName
+                              );
                             }
                           }}
                           placeholder="Search a material"
@@ -417,12 +436,17 @@ export default function StorageReceivingDetail() {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="vendorBatchNumber">Vendor Batch # *</Label>
+                        <Label htmlFor="vendorBatchNumber">
+                          Vendor Batch # *
+                        </Label>
                         <Input
                           id="vendorBatchNumber"
                           value={palletData.vendorBatchNumber}
                           onChange={(e) =>
-                            handleInputChange("vendorBatchNumber", e.target.value)
+                            handleInputChange(
+                              "vendorBatchNumber",
+                              e.target.value
+                            )
                           }
                           placeholder="Enter vendor batch number"
                         />
@@ -447,13 +471,17 @@ export default function StorageReceivingDetail() {
                               ? new Date(palletData.expiryDate)
                               : undefined
                           }
-                          onSelect={(date) => handleInputChange("expiryDate", date)}
+                          onSelect={(date) =>
+                            handleInputChange("expiryDate", date)
+                          }
                           placeholder="Select date"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="manufactureDate">Manufacture Date</Label>
+                        <Label htmlFor="manufactureDate">
+                          Manufacture Date
+                        </Label>
                         <DateSelector
                           date={
                             palletData.manufactureDate
@@ -539,7 +567,9 @@ export default function StorageReceivingDetail() {
 
                 {activeStep === 2 && (
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Barcode Generation</h3>
+                    <h3 className="text-lg font-semibold">
+                      Barcode Generation
+                    </h3>
                     <div className="space-y-2">
                       <Label htmlFor="palletNumber">Pallet Number *</Label>
                       <Input
@@ -560,7 +590,10 @@ export default function StorageReceivingDetail() {
                         id="manualPalletNumber"
                         value={palletData.manualPalletNumber}
                         onChange={(e) =>
-                          handleInputChange("manualPalletNumber", e.target.value)
+                          handleInputChange(
+                            "manualPalletNumber",
+                            e.target.value
+                          )
                         }
                         placeholder="Enter manual pallet number"
                       />
@@ -572,7 +605,10 @@ export default function StorageReceivingDetail() {
                         onValueChange={(value, item) => {
                           handleInputChange("locationId", value);
                           if (item) {
-                            handleInputChange("locationName", item.locationName);
+                            handleInputChange(
+                              "locationName",
+                              item.locationName
+                            );
                           }
                         }}
                         placeholder="Search a location"
@@ -580,11 +616,13 @@ export default function StorageReceivingDetail() {
                     </div>
                     <p className="text-sm text-muted-foreground">
                       Click "Generate Barcode" to create a barcode based on the
-                      receiving number, customer ID, material ID, date, weight, and
-                      a unique pallet ID.
+                      receiving number, customer ID, material ID, date, weight,
+                      and a unique pallet ID.
                     </p>
                     <div className="flex justify-center">
-                      <Button onClick={generateBarcode}>Generate Barcode</Button>
+                      <Button onClick={generateBarcode}>
+                        Generate Barcode
+                      </Button>
                     </div>
                   </div>
                 )}
@@ -668,7 +706,7 @@ export default function StorageReceivingDetail() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredPallets.map((pallet, index) => (                
+              {filteredPallets.map((pallet, index) => (
                 <div key={index} className="border rounded-lg p-4">
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
