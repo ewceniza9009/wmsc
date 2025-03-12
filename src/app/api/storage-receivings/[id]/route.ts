@@ -32,7 +32,10 @@ export async function GET(
     const { id } = await context.params;
 
     // Find the storage receiving record
-    const storageReceiving = await TrnStorageReceiving.findById(id);
+    const storageReceiving = await TrnStorageReceiving.findById(id).populate(
+      "customerId",
+      "customerName"
+    );
 
     if (!storageReceiving) {
       return NextResponse.json(
@@ -76,6 +79,7 @@ export async function GET(
       containerNumber: storageReceiving.containerNumber,
       remarks: storageReceiving.remarks,
       customerId: storageReceiving.customerId.toString(),
+      customerName: storageReceiving.customerId?.customerName,
       isFreezing: storageReceiving.isFreezing,
       receivedBy: storageReceiving.receivedBy,
       createdBy: storageReceiving.createdBy.toString(),

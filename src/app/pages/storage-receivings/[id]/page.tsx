@@ -315,7 +315,8 @@ export default function StorageReceivingDetail() {
             <Grid2X2Plus className="h-6 w-6 text-teal-500" />
             Storage Receiving Pallet
           </h1>
-          <p>Receiving Number: {storageReceiving.receivingNumber}</p>
+          <p className="font-medium italic">Receiving Number: {storageReceiving.receivingNumber}</p>
+          <p className="font-medium italic">Customer: {storageReceiving.customerName}</p>
         </div>
         <Button
           variant="outline"
