@@ -99,7 +99,6 @@ export default function StorageReceivingDetail() {
     setIsLoading(true);
     try {
       const { data } = await axios.get(`/api/storage-receivings/${id}`);
-      console.log(data);
       setStorageReceiving(data);
     } catch (error: any) {
       toast.error(
