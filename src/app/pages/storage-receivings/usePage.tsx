@@ -66,9 +66,12 @@ export default function usePage() {
   useEffect(() => {
     if (isEdit && id) {
       setIsDetailLoading(true);
+      
       axios
         .get(`/api/storage-receivings/${id}`)
-        .then((res) => setForm(res.data))
+        .then((res) => {
+          setForm(res.data)
+        })
         .catch((err) => console.error(err))
         .finally(() => setIsDetailLoading(false));
     } else {
@@ -93,7 +96,6 @@ export default function usePage() {
         error?.response?.data?.message || "Failed to load storage receiving"
       );
     } finally {
-      console.log(storageReceivings)
       setIsLoading(false);
     }
   };

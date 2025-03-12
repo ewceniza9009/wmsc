@@ -78,7 +78,7 @@ export async function GET(
       weight: storageReceiving.weight,
       containerNumber: storageReceiving.containerNumber,
       remarks: storageReceiving.remarks,
-      customerId: storageReceiving.customerId.toString(),
+      customerId: storageReceiving.customerId._id.toString(),
       customerName: storageReceiving.customerId?.customerName,
       isFreezing: storageReceiving.isFreezing,
       receivedBy: storageReceiving.receivedBy,
