@@ -44,7 +44,7 @@ export interface StorageReceivingPallet {
   locationId: string;
   locationName?: string 
   materialId: string;
-  materalName?: string;
+  materialName?: string;
   quantity: number;
   unitId: string;
   unitName?: string;

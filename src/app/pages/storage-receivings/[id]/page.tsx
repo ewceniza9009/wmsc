@@ -99,6 +99,7 @@ export default function StorageReceivingDetail() {
     setIsLoading(true);
     try {
       const { data } = await axios.get(`/api/storage-receivings/${id}`);
+      console.log(data);
       setStorageReceiving(data);
     } catch (error: any) {
       toast.error(
@@ -186,7 +187,7 @@ export default function StorageReceivingDetail() {
         locationId: palletData.locationId,
         locationName: palletData.locationName,
         materialId: palletData.materialId,
-        materalName: palletData.materialName,
+        materialName: palletData.materialName,
         quantity: palletData.quantity,
         unitId: palletData.unitId,
         unitName: palletData.unitName,
@@ -660,7 +661,6 @@ export default function StorageReceivingDetail() {
       </Collapsible>
 
       <SearchBox onSearch={(searchTerm: string) => setSearchTerm(searchTerm)} />
-
       {storageReceiving.pallets && storageReceiving.pallets.length > 0 && (
         <Card className="mt-6">
           <CardHeader>
@@ -668,7 +668,7 @@ export default function StorageReceivingDetail() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredPallets.map((pallet, index) => (
+              {filteredPallets.map((pallet, index) => (                
                 <div key={index} className="border rounded-lg p-4">
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
@@ -676,13 +676,17 @@ export default function StorageReceivingDetail() {
                       <p>{pallet.palletNumber}</p>
                     </div>
                     <div>
-                      <p className="font-medium">Material ID:</p>
-                      <p>{pallet.materialId}</p>
+                      <p className="font-medium">Location:</p>
+                      <p>{pallet.locationName}</p>
+                    </div>
+                    <div>
+                      <p className="font-medium">Material:</p>
+                      <p>{pallet.materialName}</p>
                     </div>
                     <div>
                       <p className="font-medium">Quantity:</p>
                       <p>
-                        {pallet.quantity} {pallet.unitId}
+                        {pallet.quantity} {pallet.unitName}
                       </p>
                     </div>
                     <div>
