@@ -28,13 +28,16 @@ import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
 import axios from "axios";
 import {
   ArrowLeft,
+  ArrowRight,
+  Check,
+  Grid2X2,
   Grid2X2Plus,
+  Grid2X2X,
   ListCollapse,
   LucideBarcode,
   LucideBetweenHorizonalStart,
   Pencil,
-  Trash,
-  Weight,
+  Weight
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
@@ -564,7 +567,7 @@ export default function StorageReceivingDetail() {
                     <div className="border border-primary rounded-lg p-4">
                       <div className="flex justify-end w-full my-10">
                         <Label className="text-red-600 font-normal italic">
-                          Weighing scale not connected...
+                          Weighing scale disconnected...
                         </Label>
                       </div>
                       <div className="flex justify-end w-full">
@@ -705,9 +708,11 @@ export default function StorageReceivingDetail() {
                     onClick={handlePreviousStep}
                     disabled={activeStep === 0}
                   >
+                    <ArrowLeft />
                     Previous
                   </Button>
                   <Button onClick={handleNextStep}>
+                    {activeStep === steps.length - 1 ? <Check /> : <ArrowRight />}
                     {activeStep === steps.length - 1 ? "Save Pallet" : "Next"}
                   </Button>
                 </div>
@@ -721,7 +726,7 @@ export default function StorageReceivingDetail() {
       {storageReceiving.pallets && storageReceiving.pallets.length > 0 && (
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Saved Pallets</CardTitle>
+            <CardTitle className="flex flex-row items-center gap-2"><Grid2X2 className="h-4 w-4 text-teal-500" />Saved Pallets</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
@@ -762,17 +767,17 @@ export default function StorageReceivingDetail() {
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button variant="destructive">
-                      <Trash className="h-4 w-4" />
+                      <Grid2X2X className="h-4 w-4" />
+                    </Button>
+                    <Button>
+                      <LucideBetweenHorizonalStart className="h-4 w-4" />
                     </Button>
                     <Button variant="outline">
                       <LucideBarcode className="h-4 w-4" />
                     </Button>
                     <Button variant="outline">
                       <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button>
-                      <LucideBetweenHorizonalStart className="h-4 w-4" />
-                    </Button>
+                    </Button>                    
                   </div>
                 </div>
               ))}

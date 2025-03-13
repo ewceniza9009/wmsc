@@ -30,7 +30,7 @@ export default function DateSelector({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
+          variant="app"
           className={cn(
             "w-full justify-start text-left font-normal",
             !date && "text-muted-foreground",
