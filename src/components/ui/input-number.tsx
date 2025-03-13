@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useRef } from "react";
 import { NumericFormat } from "react-number-format";
 
 interface NumberInputProps {
@@ -11,7 +12,7 @@ interface NumberInputProps {
   placeholder?: string;
   className?: string;
   id?: string;
-  disabled?: boolean; // Added `disabled` prop
+  disabled?: boolean;
 }
 
 export default function NumberInput({
@@ -21,8 +22,16 @@ export default function NumberInput({
   placeholder = "0.00",
   className,
   id,
-  disabled = false, // Default `disabled` to false
+  disabled = false,
 }: NumberInputProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFocus = () => {
+    setTimeout(() => {
+      inputRef.current?.select(); // Select all text on focus
+    }, 0); // Delay ensures the input is fully rendered before selecting text
+  };
+
   return (
     <NumericFormat
       value={value}
@@ -33,7 +42,8 @@ export default function NumberInput({
       prefix={prefix || ""}
       placeholder={placeholder}
       id={id}
-      disabled={disabled} // Added `disabled` here
+      disabled={disabled}
+      getInputRef={inputRef} // Correct reference for NumericFormat's internal <input>
       className={cn(
         "border-input file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
         "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
@@ -41,6 +51,7 @@ export default function NumberInput({
         className
       )}
       customInput={Input}
+      onFocus={handleFocus} // Added focus logic here
       onValueChange={(values) => onChange(Number(values.value))}
     />
   );
