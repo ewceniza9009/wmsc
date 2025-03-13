@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/collapsible";
 import DateSelector from "@/components/ui/date-selector";
 import { Input } from "@/components/ui/input";
+import InputNumber from "@/components/ui/input-number";
 import { Label } from "@/components/ui/label";
 import SearchBox from "@/components/ui/SearchBox";
 import {
@@ -25,7 +26,16 @@ import { Unit } from "@/models/MstUnit";
 import { StorageReceiving } from "@/models/TrnStorageReceiving";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
 import axios from "axios";
-import { ArrowLeft, Grid2X2Plus, ListCollapse, LucideBarcode, LucideBetweenHorizonalStart, Pencil, Trash, Weight } from "lucide-react";
+import {
+  ArrowLeft,
+  Grid2X2Plus,
+  ListCollapse,
+  LucideBarcode,
+  LucideBetweenHorizonalStart,
+  Pencil,
+  Trash,
+  Weight,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -379,15 +389,11 @@ export default function StorageReceivingDetail() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="quantity">Quantity *</Label>
-                        <Input
+                        <InputNumber
                           id="quantity"
-                          type="number"
                           value={palletData.quantity}
-                          onChange={(e) =>
-                            handleInputChange(
-                              "quantity",
-                              parseFloat(e.target.value)
-                            )
+                          onChange={(value) =>
+                            handleInputChange("quantity", value)
                           }
                           placeholder="Enter quantity"
                         />
@@ -506,15 +512,11 @@ export default function StorageReceivingDetail() {
                           <Label htmlFor="grossWeight">
                             Gross Weight (kg) *
                           </Label>
-                          <Input
+                          <InputNumber
                             id="grossWeight"
-                            type="number"
                             value={palletData.grossWeight}
-                            onChange={(e) =>
-                              handleInputChange(
-                                "grossWeight",
-                                parseFloat(e.target.value)
-                              )
+                            onChange={(value) =>
+                              handleInputChange("grossWeight", value)
                             }
                             placeholder="Enter gross weight"
                           />
@@ -523,15 +525,11 @@ export default function StorageReceivingDetail() {
                           <Label htmlFor="packageTareWeight">
                             Package Tare Weight (kg)
                           </Label>
-                          <Input
+                          <InputNumber
                             id="packageTareWeight"
-                            type="number"
                             value={palletData.packageTareWeight}
-                            onChange={(e) =>
-                              handleInputChange(
-                                "packageTareWeight",
-                                parseFloat(e.target.value)
-                              )
+                            onChange={(value) =>
+                              handleInputChange("packageTareWeight", value)
                             }
                             placeholder="Enter package tare weight"
                           />
@@ -540,26 +538,24 @@ export default function StorageReceivingDetail() {
                           <Label htmlFor="palletTareWeight">
                             Pallet Tare Weight (kg)
                           </Label>
-                          <Input
+                          <InputNumber
                             id="palletTareWeight"
-                            type="number"
                             value={palletData.palletTareWeight}
-                            onChange={(e) =>
-                              handleInputChange(
-                                "palletTareWeight",
-                                parseFloat(e.target.value)
-                              )
+                            onChange={(value) =>
+                              handleInputChange("palletTareWeight", value)
                             }
                             placeholder="Enter pallet tare weight"
                           />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="netWeight">Net Weight (kg)</Label>
-                          <Input
+                          <InputNumber
                             id="netWeight"
-                            type="number"
                             value={palletData.netWeight}
-                            readOnly
+                            onChange={(value) =>
+                              handleInputChange("netWeight", value)
+                            }
+                            disabled
                             className="bg-gray-100"
                           />
                         </div>
@@ -669,7 +665,7 @@ export default function StorageReceivingDetail() {
                       </div>
                       <div>
                         <p className="font-medium">Quantity:</p>
-                        <p>{palletData.quantity}</p>
+                        <p>{(+palletData.quantity).toFixed(2)}</p> 
                       </div>
                       <div>
                         <p className="font-medium">Qty Unit:</p>
@@ -677,19 +673,19 @@ export default function StorageReceivingDetail() {
                       </div>
                       <div>
                         <p className="font-medium">Gross Weight:</p>
-                        <p>{palletData.grossWeight} kg</p>
+                        <p>{(+palletData.grossWeight).toFixed(2)} kg</p>
                       </div>
                       <div>
                         <p className="font-medium">Package Tare Weight:</p>
-                        <p>{palletData.packageTareWeight} kg</p>
+                        <p>{(+palletData.packageTareWeight).toFixed(2)} kg</p>
                       </div>
                       <div>
                         <p className="font-medium">Pallet Tare Weight:</p>
-                        <p>{palletData.palletTareWeight} kg</p>
+                        <p>{(+palletData.palletTareWeight).toFixed(2)} kg</p>
                       </div>
                       <div>
                         <p className="font-medium">Net Weight:</p>
-                        <p>{palletData.netWeight} kg</p>
+                        <p>{(+palletData.netWeight).toFixed(2)} kg</p>
                       </div>
                     </div>
                     <p className="font-medium">Barcode:</p>
@@ -750,12 +746,12 @@ export default function StorageReceivingDetail() {
                     <div>
                       <p className="font-medium">Quantity:</p>
                       <p>
-                        {pallet.quantity} {pallet.unitName}
+                        {(+pallet.quantity).toFixed(2)} {pallet.unitName}
                       </p>
                     </div>
                     <div>
                       <p className="font-medium">Net Weight:</p>
-                      <p>{pallet.netWeight} Kg</p>
+                      <p>{(+pallet.netWeight).toFixed(2)} Kg</p>
                     </div>
                     <div className="col-span-2">
                       <p className="font-medium">Barcode:</p>
@@ -765,10 +761,18 @@ export default function StorageReceivingDetail() {
                     </div>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <Button variant="destructive"><Trash className="h-4 w-4" /></Button>
-                    <Button variant="outline"><LucideBarcode className="h-4 w-4" /></Button>
-                    <Button variant="outline"><Pencil className="h-4 w-4" /></Button>                    
-                    <Button ><LucideBetweenHorizonalStart className="h-4 w-4" /></Button>
+                    <Button variant="destructive">
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline">
+                      <LucideBarcode className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline">
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button>
+                      <LucideBetweenHorizonalStart className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               ))}
