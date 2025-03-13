@@ -162,8 +162,8 @@ export default function StorageReceivingDetail() {
     // In a real application, you might want to use a more sophisticated barcode generation algorithm
     const barcode = [
       storageReceiving.receivingNumber,
-      storageReceiving.customerId,
-      palletData.materialId,
+      palletData?.palletNumber || "NA",
+      palletData.materialName,
       formattedDate,
       palletData.netWeight.toString(),
       `PAL${Date.now().toString().slice(-6)}`, // Simple unique ID for the pallet
@@ -690,7 +690,7 @@ export default function StorageReceivingDetail() {
                       </div>
                       <div className="col-span-2">
                         <p className="font-medium">Barcode:</p>
-                        <p className="font-mono bg-gray-100 p-2 rounded">
+                        <p className="font-mono bg-gray-400 text-black p-2 rounded">
                           {palletData.barCode}
                         </p>
                       </div>
