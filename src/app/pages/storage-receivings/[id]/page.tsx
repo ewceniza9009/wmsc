@@ -360,7 +360,7 @@ export default function StorageReceivingDetail() {
                     <h3 className="text-lg font-semibold">
                       Pallet Information
                     </h3>
-                    <div className="grid grid-rows-4 grid-flow-col gap-4">
+                    <div className="grid grid-rows-4 md:grid-flow-col gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="materialId">Material *</Label>
                         <MaterialCombobox
@@ -498,7 +498,7 @@ export default function StorageReceivingDetail() {
                 )}
 
                 {activeStep === 1 && (
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold">Weighing</h3>
                       <div className="grid grid-rows-4 grid-flow-col gap-4">
@@ -565,7 +565,7 @@ export default function StorageReceivingDetail() {
                         </div>
                       </div>
                     </div>
-                    <div className="border border-teal-400 rounded-lg p-4">
+                    <div className="border border-primary rounded-lg p-4">
                       <div className="flex justify-end w-full my-10">
                         <Label className="text-red-600 font-normal italic">
                           Weighing scale not connected...
@@ -637,8 +637,8 @@ export default function StorageReceivingDetail() {
                     </div>
                     <p className="text-sm text-muted-foreground">
                       Click "Generate Barcode" to create a barcode based on the
-                      receiving number, customer, date, weight,
-                      and a unique pallet ID.
+                      receiving number, customer, date, weight, and a unique
+                      pallet ID.
                     </p>
                     <div className="flex justify-center">
                       <Button onClick={generateBarcode}>
@@ -654,7 +654,7 @@ export default function StorageReceivingDetail() {
                     <p className="text-sm text-muted-foreground">
                       Review the pallet information before saving.
                     </p>
-                    <div className="grid grid-cols-2 gap-4 mt-4">
+                    <div className="grid grid-rows-4 md:grid-flow-col gap-4">
                       <div>
                         <p className="font-medium">Pallet Number:</p>
                         <p>{palletData.palletNumber}</p>
@@ -691,15 +691,14 @@ export default function StorageReceivingDetail() {
                         <p className="font-medium">Net Weight:</p>
                         <p>{palletData.netWeight} kg</p>
                       </div>
-                      <div className="col-span-2">
-                        <p className="font-medium">Barcode:</p>
-                        {/* <p className="font-mono bg-gray-400 text-black p-2 m-5 rounded">
-                          {palletData.barCode}
-                        </p> */}
-                        <div className="flex justify-center w-full my-10">
-                          <ReactBarcode value={palletData.barCode} width={1.5} height={80}/>
-                        </div>
-                      </div>
+                    </div>
+                    <p className="font-medium">Barcode:</p>
+                    <div className="flex justify-center w-full my-10">
+                      <ReactBarcode
+                        value={palletData.barCode}
+                        width={1.5}
+                        height={80}
+                      />
                     </div>
                   </div>
                 )}
@@ -729,7 +728,7 @@ export default function StorageReceivingDetail() {
             <CardTitle>Received Pallets</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
               {filteredPallets.map((pallet, index) => (
                 <div key={index} className="border rounded-lg p-4">
                   <div className="grid grid-cols-2 gap-2 text-sm">
