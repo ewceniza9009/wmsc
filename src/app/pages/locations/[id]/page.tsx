@@ -4,6 +4,7 @@ import { RoomCombobox } from "@/components/RoomCombobox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import InputNumber from "@/components/ui/input-number";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { ArrowLeft, Loader2, MapPin, SaveAll } from "lucide-react";
@@ -12,13 +13,8 @@ import { useParams } from "next/navigation";
 import usePage from "../usePage";
 
 export default function LocationDetailPage() {
-  const {
-    form,
-    handleChange,
-    handleSubmit,
-    isDetailLoading,
-    isSaving,
-  } = usePage();
+  const { form, handleChange, handleSubmit, isDetailLoading, isSaving } =
+    usePage();
   const { id } = useParams();
   const isEdit = id !== "new";
 
@@ -46,11 +42,7 @@ export default function LocationDetailPage() {
             </h1>
           </div>
         </div>
-        <Button
-          form="mainForm"
-          type="submit"
-          disabled={isSaving}    
-        >
+        <Button form="mainForm" type="submit" disabled={isSaving}>
           {isSaving ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
@@ -66,7 +58,7 @@ export default function LocationDetailPage() {
             <CardTitle>Location Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-rows-6 md:grid-flow-col gap-4">
               <div className="space-y-2">
                 <Label htmlFor="locationNumber">Location Number *</Label>
                 <Input
@@ -85,9 +77,7 @@ export default function LocationDetailPage() {
                 <Input
                   id="locationName"
                   value={form.locationName}
-                  onChange={(e) =>
-                    handleChange("locationName", e.target.value)
-                  }
+                  onChange={(e) => handleChange("locationName", e.target.value)}
                   placeholder="e.g. Aisle 1"
                   className="w-full"
                   required
@@ -105,13 +95,10 @@ export default function LocationDetailPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="capacity">Capacity</Label>
-                <Input
+                <InputNumber
                   id="capacity"
-                  type="number"
                   value={form.capacity}
-                  onChange={(e) =>
-                    handleChange("capacity", parseFloat(e.target.value))
-                  }
+                  onChange={(value) => handleChange("capacity", value)}
                   placeholder="e.g. 100"
                   className="w-full"
                 />
@@ -119,13 +106,10 @@ export default function LocationDetailPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="totalWeight">Total Weight (kg)</Label>
-                <Input
+                <InputNumber
                   id="totalWeight"
-                  type="number"
                   value={form.totalWeight}
-                  onChange={(e) =>
-                    handleChange("totalWeight", parseFloat(e.target.value))
-                  }
+                  onChange={(value) => handleChange("totalWeight", value)}
                   placeholder="e.g. 500"
                   className="w-full"
                 />
@@ -133,13 +117,10 @@ export default function LocationDetailPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="palletCount">Pallet Count</Label>
-                <Input
+                <InputNumber
                   id="palletCount"
-                  type="number"
                   value={form.palletCount}
-                  onChange={(e) =>
-                    handleChange("palletCount", parseInt(e.target.value))
-                  }
+                  onChange={(value) => handleChange("palletCount", value)}
                   placeholder="e.g. 50"
                   className="w-full"
                 />
@@ -150,9 +131,7 @@ export default function LocationDetailPage() {
                 <Input
                   id="locBay"
                   value={form.locBay}
-                  onChange={(e) =>
-                    handleChange("locBay", e.target.value)
-                  }
+                  onChange={(e) => handleChange("locBay", e.target.value)}
                   placeholder="e.g. Bay 1"
                   className="w-full"
                 />
@@ -163,9 +142,7 @@ export default function LocationDetailPage() {
                 <Input
                   id="locColumn"
                   value={form.locColumn}
-                  onChange={(e) =>
-                    handleChange("locColumn", e.target.value)
-                  }
+                  onChange={(e) => handleChange("locColumn", e.target.value)}
                   placeholder="e.g. Col 1"
                   className="w-full"
                 />
@@ -176,9 +153,7 @@ export default function LocationDetailPage() {
                 <Input
                   id="locRow"
                   value={form.locRow}
-                  onChange={(e) =>
-                    handleChange("locRow", e.target.value)
-                  }
+                  onChange={(e) => handleChange("locRow", e.target.value)}
                   placeholder="e.g. Row 1"
                   className="w-full"
                 />

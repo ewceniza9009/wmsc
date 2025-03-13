@@ -5,6 +5,7 @@ import { MaterialCategoryCombobox } from "@/components/MaterialCategoryCombobox"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import InputNumber from "@/components/ui/input-number";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -64,7 +65,7 @@ export default function MaterialDetailPage() {
             <CardTitle>Material Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-rows-5 md:grid-flow-col gap-4">
               <div className="space-y-2">
                 <Label htmlFor="materialNumber">Material Number *</Label>
                 <Input
@@ -132,7 +133,7 @@ export default function MaterialDetailPage() {
                   <SelectContent>
                     {units.map((unit) => (
                       <SelectItem key={unit.id} value={unit.id}>
-                       {unit.unitName} ({unit.unitName})
+                        {unit.unitName} ({unit.unitName})
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -158,15 +159,11 @@ export default function MaterialDetailPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="fixedWeight">Fixed Weight *</Label>
-                <Input
+                <InputNumber
                   id="fixedWeight"
-                  type="number"
                   value={form.fixedWeight}
-                  onChange={(e) =>
-                    handleChange("fixedWeight", parseFloat(e.target.value))
-                  }
+                  onChange={(value) => handleChange("fixedWeight", value)}
                   placeholder="Enter fixed weight"
-                  required
                 />
               </div>
 

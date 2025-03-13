@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter, useParams } from "next/navigation";
-import { toast } from "sonner";
-import axios from "axios";
 import { Customer } from "@/models/MstCustomer";
-import { Term } from "@/models/MstTerm";
 import { Tax } from "@/models/MstTax";
+import { Term } from "@/models/MstTerm";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function usePage() {
   const { data: session, status } = useSession();
@@ -129,7 +129,7 @@ export default function usePage() {
     setIsDeleteDialogOpen(true);
   };
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: string, value: any) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 

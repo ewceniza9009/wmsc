@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import DateSelector from "@/components/ui/date-selector";
 import { Input } from "@/components/ui/input";
+import InputNumber from "@/components/ui/input-number";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Loader2, SaveAll, Truck } from "lucide-react";
 import Link from "next/link";
@@ -38,7 +39,9 @@ export default function StorageReceivingDetailPage() {
           <div>
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <Truck className="h-6 w-6 text-teal-500" />
-              {form.receivingNumber ? form.receivingNumber : "New Storage Receiving"}
+              {form.receivingNumber
+                ? form.receivingNumber
+                : "New Storage Receiving"}
             </h1>
           </div>
         </div>
@@ -58,7 +61,7 @@ export default function StorageReceivingDetailPage() {
             <CardTitle>Storage Receiving Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-rows-8 md:grid-flow-col gap-4">
               <div className="space-y-2">
                 <Label htmlFor="receivingNumber">Receiving Number *</Label>
                 <Input
@@ -84,7 +87,11 @@ export default function StorageReceivingDetailPage() {
               <div className="space-y-2">
                 <Label htmlFor="receivingDate">Receiving Date *</Label>
                 <DateSelector
-                  date={form.receivingDate ? new Date(form.receivingDate) : undefined}
+                  date={
+                    form.receivingDate
+                      ? new Date(form.receivingDate)
+                      : undefined
+                  }
                   onSelect={(date) => handleChange("receivingDate", date)}
                   placeholder="Select date"
                 />
@@ -117,8 +124,14 @@ export default function StorageReceivingDetailPage() {
               <div className="space-y-2">
                 <Label htmlFor="manufactureDateHeader">Manufacture Date</Label>
                 <DateSelector
-                  date={form.manufactureDateHeader ? new Date(form.manufactureDateHeader) : undefined}
-                  onSelect={(date) => handleChange("manufactureDateHeader", date)}
+                  date={
+                    form.manufactureDateHeader
+                      ? new Date(form.manufactureDateHeader)
+                      : undefined
+                  }
+                  onSelect={(date) =>
+                    handleChange("manufactureDateHeader", date)
+                  }
                   placeholder="Select date"
                 />
               </div>
@@ -141,26 +154,22 @@ export default function StorageReceivingDetailPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="quantity">Quantity</Label>
-                <Input
+                <InputNumber
                   id="quantity"
-                  type="number"
                   value={form.quantity}
-                  onChange={(e) =>
-                    handleChange("quantity", parseFloat(e.target.value))
-                  }
+                  onChange={(value) => handleChange("quantity", value)}
+                  disabled
                   placeholder="Enter quantity"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="weight">Weight (kg)</Label>
-                <Input
+                <InputNumber
                   id="weight"
-                  type="number"
                   value={form.weight}
-                  onChange={(e) =>
-                    handleChange("weight", parseFloat(e.target.value))
-                  }
+                  onChange={(value) => handleChange("weight", value)}
+                  disabled
                   placeholder="Enter weight"
                 />
               </div>

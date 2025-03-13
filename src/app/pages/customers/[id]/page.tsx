@@ -1,19 +1,11 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  ArrowLeft,
-  Loader2,
-  SaveAll,
-  UserRoundSearch,
-} from "lucide-react";
-import Link from "next/link";
-import usePage from "../usePage";
 import { AccountCombobox } from "@/components/AccountCombobox";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import InputNumber from "@/components/ui/input-number";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -21,10 +13,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ArrowLeft, Loader2, SaveAll, UserRoundSearch } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import usePage from "../usePage";
 
 export default function CustomerDetailPage() {
-  const { form, terms, taxes, handleChange, handleSubmit, isDetailLoading, isSaving } =
-    usePage();
+  const {
+    form,
+    terms,
+    taxes,
+    handleChange,
+    handleSubmit,
+    isDetailLoading,
+    isSaving,
+  } = usePage();
   const { id } = useParams();
   const isEdit = id !== "new";
 
@@ -53,16 +56,8 @@ export default function CustomerDetailPage() {
           </div>
         </div>
         <div className="flex gap-5">
-        <Button  
-          variant="outline"  
-          >           
-            {"Print"}
-          </Button>
-          <Button
-            form="mainForm"
-            type="submit"
-            disabled={isSaving}            
-          >
+          <Button variant="outline">{"Print"}</Button>
+          <Button form="mainForm" type="submit" disabled={isSaving}>
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {!isSaving && <SaveAll className="mr-2 h-4 w-4" />}
             {isEdit ? "Save Changes" : "Add Customer"}
@@ -76,7 +71,7 @@ export default function CustomerDetailPage() {
             <CardTitle>Customer Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-rows-8 md:grid-flow-col gap-4">
               <div className="space-y-2">
                 <Label htmlFor="customerNumber">Customer Number *</Label>
                 <Input
@@ -239,12 +234,11 @@ export default function CustomerDetailPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="creditLimit">Credit Limit</Label>
-                <Input
+                <InputNumber
                   id="creditLimit"
                   value={form.creditLimit}
-                  onChange={(e) => handleChange("creditLimit", e.target.value)}
+                  onChange={(value) => handleChange("creditLimit", value)}
                   placeholder="Enter credit limit"
-                  type="number"
                 />
               </div>
             </div>
@@ -256,7 +250,7 @@ export default function CustomerDetailPage() {
             <CardTitle>Address Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-rows-2 md:grid-flow-col gap-4">
               <div className="space-y-2">
                 <Label htmlFor="address">Primary Address *</Label>
                 <Input

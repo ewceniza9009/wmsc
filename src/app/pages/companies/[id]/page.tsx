@@ -1,12 +1,12 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Building2, Loader2, SaveAll } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import usePage from "../usePage";
 
 export default function CompanyDetailPage() {
@@ -54,7 +54,7 @@ export default function CompanyDetailPage() {
             <CardTitle>Company Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-rows-5 md:grid-flow-col gap-4">
               <div className="space-y-2">
                 <Label htmlFor="companyName">Company Name *</Label>
                 <Input
@@ -133,7 +133,7 @@ export default function CompanyDetailPage() {
                   onChange={(e) =>
                     handleChange("accreditationNumber", e.target.value)
                   }
-                   placeholder="Enter accreditation number"
+                  placeholder="Enter accreditation number"
                 />
               </div>
 
@@ -143,7 +143,7 @@ export default function CompanyDetailPage() {
                   id="serialNumber"
                   value={form.serialNumber}
                   onChange={(e) => handleChange("serialNumber", e.target.value)}
-                   placeholder="Enter serial number"
+                  placeholder="Enter serial number"
                 />
               </div>
 
@@ -153,7 +153,7 @@ export default function CompanyDetailPage() {
                   id="permitNumber"
                   value={form.permitNumber}
                   onChange={(e) => handleChange("permitNumber", e.target.value)}
-                   placeholder="Enter permit number"
+                  placeholder="Enter permit number"
                 />
               </div>
             </div>
@@ -165,14 +165,14 @@ export default function CompanyDetailPage() {
             <CardTitle>Company Officials</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-rows-3 md:grid-flow-col gap-4">
               <div className="space-y-2">
                 <Label htmlFor="accountant">Accountant</Label>
                 <Input
                   id="accountant"
                   value={form.accountant}
                   onChange={(e) => handleChange("accountant", e.target.value)}
-                   placeholder="Enter accountant"
+                  placeholder="Enter accountant"
                 />
               </div>
 
@@ -184,7 +184,7 @@ export default function CompanyDetailPage() {
                   onChange={(e) =>
                     handleChange("financeManager", e.target.value)
                   }
-                   placeholder="Enter finance manager"
+                  placeholder="Enter finance manager"
                 />
               </div>
 
@@ -196,7 +196,7 @@ export default function CompanyDetailPage() {
                   onChange={(e) =>
                     handleChange("operationsManager", e.target.value)
                   }
-                   placeholder="Enter operations manager"
+                  placeholder="Enter operations manager"
                 />
               </div>
 
@@ -208,7 +208,7 @@ export default function CompanyDetailPage() {
                   onChange={(e) =>
                     handleChange("managingDirector", e.target.value)
                   }
-                   placeholder="Enter managing director"
+                  placeholder="Enter managing director"
                 />
               </div>
 
@@ -220,7 +220,7 @@ export default function CompanyDetailPage() {
                   onChange={(e) =>
                     handleChange("defaultApproveBy", e.target.value)
                   }
-                   placeholder="Enter default approved by"
+                  placeholder="Enter default approved by"
                 />
               </div>
             </div>

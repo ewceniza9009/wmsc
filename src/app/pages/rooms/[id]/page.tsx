@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import InputNumber from "@/components/ui/input-number";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Container, Loader2, SaveAll } from "lucide-react";
 import Link from "next/link";
@@ -10,13 +11,8 @@ import { useParams } from "next/navigation";
 import usePage from "../usePage";
 
 export default function RoomDetailPage() {
-  const {
-    form,
-    handleChange,
-    handleSubmit,
-    isDetailLoading,
-    isSaving,
-  } = usePage();
+  const { form, handleChange, handleSubmit, isDetailLoading, isSaving } =
+    usePage();
   const { id } = useParams();
   const isEdit = id !== "new";
 
@@ -44,11 +40,7 @@ export default function RoomDetailPage() {
             </h1>
           </div>
         </div>
-        <Button
-          form="mainForm"
-          type="submit"
-          disabled={isSaving}     
-        >
+        <Button form="mainForm" type="submit" disabled={isSaving}>
           {isSaving ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
@@ -64,15 +56,13 @@ export default function RoomDetailPage() {
             <CardTitle>Room Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-rows-2 md:grid-flow-col gap-4">
               <div className="space-y-2">
                 <Label htmlFor="roomNumber">Room Number</Label>
                 <Input
                   id="roomNumber"
                   value={form.roomNumber}
-                  onChange={(e) =>
-                    handleChange("roomNumber", e.target.value)
-                  }
+                  onChange={(e) => handleChange("roomNumber", e.target.value)}
                   placeholder="e.g. R001"
                   className="w-full"
                 />
@@ -82,35 +72,29 @@ export default function RoomDetailPage() {
                 <Input
                   id="roomName"
                   value={form.roomName}
-                  onChange={(e) =>
-                    handleChange("roomName", e.target.value)
-                  }
+                  onChange={(e) => handleChange("roomName", e.target.value)}
                   placeholder="e.g. Cold Storage Room"
                   className="w-full"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="temperatureFrom">Minimum Temperature (°C)</Label>
-                <Input
+                <Label htmlFor="temperatureFrom">
+                  Minimum Temperature (°C)
+                </Label>
+                <InputNumber
                   id="temperatureFrom"
-                  type="number"
                   value={form.temperatureFrom}
-                  onChange={(e) =>
-                    handleChange("temperatureFrom", parseFloat(e.target.value))
-                  }
+                  onChange={(value) => handleChange("temperatureFrom", value)}
                   placeholder="e.g. -5"
                   className="w-full"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="temperatureTo">Maximum Temperature (°C)</Label>
-                <Input
+                <InputNumber
                   id="temperatureTo"
-                  type="number"
                   value={form.temperatureTo}
-                  onChange={(e) =>
-                    handleChange("temperatureTo", parseFloat(e.target.value))
-                  }
+                  onChange={(value) => handleChange("temperatureTo", value)}
                   placeholder="e.g. 5"
                   className="w-full"
                 />
