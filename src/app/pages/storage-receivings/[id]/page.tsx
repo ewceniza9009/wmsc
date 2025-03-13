@@ -759,15 +759,15 @@ export default function StorageReceivingDetail() {
                     </div>
                     <div className="col-span-2">
                       <p className="font-medium">Barcode:</p>
-                      <p className="font-mono p-2 rounded text-xs truncate">
+                      <p className="font-mono rounded text-xs truncate">
                         {pallet.barCode}
                       </p>
                     </div>
                   </div>
-                  <div className="flex justify-end mt-4 gap-2">
-                    <Button ><Trash className="h-4 w-4" /></Button>
-                    <Button ><Pencil className="h-4 w-4" /></Button>
-                    <Button ><LucideBarcode className="h-4 w-4" /></Button>
+                  <div className="flex justify-end gap-2">
+                    <Button variant="destructive"><Trash className="h-4 w-4" /></Button>
+                    <Button variant="outline"><LucideBarcode className="h-4 w-4" /></Button>
+                    <Button variant="outline"><Pencil className="h-4 w-4" /></Button>                    
                     <Button ><LucideBetweenHorizonalStart className="h-4 w-4" /></Button>
                   </div>
                 </div>
