@@ -29,6 +29,7 @@ import { ArrowLeft, Grid2X2Plus, ListCollapse, Weight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import ReactBarcode from "react-barcode";
 import { toast } from "sonner";
 
 export default function StorageReceivingDetail() {
@@ -564,14 +565,16 @@ export default function StorageReceivingDetail() {
                         </div>
                       </div>
                     </div>
-                    <div>
+                    <div className="border border-teal-400 rounded-lg p-4">
                       <div className="flex justify-end w-full my-10">
-                        <Label className="text-red-400 italic">
+                        <Label className="text-red-600 font-normal italic">
                           Weighing scale not connected...
                         </Label>
                       </div>
                       <div className="flex justify-end w-full">
-                        <Label className="text-8xl font-[Digital-7] ">0.000 kg</Label>
+                        <Label className="text-8xl font-[Digital-7] ">
+                          0.000 kg
+                        </Label>
                       </div>
                       <div className="flex justify-end w-full mt-10">
                         <Button variant="default">
@@ -634,7 +637,7 @@ export default function StorageReceivingDetail() {
                     </div>
                     <p className="text-sm text-muted-foreground">
                       Click "Generate Barcode" to create a barcode based on the
-                      receiving number, customer ID, material ID, date, weight,
+                      receiving number, customer, date, weight,
                       and a unique pallet ID.
                     </p>
                     <div className="flex justify-center">
@@ -690,9 +693,12 @@ export default function StorageReceivingDetail() {
                       </div>
                       <div className="col-span-2">
                         <p className="font-medium">Barcode:</p>
-                        <p className="font-mono bg-gray-400 text-black p-2 rounded">
+                        {/* <p className="font-mono bg-gray-400 text-black p-2 m-5 rounded">
                           {palletData.barCode}
-                        </p>
+                        </p> */}
+                        <div className="flex justify-center w-full my-10">
+                          <ReactBarcode value={palletData.barCode} width={1.5} height={80}/>
+                        </div>
                       </div>
                     </div>
                   </div>
