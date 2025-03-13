@@ -25,7 +25,7 @@ import { Unit } from "@/models/MstUnit";
 import { StorageReceiving } from "@/models/TrnStorageReceiving";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
 import axios from "axios";
-import { ArrowLeft, Grid2X2Plus, ListCollapse, Weight } from "lucide-react";
+import { ArrowLeft, Grid2X2Plus, ListCollapse, LucideBarcode, LucideBetweenHorizonalStart, Pencil, Trash, Weight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -730,8 +730,11 @@ export default function StorageReceivingDetail() {
           <CardContent>
             <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
               {filteredPallets.map((pallet, index) => (
-                <div key={index} className="border rounded-lg p-4">
-                  <div className="grid grid-rows-4 md:grid-flow-col gap-1">
+                <div
+                  key={index}
+                  className="border rounded-lg p-4 flex flex-col h-full"
+                >
+                  <div className="grid grid-rows-4 md:grid-flow-col gap-1 flex-grow">
                     <div>
                       <p className="font-medium">Pallet Number:</p>
                       <p>{pallet.palletNumber}</p>
@@ -760,6 +763,12 @@ export default function StorageReceivingDetail() {
                         {pallet.barCode}
                       </p>
                     </div>
+                  </div>
+                  <div className="flex justify-end mt-4 gap-2">
+                    <Button ><Trash className="h-4 w-4" /></Button>
+                    <Button ><Pencil className="h-4 w-4" /></Button>
+                    <Button ><LucideBarcode className="h-4 w-4" /></Button>
+                    <Button ><LucideBetweenHorizonalStart className="h-4 w-4" /></Button>
                   </div>
                 </div>
               ))}
