@@ -725,13 +725,13 @@ export default function StorageReceivingDetail() {
       {storageReceiving.pallets && storageReceiving.pallets.length > 0 && (
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Received Pallets</CardTitle>
+            <CardTitle>Saved Pallets</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
               {filteredPallets.map((pallet, index) => (
                 <div key={index} className="border rounded-lg p-4">
-                  <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="grid grid-rows-4 md:grid-flow-col gap-1">
                     <div>
                       <p className="font-medium">Pallet Number:</p>
                       <p>{pallet.palletNumber}</p>
