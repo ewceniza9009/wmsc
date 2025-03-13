@@ -9,6 +9,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@font-face {
+  font-family: 'Digital-7';
+  src: url('/fonts/digital-7.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --background: oklch(0.99 0.01 195);
   --foreground: oklch(0.2 0.02 195);

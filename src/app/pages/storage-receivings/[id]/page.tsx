@@ -25,7 +25,7 @@ import { Unit } from "@/models/MstUnit";
 import { StorageReceiving } from "@/models/TrnStorageReceiving";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
 import axios from "axios";
-import { ArrowLeft, Grid2X2Plus, ListCollapse } from "lucide-react";
+import { ArrowLeft, Grid2X2Plus, ListCollapse, Weight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -311,9 +311,7 @@ export default function StorageReceivingDetail() {
           pallet.palletNumber
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) ||
-          pallet.materialName
-            ?.toLowerCase()
-            .includes(searchTerm.toLowerCase())
+          pallet.materialName?.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : [];
 
@@ -326,7 +324,8 @@ export default function StorageReceivingDetail() {
             Storage Receiving Pallet
           </h1>
           <p className="text-primary italic">
-            Receiving Number: {storageReceiving.receivingNumber}, Customer: {storageReceiving.customerName}
+            Receiving Number: {storageReceiving.receivingNumber}, Customer:{" "}
+            {storageReceiving.customerName}
           </p>
         </div>
         <Button
@@ -360,7 +359,7 @@ export default function StorageReceivingDetail() {
                     <h3 className="text-lg font-semibold">
                       Pallet Information
                     </h3>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-rows-4 grid-flow-col gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="materialId">Material *</Label>
                         <MaterialCombobox
@@ -498,67 +497,87 @@ export default function StorageReceivingDetail() {
                 )}
 
                 {activeStep === 1 && (
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Weighing</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="grossWeight">Gross Weight (kg) *</Label>
-                        <Input
-                          id="grossWeight"
-                          type="number"
-                          value={palletData.grossWeight}
-                          onChange={(e) =>
-                            handleInputChange(
-                              "grossWeight",
-                              parseFloat(e.target.value)
-                            )
-                          }
-                          placeholder="Enter gross weight"
-                        />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold">Weighing</h3>
+                      <div className="grid grid-rows-4 grid-flow-col gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="grossWeight">
+                            Gross Weight (kg) *
+                          </Label>
+                          <Input
+                            id="grossWeight"
+                            type="number"
+                            value={palletData.grossWeight}
+                            onChange={(e) =>
+                              handleInputChange(
+                                "grossWeight",
+                                parseFloat(e.target.value)
+                              )
+                            }
+                            placeholder="Enter gross weight"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="packageTareWeight">
+                            Package Tare Weight (kg)
+                          </Label>
+                          <Input
+                            id="packageTareWeight"
+                            type="number"
+                            value={palletData.packageTareWeight}
+                            onChange={(e) =>
+                              handleInputChange(
+                                "packageTareWeight",
+                                parseFloat(e.target.value)
+                              )
+                            }
+                            placeholder="Enter package tare weight"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="palletTareWeight">
+                            Pallet Tare Weight (kg)
+                          </Label>
+                          <Input
+                            id="palletTareWeight"
+                            type="number"
+                            value={palletData.palletTareWeight}
+                            onChange={(e) =>
+                              handleInputChange(
+                                "palletTareWeight",
+                                parseFloat(e.target.value)
+                              )
+                            }
+                            placeholder="Enter pallet tare weight"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="netWeight">Net Weight (kg)</Label>
+                          <Input
+                            id="netWeight"
+                            type="number"
+                            value={palletData.netWeight}
+                            readOnly
+                            className="bg-gray-100"
+                          />
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="packageTareWeight">
-                          Package Tare Weight (kg)
+                    </div>
+                    <div>
+                      <div className="flex justify-end w-full my-10">
+                        <Label className="text-red-400 italic">
+                          Weighing scale not connected...
                         </Label>
-                        <Input
-                          id="packageTareWeight"
-                          type="number"
-                          value={palletData.packageTareWeight}
-                          onChange={(e) =>
-                            handleInputChange(
-                              "packageTareWeight",
-                              parseFloat(e.target.value)
-                            )
-                          }
-                          placeholder="Enter package tare weight"
-                        />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="palletTareWeight">
-                          Pallet Tare Weight (kg)
-                        </Label>
-                        <Input
-                          id="palletTareWeight"
-                          type="number"
-                          value={palletData.palletTareWeight}
-                          onChange={(e) =>
-                            handleInputChange(
-                              "palletTareWeight",
-                              parseFloat(e.target.value)
-                            )
-                          }
-                          placeholder="Enter pallet tare weight"
-                        />
+                      <div className="flex justify-end w-full">
+                        <Label className="text-8xl font-[Digital-7] ">0.000 kg</Label>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="netWeight">Net Weight (kg)</Label>
-                        <Input
-                          id="netWeight"
-                          type="number"
-                          value={palletData.netWeight}
-                          readOnly
-                          className="bg-gray-100"
-                        />
+                      <div className="flex justify-end w-full mt-10">
+                        <Button variant="default">
+                          <Weight className="h-4 w-4" />
+                          Capture Weight
+                        </Button>
                       </div>
                     </div>
                   </div>
