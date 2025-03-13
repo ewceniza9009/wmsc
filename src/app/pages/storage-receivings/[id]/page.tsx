@@ -37,7 +37,7 @@ import {
   LucideBarcode,
   LucideBetweenHorizonalStart,
   Pencil,
-  Weight
+  Weight,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
@@ -668,7 +668,7 @@ export default function StorageReceivingDetail() {
                       </div>
                       <div>
                         <p className="font-medium">Quantity:</p>
-                        <p>{(+palletData.quantity).toFixed(2)}</p> 
+                        <p>{(+palletData.quantity).toFixed(2)}</p>
                       </div>
                       <div>
                         <p className="font-medium">Qty Unit:</p>
@@ -712,7 +712,11 @@ export default function StorageReceivingDetail() {
                     Previous
                   </Button>
                   <Button onClick={handleNextStep}>
-                    {activeStep === steps.length - 1 ? <Check /> : <ArrowRight />}
+                    {activeStep === steps.length - 1 ? (
+                      <Check />
+                    ) : (
+                      <ArrowRight />
+                    )}
                     {activeStep === steps.length - 1 ? "Save Pallet" : "Next"}
                   </Button>
                 </div>
@@ -726,7 +730,10 @@ export default function StorageReceivingDetail() {
       {storageReceiving.pallets && storageReceiving.pallets.length > 0 && (
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle className="flex flex-row items-center gap-2"><Grid2X2 className="h-4 w-4 text-teal-500" />Saved Pallets</CardTitle>
+            <CardTitle className="flex flex-row items-center gap-2">
+              <Grid2X2 className="h-4 w-4 text-teal-500" />
+              Saved Pallets
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
@@ -766,18 +773,18 @@ export default function StorageReceivingDetail() {
                     </div>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <Button variant="destructive">
-                      <Grid2X2X className="h-4 w-4" />
+                    <Button variant="app">
+                      <Grid2X2X className="h-4 w-4 text-destructive" />
                     </Button>
-                    <Button>
-                      <LucideBetweenHorizonalStart className="h-4 w-4" />
+                    <Button variant="app">
+                      <LucideBetweenHorizonalStart className="h-4 w-4 text-primary" />
                     </Button>
-                    <Button variant="outline">
-                      <LucideBarcode className="h-4 w-4" />
+                    <Button variant="app">
+                      <LucideBarcode className="h-4 w-4 text-gray-500" />
                     </Button>
-                    <Button variant="outline">
-                      <Pencil className="h-4 w-4" />
-                    </Button>                    
+                    <Button variant="app">
+                      <Pencil className="h-4 w-4 text-gray-500" />
+                    </Button>
                   </div>
                 </div>
               ))}
