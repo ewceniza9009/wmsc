@@ -772,17 +772,18 @@ export default function StorageReceivingDetail() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex justify-end gap-2">
-                    <Button variant="app">
+                  <div className="border-t-1 border-dashed border-gray-400 w-full my-2" />
+                  <div className="flex justify-end">
+                    <Button variant="ghost">
                       <Grid2X2X className="h-4 w-4 text-destructive" />
                     </Button>
-                    <Button variant="app">
+                    <Button variant="ghost">
                       <LucideBetweenHorizonalStart className="h-4 w-4 text-primary" />
                     </Button>
-                    <Button variant="app">
+                    <Button variant="ghost">
                       <LucideBarcode className="h-4 w-4 text-gray-500" />
                     </Button>
-                    <Button variant="app">
+                    <Button variant="ghost">
                       <Pencil className="h-4 w-4 text-gray-500" />
                     </Button>
                   </div>
