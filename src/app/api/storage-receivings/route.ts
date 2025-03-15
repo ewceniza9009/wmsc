@@ -123,6 +123,24 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
+    if (body.palletNumber === "NA") {
+      const lastPallet = await TrnStorageReceivingPallet.findOne().sort({
+        palletNumber: -1,
+      });
+
+      if (lastPallet) {
+        const lastPalletNumber = lastPallet.palletNumber;
+        const lastPalletNumberSuffix = lastPalletNumber.slice(4); // Extracts the numeric part after 'PALT'
+        const nextPalletNumberSuffix = (parseInt(lastPalletNumberSuffix) + 1)
+          .toString()
+          .padStart(9, "0");
+        const nextPalletNumber = `SRNU${nextPalletNumberSuffix}`;
+        body.palletNumber = nextPalletNumber;
+      } else {
+        body.palletNumber = "SRNU000000001";
+      }
+    }
+
     // Check if receiving number already exists
     const existingReceiving = await TrnStorageReceiving.findOne({ 
       receivingNumber: body.receivingNumber 
