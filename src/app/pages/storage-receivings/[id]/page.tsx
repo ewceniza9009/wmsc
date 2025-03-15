@@ -5,6 +5,7 @@ import { MaterialCombobox } from "@/components/MaterialCombobox";
 import PalletUpdateForm from "@/components/PalletUpdateForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Collapsible,
   CollapsibleContent,
@@ -246,7 +247,10 @@ export default function StorageReceivingDetail() {
                           id="vendorBatchNumber"
                           value={palletData.vendorBatchNumber}
                           onChange={(e) =>
-                            handleInputChange("vendorBatchNumber", e.target.value)
+                            handleInputChange(
+                              "vendorBatchNumber",
+                              e.target.value
+                            )
                           }
                           placeholder="Enter vendor batch number"
                         />
@@ -432,9 +436,7 @@ export default function StorageReceivingDetail() {
                       pallet ID.
                     </p>
                     <div className="flex justify-center">
-                      <Button onClick={handleNextStep}>
-                        Generate Barcode
-                      </Button>
+                      <Button onClick={handleNextStep}>Generate Barcode</Button>
                     </div>
                   </div>
                 )}
@@ -534,53 +536,78 @@ export default function StorageReceivingDetail() {
                   key={index}
                   className="border rounded-lg p-4 flex flex-col h-full"
                 >
-                  <div className="grid grid-rows-4 md:grid-flow-col gap-1 flex-grow">
+                  <div className="grid grid-rows-5 md:grid-flow-col gap-1 flex-grow">
                     <div>
-                      <p className="font-medium">Pallet Number:</p>
-                      <p>{pallet.palletNumber}</p>
+                      <p className="font-medium text-[12px]">Pallet Number:</p>
+                      <p className="text-[12px]">{pallet.palletNumber}</p>
                     </div>
                     <div>
-                      <p className="font-medium">Location:</p>
-                      <p>{pallet.locationName}</p>
+                      <p className="font-medium text-[12px]">Location:</p>
+                      <p className="text-[12px]">{pallet.locationName}</p>
                     </div>
                     <div>
-                      <p className="font-medium">Material:</p>
-                      <p>{pallet.materialName}</p>
+                      <p className="font-medium text-[12px]">Material:</p>
+                      <p className="text-[12px]">{pallet.materialName}</p>
                     </div>
                     <div>
-                      <p className="font-medium">Quantity:</p>
-                      <p>
+                      <p className="font-medium text-[12px]">Quantity:</p>
+                      <p className="text-[12px]">
                         {(+pallet.quantity).toFixed(2)} {pallet.unitName}
                       </p>
                     </div>
                     <div>
-                      <p className="font-medium">Net Weight:</p>
-                      <p>{(+pallet.netWeight).toFixed(2)} Kg</p>
+                      <p className="font-medium text-[12px]">Box Number:</p>
+                      <p className="text-[12px]">{pallet.boxNumber}</p>
                     </div>
+                    <div>
+                      <p className="font-medium text-[12px]">Vendor Batch Number:</p>
+                      <p className="text-[12px]">{pallet.vendorBatchNumber}</p>
+                    </div>
+                    <div>
+                      <p className="font-medium text-[12px]">Batch Code:</p>
+                      <p className="text-[12px]">{pallet.batchCode}</p>
+                    </div>
+                    <div>
+                      <p className="font-medium text-[12px]">No of days to alert:</p>
+                      <p className="text-[12px]">{(+pallet.noDaysToPrompAlert).toFixed(0)} Days</p>
+                    </div>
+                    <div>
+                      <p className="font-medium text-[12px]">Is last material:</p>
+                      <Checkbox checked={pallet.isLastMaterial} />
+                    </div>
+                    <div>
+                      <p className="font-medium text-[12px]">Net Weight:</p>
+                      <p className="text-[12px]">{(+pallet.netWeight).toFixed(2)} Kg</p>
+                    </div>
+                  </div>
+                  <div className="border-t-1 border-dashed border-gray-400 w-full my-2" />
+                  <div className="flex justify-between">
                     <div className="col-span-2">
-                      <p className="font-medium">Barcode:</p>
+                      <p className="font-medium text-[12px]">Barcode:</p>
                       <p className="font-mono rounded text-xs truncate">
                         {pallet.barCode}
                       </p>
                     </div>
-                  </div>
-                  <div className="border-t-1 border-dashed border-gray-400 w-full my-2" />
-                  <div className="flex justify-end">
-                    <Button variant="ghost">
-                      <Grid2X2X className="h-4 w-4 text-destructive" />
-                    </Button>
-                    <Button variant="ghost">
-                      <LucideBetweenHorizonalStart className="h-4 w-4 text-primary" />
-                    </Button>
-                    <Button variant="ghost">
-                      <LucideBarcode className="h-4 w-4 text-gray-500" />
-                    </Button>
-                    <Button variant="ghost" onClick={() => {
-                      setSelectedPallet(pallet);
-                      setIsUpdateFormOpen(true);
-                    }}>
-                      <Pencil className="h-4 w-4 text-gray-500" />
-                    </Button>
+                    <div>
+                      <Button variant="ghost">
+                        <Grid2X2X className="h-4 w-4 text-destructive" />
+                      </Button>
+                      <Button variant="ghost">
+                        <LucideBetweenHorizonalStart className="h-4 w-4 text-primary" />
+                      </Button>
+                      <Button variant="ghost">
+                        <LucideBarcode className="h-4 w-4 text-gray-500" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          setSelectedPallet(pallet);
+                          setIsUpdateFormOpen(true);
+                        }}
+                      >
+                        <Pencil className="h-4 w-4 text-gray-500" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -601,7 +628,10 @@ export default function StorageReceivingDetail() {
                 materialId: selectedPallet.materialId,
                 unitId: selectedPallet.unitId,
               };
-              await axios.put(`/api/storage-receiving-pallets/${updatedPallet.id}`, updatedPalletData);
+              await axios.put(
+                `/api/storage-receiving-pallets/${updatedPallet.id}`,
+                updatedPalletData
+              );
               // Refresh storage receiving data
               fetchStorageReceiving();
               // Close the form

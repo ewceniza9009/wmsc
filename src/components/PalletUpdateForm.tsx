@@ -6,7 +6,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import DateSelector from "@/components/ui/date-selector";
 import { Input } from "@/components/ui/input";
@@ -72,85 +72,94 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="boxNumber" className="text-left">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <Label htmlFor="boxNumber" className="text-left sm:text-left">
               Box #
             </Label>
             <Input
               id="boxNumber"
               value={boxNumber}
               onChange={(e) => setBoxNumber(e.target.value)}
-              className="col-span-3"
+              className="sm:col-span-3"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="vendorBatchNumber" className="text-left">
-              Vendor Batch Number
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <Label
+              htmlFor="vendorBatchNumber"
+              className="text-left sm:text-left"
+            >
+              Vendor Batch #
             </Label>
             <Input
               id="vendorBatchNumber"
               value={vendorBatchNumber}
               onChange={(e) => setVendorBatchNumber(e.target.value)}
-              className="col-span-3"
+              className="sm:col-span-3"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="batchCode" className="text-left">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <Label htmlFor="batchCode" className="text-left sm:text-left">
               Batch Code
             </Label>
             <Input
               id="batchCode"
               value={batchCode}
               onChange={(e) => setBatchCode(e.target.value)}
-              className="col-span-3"
+              className="sm:col-span-3"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="expiryDate" className="text-left">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <Label htmlFor="expiryDate" className="text-left sm:text-left">
               Exp. Date
             </Label>
             <DateSelector
               date={expiryDate}
               onSelect={(date) => setExpiryDate(date)}
               placeholder="Select date"
-              className="col-span-3"
+              className="sm:col-span-3"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="manufactureDate" className="text-left">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <Label htmlFor="manufactureDate" className="text-left sm:text-left">
               Man. Date
             </Label>
             <DateSelector
               date={manufactureDate}
               onSelect={(date) => setManufactureDate(date)}
               placeholder="Select date"
-              className="col-span-3"
+              className="sm:col-span-3"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="noDaysToPrompAlert" className="text-left">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <Label
+              htmlFor="noDaysToPrompAlert"
+              className="text-left sm:text-left"
+            >
               # Days To Alert
             </Label>
             <InputNumber
               id="noDaysToPrompAlert"
               value={noDaysToPrompAlert}
               onChange={(value) => setNoDaysToPrompAlert(value)}
-              className="col-span-3"
+              className="sm:col-span-3"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="arrivalSequenceNo" className="text-left">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <Label
+              htmlFor="arrivalSequenceNo"
+              className="text-left sm:text-left"
+            >
               Arrival Seq. #
             </Label>
             <InputNumber
               id="arrivalSequenceNo"
               value={arrivalSequenceNo}
               onChange={(value) => setArrivalSequenceNo(value)}
-              className="col-span-3"
+              className="sm:col-span-3"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="isLastMaterial" className="text-right">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <Label htmlFor="isLastMaterial" className="text-right sm:text-left">
               Is Last Material
             </Label>
             <input
@@ -158,13 +167,19 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
               id="isLastMaterial"
               checked={isLastMaterial}
               onChange={(e) => setIsLastMaterial(e.target.checked)}
-              className="col-span-3"
+              className="sm:col-span-3"
             />
           </div>
         </div>
         <AlertDialogFooter>
-          <Button variant="outline" onClick={onCancel}><CircleOff className="h-4 w-4"/> Cancel</Button>
-          <Button variant="default" onClick={handleUpdate}><Check className="h-4 w-4"/> Continue</Button>
+          <div className="space-x-2">
+            <Button variant="outline" onClick={onCancel}>
+              <CircleOff className="h-4 w-4" /> Cancel
+            </Button>
+            <Button variant="default" onClick={handleUpdate}>
+              <Check className="h-4 w-4" /> Continue
+            </Button>
+          </div>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
