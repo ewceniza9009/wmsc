@@ -82,6 +82,8 @@ export default function StorageReceivingDetail() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
 
+  const [isLUpdateLocation , setIsLUpdateLocation] = useState(false)
+
   const steps = [
     {
       id: "pallet-info",
@@ -656,8 +658,10 @@ export default function StorageReceivingDetail() {
                       </AlertDialog>
                       <Button variant="ghost" onClick={() => {
                         setSelectedPallet(pallet);
+                        setIsLUpdateLocation(true)
                         setIsUpdateFormOpen(true);
-                      }}>
+                      }}
+                      >
                         <LucideBetweenHorizonalStart className="h-4 w-4 text-primary" />
                       </Button>
                       <AlertDialog open={isBarcodeModalOpen}>
@@ -703,6 +707,7 @@ export default function StorageReceivingDetail() {
                       <Button
                         variant="ghost"
                         onClick={() => {
+                          setIsLUpdateLocation(false)
                           setSelectedPallet(pallet);
                           setIsUpdateFormOpen(true);
                         }}
@@ -721,14 +726,12 @@ export default function StorageReceivingDetail() {
       {isUpdateFormOpen && selectedPallet && (
         <PalletUpdateForm
           pallet={selectedPallet}
+          showLocationOnly={isLUpdateLocation}
           onUpdate={async (updatedPallet) => {
             // Make API call to update the pallet
             try {
               const updatedPalletData = {
-                ...updatedPallet,
-                locationId: selectedPallet.locationId,
-                materialId: selectedPallet.materialId,
-                unitId: selectedPallet.unitId,
+                ...updatedPallet
               };
               await axios.put(
                 `/api/storage-receiving-pallets/${updatedPallet.id}`,
