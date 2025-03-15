@@ -97,6 +97,7 @@ export async function GET(
         locationName: pallet.locationId?.locationName,
         materialId: pallet.materialId.toString(),
         materialName: pallet.materialId?.materialName,
+        materialNumber: pallet.materialId?.materialNumber,
         quantity: pallet.quantity,
         unitId: pallet.unitId.toString(),
         unitName: pallet.unitId?.unitName,

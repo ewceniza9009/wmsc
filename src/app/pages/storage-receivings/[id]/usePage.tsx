@@ -22,6 +22,7 @@ export default function useReceiving() {
     locationName: "",
     materialId: "",
     materialName: "",
+    materialNumber: "",
     quantity: 0,
     unitId: "",
     unitName: "",
@@ -112,12 +113,11 @@ export default function useReceiving() {
     // Using a simple concatenation with separators for demonstration
     // In a real application, you might want to use a more sophisticated barcode generation algorithm
     const barcode = [
-      storageReceiving.receivingNumber,
-      palletData?.palletNumber || "NA",
-      palletData.materialName,
+      storageReceiving.receivingNumber,      
       formattedDate,
-      palletData.netWeight.toString(),
       `PAL${Date.now().toString().slice(-6)}`, // Simple unique ID for the pallet
+      palletData.materialNumber,
+      palletData.netWeight.toString(),
     ].join("-");
 
     setPalletData((prev) => ({
@@ -142,6 +142,7 @@ export default function useReceiving() {
         locationName: palletData.locationName,
         materialId: palletData.materialId,
         materialName: palletData.materialName,
+        materialNumber: palletData.materialNumber,
         quantity: palletData.quantity,
         unitId: palletData.unitId,
         unitName: palletData.unitName,
@@ -169,6 +170,7 @@ export default function useReceiving() {
         locationName: "",
         materialId: "",
         materialName: "",
+        materialNumber: "",
         quantity: 0,
         unitId: "",
         unitName: "",

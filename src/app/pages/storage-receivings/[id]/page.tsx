@@ -166,9 +166,8 @@ export default function StorageReceivingDetail() {
                             handleInputChange("materialId", value);
                             if (item) {
                               handleInputChange(
-                                "materialName",
-                                item.materialName
-                              );
+                                "materialNumber",
+                                item.materialNumber                              );
                             }
                           }}
                           placeholder="Search a material"
