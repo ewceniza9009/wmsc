@@ -48,7 +48,6 @@ export default function usePage() {
   useEffect(() => {
     const storedWarehouse = localStorage.getItem("selectedWarehouse");
     if (storedWarehouse) {
-      console.log(storedWarehouse);
       setForm((prevForm) => ({
         ...prevForm,
         warehouseId: storedWarehouse,
