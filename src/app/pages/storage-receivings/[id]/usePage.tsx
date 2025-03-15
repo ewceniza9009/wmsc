@@ -11,6 +11,17 @@ export default function useReceiving() {
   const router = useRouter();
   const { id } = useParams();
 
+  const deletePallet = async (palletId: string) => {
+    try {
+      await axios.delete(`/api/storage-receiving-pallets/${palletId}`);
+      toast.success("Pallet deleted successfully");
+      // After successful deletion, refresh the list of pallets
+      fetchStorageReceiving();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to delete pallet");
+    }
+  };
+
   const [isLoading, setIsLoading] = useState(true);
   const [storageReceiving, setStorageReceiving] =
     useState<StorageReceiving | null>(null);
@@ -242,5 +253,6 @@ export default function useReceiving() {
     handlePreviousStep,
     fetchUnits,
     fetchStorageReceiving,
+    deletePallet,
   };
 }

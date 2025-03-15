@@ -1,5 +1,17 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { LocationCombobox } from "@/components/LocationCombobox";
 import { MaterialCombobox } from "@/components/MaterialCombobox";
 import PalletUpdateForm from "@/components/PalletUpdateForm";
@@ -59,6 +71,7 @@ export default function StorageReceivingDetail() {
     handleNextStep,
     handlePreviousStep,
     fetchStorageReceiving,
+    deletePallet,
   } = usePage();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -589,9 +602,27 @@ export default function StorageReceivingDetail() {
                       </p>
                     </div>
                     <div>
-                      <Button variant="ghost">
-                        <Grid2X2X className="h-4 w-4 text-destructive" />
-                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost">
+                            <Grid2X2X className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Pallet</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete this pallet?
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => deletePallet(pallet.id)}>
+                              OK
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                       <Button variant="ghost">
                         <LucideBetweenHorizonalStart className="h-4 w-4 text-primary" />
                       </Button>
