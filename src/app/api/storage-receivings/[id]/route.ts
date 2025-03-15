@@ -50,7 +50,8 @@ export async function GET(
     })
       .populate("locationId", "locationName")
       .populate("materialId", "materialName")
-      .populate("unitId", "unitName");
+      .populate("unitId", "unitName")
+      .sort({ palletNumber: -1 });
     const loc = MstLocation;
     const mat = MstMaterial;
     const unt = MstUnit;
@@ -216,14 +217,11 @@ export async function PUT(
     try {
       // Update the storage receiving record
       const updatedStorageReceiving =
-        await TrnStorageReceiving.findByIdAndUpdate(
-          id,
-          {
-            ...body,
-            updatedBy: session.user.id,
-          }
-        );
-      
+        await TrnStorageReceiving.findByIdAndUpdate(id, {
+          ...body,
+          updatedBy: session.user.id,
+        });
+
       // Commit the transaction
       await session_db.commitTransaction();
       session_db.endSession();
