@@ -173,6 +173,10 @@ export default function StorageReceivingDetail() {
                             handleInputChange("materialId", value);
                             if (item) {
                               handleInputChange(
+                                "materialName",
+                                item.materialName
+                              );
+                              handleInputChange(
                                 "materialNumber",
                                 item.materialNumber
                               );
@@ -590,13 +594,12 @@ export default function StorageReceivingDetail() {
           pallet={selectedPallet}
           onUpdate={async (updatedPallet) => {
             // Make API call to update the pallet
-            console.log(updatedPallet);
-
             try {
               const updatedPalletData = {
                 ...updatedPallet,
-                expiryDate: updatedPallet.expiryDate ? new Date(updatedPallet.expiryDate) : null,
-                manufactureDate: updatedPallet.manufactureDate ? new Date(updatedPallet.manufactureDate) : null,
+                locationId: updatedPallet.locationId,
+                materialId: updatedPallet.materialId,
+                unitId: updatedPallet.unitId,
               };
               await axios.put(`/api/storage-receiving-pallets/${updatedPallet.id}`, updatedPalletData);
               // Refresh storage receiving data
