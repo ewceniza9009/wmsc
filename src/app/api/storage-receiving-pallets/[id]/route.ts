@@ -73,15 +73,15 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         const body = await request.json();
 
         // Find the storage receiving pallet by ID and update it
-        // const storageReceivingPallet = await TrnStorageReceivingPallet.findByIdAndUpdate(id, body, {
-        //     new: true, // Return the updated document
-        // });
+        const storageReceivingPallet = await TrnStorageReceivingPallet.findByIdAndUpdate(id, body, {
+            new: true, // Return the updated document
+        });
 
-        // if (!storageReceivingPallet) {
-        //     return NextResponse.json({ message: 'Storage receiving pallet not found' }, { status: 404 });
-        // }
+        if (!storageReceivingPallet) {
+            return NextResponse.json({ message: 'Storage receiving pallet not found' }, { status: 404 });
+        }
 
-        // return NextResponse.json({ message: 'Storage receiving pallet updated successfully', data: storageReceivingPallet });
+        return NextResponse.json({ message: 'Storage receiving pallet updated successfully', data: storageReceivingPallet });
     } catch (error: any) {
         console.error('Error updating storage receiving pallet:', error);
         return NextResponse.json({ message: error.message || 'Failed to update storage receiving pallet' }, { status: 500 });
