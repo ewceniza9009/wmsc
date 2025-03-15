@@ -160,7 +160,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
           </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
             <Label htmlFor="isLastMaterial" className="text-right sm:text-left">
-              Is Last Material
+              Last Material
             </Label>
             <input
               type="checkbox"

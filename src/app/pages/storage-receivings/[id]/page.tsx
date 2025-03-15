@@ -649,12 +649,15 @@ export default function StorageReceivingDetail() {
                               }}
                             >
                               <Trash className="h-4 w-4" />
-                              OK
+                              Delete
                             </Button>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
-                      <Button variant="ghost">
+                      <Button variant="ghost" onClick={() => {
+                        setSelectedPallet(pallet);
+                        setIsUpdateFormOpen(true);
+                      }}>
                         <LucideBetweenHorizonalStart className="h-4 w-4 text-primary" />
                       </Button>
                       <AlertDialog open={isBarcodeModalOpen}>
@@ -670,8 +673,9 @@ export default function StorageReceivingDetail() {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Barcode</AlertDialogTitle>
+                            <AlertDialogTitle>Pallet Barcode</AlertDialogTitle>
                             <AlertDialogDescription>
+                            Barcode for pallet: {pallet.palletNumber}
                               <ReactBarcode
                                 value={pallet.barCode}
                                 width={1.12}
