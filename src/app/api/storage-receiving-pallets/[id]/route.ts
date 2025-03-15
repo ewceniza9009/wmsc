@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
 // GET /api/storage-receiving-pallets/[id] - Get a specific storage receiving pallet by ID
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
   try {
     // Connect to database
     await dbConnect();
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 
-    const { id } = params;
+    const { id } = await context.params;
 
     // Find the storage receiving pallet by ID
     const storageReceivingPallet = await TrnStorageReceivingPallet.findById(id);
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 }
 
 // PUT /api/storage-receiving-pallets/[id] - Update a specific storage receiving pallet by ID
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
     try {
         // Connect to database
         await dbConnect();
@@ -69,7 +69,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
             return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
         }
 
-        const { id } = params;
+        const { id } = await context.params;
         const body = await request.json();
 
         // Find the storage receiving pallet by ID and update it
@@ -89,7 +89,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 }
 
 // DELETE /api/storage-receiving-pallets/[id] - Delete a specific storage receiving pallet by ID
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     try {
         // Connect to database
         await dbConnect();
@@ -105,7 +105,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
             return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
         }
 
-        const { id } = params;
+        const { id } = await context.params;
 
         // Find the storage receiving pallet by ID and delete it
         const storageReceivingPallet = await TrnStorageReceivingPallet.findByIdAndDelete(id);
