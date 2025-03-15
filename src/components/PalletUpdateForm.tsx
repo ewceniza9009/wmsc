@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import InputNumber from "@/components/ui/input-number";
 import { Label } from "@/components/ui/label";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
-import { Check, CircleOff } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 
@@ -174,7 +174,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
         <AlertDialogFooter>
           <div className="space-x-2">
             <Button variant="outline" onClick={onCancel}>
-              <CircleOff className="h-4 w-4" /> Cancel
+              <X className="h-4 w-4" /> Cancel
             </Button>
             <Button variant="default" onClick={handleUpdate}>
               <Check className="h-4 w-4" /> Continue

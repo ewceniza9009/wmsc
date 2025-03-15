@@ -2,8 +2,6 @@
 
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -49,7 +47,10 @@ import {
   LucideBarcode,
   LucideBetweenHorizonalStart,
   Pencil,
+  Printer,
+  Trash,
   Weight,
+  X
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -78,6 +79,8 @@ export default function StorageReceivingDetail() {
   const [selectedPallet, setSelectedPallet] =
     useState<StorageReceivingPallet | null>(null);
   const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
 
   const steps = [
     {
@@ -573,7 +576,9 @@ export default function StorageReceivingDetail() {
                       <p className="text-[12px]">{pallet.boxNumber}</p>
                     </div>
                     <div>
-                      <p className="font-medium text-[12px]">Vendor Batch Number:</p>
+                      <p className="font-medium text-[12px]">
+                        Vendor Batch Number:
+                      </p>
                       <p className="text-[12px]">{pallet.vendorBatchNumber}</p>
                     </div>
                     <div>
@@ -581,16 +586,24 @@ export default function StorageReceivingDetail() {
                       <p className="text-[12px]">{pallet.batchCode}</p>
                     </div>
                     <div>
-                      <p className="font-medium text-[12px]">No of days to alert:</p>
-                      <p className="text-[12px]">{(+pallet.noDaysToPrompAlert).toFixed(0)} Days</p>
+                      <p className="font-medium text-[12px]">
+                        No of days to alert:
+                      </p>
+                      <p className="text-[12px]">
+                        {(+pallet.noDaysToPrompAlert).toFixed(0)} Days
+                      </p>
                     </div>
                     <div>
-                      <p className="font-medium text-[12px]">Is last material:</p>
+                      <p className="font-medium text-[12px]">
+                        Is last material:
+                      </p>
                       <Checkbox checked={pallet.isLastMaterial} />
                     </div>
                     <div>
                       <p className="font-medium text-[12px]">Net Weight:</p>
-                      <p className="text-[12px]">{(+pallet.netWeight).toFixed(2)} Kg</p>
+                      <p className="text-[12px]">
+                        {(+pallet.netWeight).toFixed(2)} Kg
+                      </p>
                     </div>
                   </div>
                   <div className="border-t-1 border-dashed border-gray-400 w-full my-2" />
@@ -602,9 +615,14 @@ export default function StorageReceivingDetail() {
                       </p>
                     </div>
                     <div>
-                      <AlertDialog>
+                      <AlertDialog open={isDeleteModalOpen}>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost">
+                          <Button
+                            variant="ghost"
+                            onClick={() => {
+                              setIsDeleteModalOpen(true);
+                            }}
+                          >
                             <Grid2X2X className="h-4 w-4 text-destructive" />
                           </Button>
                         </AlertDialogTrigger>
@@ -616,19 +634,68 @@ export default function StorageReceivingDetail() {
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => deletePallet(pallet.id)}>
+                            <Button
+                              variant="outline"
+                              onClick={() => setIsDeleteModalOpen(false)}
+                            >
+                              <X className="h-4 w-4" />
+                              Cancel
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              onClick={() => {
+                                deletePallet(pallet.id);
+                                setIsDeleteModalOpen(false);
+                              }}
+                            >
+                              <Trash className="h-4 w-4" />
                               OK
-                            </AlertDialogAction>
+                            </Button>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
                       <Button variant="ghost">
                         <LucideBetweenHorizonalStart className="h-4 w-4 text-primary" />
                       </Button>
-                      <Button variant="ghost">
-                        <LucideBarcode className="h-4 w-4 text-gray-500" />
-                      </Button>
+                      <AlertDialog open={isBarcodeModalOpen}>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            onClick={() => {
+                              setIsBarcodeModalOpen(true);
+                            }}
+                          >
+                            <LucideBarcode className="h-4 w-4 text-gray-500" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Barcode</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              <ReactBarcode
+                                value={pallet.barCode}
+                                width={1.12}
+                                height={80}
+                              />
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <Button variant="outline" onClick={() => setIsBarcodeModalOpen(false)} >
+                              <X className="h-4 w-4"/>
+                              Close
+                            </Button>
+                            <Button
+                              variant="default"
+                              onClick={() => {
+                                setIsBarcodeModalOpen(false);
+                              }}
+                            >
+                              <Printer className="h-4 w-4" />
+                              Print
+                            </Button>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                       <Button
                         variant="ghost"
                         onClick={() => {
