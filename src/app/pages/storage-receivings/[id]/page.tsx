@@ -597,9 +597,9 @@ export default function StorageReceivingDetail() {
             try {
               const updatedPalletData = {
                 ...updatedPallet,
-                locationId: updatedPallet.locationId,
-                materialId: updatedPallet.materialId,
-                unitId: updatedPallet.unitId,
+                locationId: selectedPallet.locationId,
+                materialId: selectedPallet.materialId,
+                unitId: selectedPallet.unitId,
               };
               await axios.put(`/api/storage-receiving-pallets/${updatedPallet.id}`, updatedPalletData);
               // Refresh storage receiving data

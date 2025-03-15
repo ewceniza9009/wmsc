@@ -1,21 +1,21 @@
 "use client";
 
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import DateSelector from "@/components/ui/date-selector";
 import { Input } from "@/components/ui/input";
 import InputNumber from "@/components/ui/input-number";
 import { Label } from "@/components/ui/label";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
+import { Check, CircleOff } from "lucide-react";
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 interface PalletUpdateFormProps {
   pallet: StorageReceivingPallet;
@@ -74,7 +74,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="boxNumber" className="text-left">
-              Box Number
+              Box #
             </Label>
             <Input
               id="boxNumber"
@@ -107,7 +107,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="expiryDate" className="text-left">
-              Expiry Date
+              Exp. Date
             </Label>
             <DateSelector
               date={expiryDate}
@@ -118,7 +118,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="manufactureDate" className="text-left">
-              Manufacture Date
+              Man. Date
             </Label>
             <DateSelector
               date={manufactureDate}
@@ -129,7 +129,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="noDaysToPrompAlert" className="text-left">
-              No Days To Prompt Alert
+              # Days To Alert
             </Label>
             <InputNumber
               id="noDaysToPrompAlert"
@@ -140,7 +140,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="arrivalSequenceNo" className="text-left">
-              Arrival Sequence No
+              Arrival Seq. #
             </Label>
             <InputNumber
               id="arrivalSequenceNo"
@@ -163,8 +163,8 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
           </div>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleUpdate}>Continue</AlertDialogAction>
+          <Button variant="outline" onClick={onCancel}><CircleOff className="h-4 w-4"/> Cancel</Button>
+          <Button variant="default" onClick={handleUpdate}><Check className="h-4 w-4"/> Continue</Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
