@@ -2,7 +2,6 @@
 
 import { Unit } from "@/models/MstUnit";
 import { StorageReceiving } from "@/models/TrnStorageReceiving";
-import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -130,14 +129,14 @@ export default function useReceiving() {
     setActiveStep(3);
   };
 
-  const savePallet = async () => {
+  const addPallet = async () => {
     if (!storageReceiving) return;
 
     try {
       // Create a new pallet object
-      const newPallet: Partial<StorageReceivingPallet> = {
+      const newPallet = {
         storageReceivingId: storageReceiving.id,
-        palletNumber: palletData.palletNumber,
+        palletNumber: palletData.palletNumber || "NA",
         manualPalletNumber: palletData.manualPalletNumber,
         locationId: palletData.locationId,
         locationName: palletData.locationName,
@@ -158,14 +157,7 @@ export default function useReceiving() {
         barCode: palletData.barCode,
       };
 
-      // Get existing pallets
-      const existingPallets = storageReceiving.pallets || [];
-
-      // Update the storage receiving with the new pallet
-      await axios.put(`/api/storage-receivings/${id}`, {
-        ...storageReceiving,
-        pallets: [...existingPallets, newPallet],
-      });
+      await axios.post(`/api/storage-receiving-pallets`, newPallet);
 
       toast.success("Pallet added successfully");
 
@@ -193,13 +185,12 @@ export default function useReceiving() {
       });
       setActiveStep(0);
 
-      // Refresh storage receiving data
+      // Refresh storage receiving data - not needed anymore
       fetchStorageReceiving();
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to save pallet");
     }
   };
-
   const handleNextStep = () => {
     // Validate current step before proceeding
     if (activeStep === 0) {
@@ -223,8 +214,8 @@ export default function useReceiving() {
       generateBarcode();
       return;
     } else if (activeStep === 3) {
-      // Save pallet
-      savePallet();
+      // Add pallet
+      addPallet();
       return;
     }
 
