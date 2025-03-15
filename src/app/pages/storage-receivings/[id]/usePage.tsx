@@ -149,7 +149,7 @@ export default function useReceiving() {
         storageReceivingId: storageReceiving.id,
         palletNumber: palletData.palletNumber || "NA",
         manualPalletNumber: palletData.manualPalletNumber,
-        locationId: palletData.locationId,
+        locationId: palletData.locationId || "",
         locationName: palletData.locationName,
         materialId: palletData.materialId,
         materialName: palletData.materialName,

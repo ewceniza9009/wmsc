@@ -4,7 +4,7 @@ export interface ITrnStorageReceivingPallet extends Document {
   storageReceivingId: Schema.Types.ObjectId;
   palletNumber: string;
   manualPalletNumber: string;
-  locationId: Schema.Types.ObjectId;
+  locationId?: Schema.Types.ObjectId;
   materialId: Schema.Types.ObjectId;
   quantity: number;
   unitId: Schema.Types.ObjectId;
@@ -41,7 +41,7 @@ export interface StorageReceivingPallet {
   storageReceivingId: string;
   palletNumber: string;
   manualPalletNumber: string;
-  locationId: string;
+  locationId?: string;
   locationName?: string 
   materialId: string;
   materialName?: string;
@@ -94,7 +94,7 @@ const TrnStorageReceivingPalletSchema = new mongoose.Schema(
     locationId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "MstLocation",
-      required: [true, "Please provide a location ID"],
+      required: false,
     },
     materialId: {
       type: mongoose.Schema.Types.ObjectId,

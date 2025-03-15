@@ -96,6 +96,10 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
+    if (body.locationId === "") {
+      delete body.locationId;
+    }
+
     // Validate required fields
     const requiredFields = ['storageReceivingId', 'palletNumber', 'quantity'];
     const missingFields = requiredFields.filter(field => !body[field]);

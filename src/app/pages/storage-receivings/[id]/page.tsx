@@ -50,7 +50,7 @@ import {
   Printer,
   Trash,
   Weight,
-  X
+  X,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -82,7 +82,7 @@ export default function StorageReceivingDetail() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
 
-  const [isLUpdateLocation , setIsLUpdateLocation] = useState(false)
+  const [isUpdateLocation, setIsUpdateLocation] = useState(false);
 
   const steps = [
     {
@@ -468,11 +468,11 @@ export default function StorageReceivingDetail() {
                     <div className="grid grid-rows-4 md:grid-flow-col gap-4">
                       <div>
                         <p className="font-medium">Pallet Number:</p>
-                        <p>{palletData.palletNumber}</p>
+                        <p>{"To be generated on save..."}</p>
                       </div>
                       <div>
                         <p className="font-medium">Location:</p>
-                        <p>{palletData.locationName}</p>
+                        <p>{"Should be set on put... "}</p>
                       </div>
                       <div>
                         <p className="font-medium">Material:</p>
@@ -622,6 +622,7 @@ export default function StorageReceivingDetail() {
                           <Button
                             variant="ghost"
                             onClick={() => {
+                              setSelectedPallet(pallet);
                               setIsDeleteModalOpen(true);
                             }}
                           >
@@ -632,13 +633,16 @@ export default function StorageReceivingDetail() {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Delete Pallet</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Are you sure you want to delete this pallet?
+                              Are you sure you want to delete this pallet [
+                              {selectedPallet?.palletNumber || "NA"}]?
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <Button
                               variant="outline"
-                              onClick={() => setIsDeleteModalOpen(false)}
+                              onClick={() => {                                
+                                setIsDeleteModalOpen(false);
+                              }}
                             >
                               <X className="h-4 w-4" />
                               Cancel
@@ -646,7 +650,7 @@ export default function StorageReceivingDetail() {
                             <Button
                               variant="destructive"
                               onClick={() => {
-                                deletePallet(pallet.id);
+                                deletePallet(selectedPallet?.id || "");
                                 setIsDeleteModalOpen(false);
                               }}
                             >
@@ -656,11 +660,13 @@ export default function StorageReceivingDetail() {
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
-                      <Button variant="ghost" onClick={() => {
-                        setSelectedPallet(pallet);
-                        setIsLUpdateLocation(true)
-                        setIsUpdateFormOpen(true);
-                      }}
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          setSelectedPallet(pallet);
+                          setIsUpdateLocation(true);
+                          setIsUpdateFormOpen(true);
+                        }}
                       >
                         <LucideBetweenHorizonalStart className="h-4 w-4 text-primary" />
                       </Button>
@@ -669,6 +675,7 @@ export default function StorageReceivingDetail() {
                           <Button
                             variant="ghost"
                             onClick={() => {
+                              setSelectedPallet(pallet);
                               setIsBarcodeModalOpen(true);
                             }}
                           >
@@ -679,17 +686,23 @@ export default function StorageReceivingDetail() {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Pallet Barcode</AlertDialogTitle>
                             <AlertDialogDescription>
-                            Barcode for pallet: {pallet.palletNumber}
+                              <div className="mb-2">
+                                Barcode for pallet:{" "}
+                                {selectedPallet?.palletNumber}
+                              </div>
                               <ReactBarcode
-                                value={pallet.barCode}
+                                value={selectedPallet?.barCode || "NA"}
                                 width={1.12}
                                 height={80}
                               />
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <Button variant="outline" onClick={() => setIsBarcodeModalOpen(false)} >
-                              <X className="h-4 w-4"/>
+                            <Button
+                              variant="outline"
+                              onClick={() => setIsBarcodeModalOpen(false)}
+                            >
+                              <X className="h-4 w-4" />
                               Close
                             </Button>
                             <Button
@@ -707,7 +720,7 @@ export default function StorageReceivingDetail() {
                       <Button
                         variant="ghost"
                         onClick={() => {
-                          setIsLUpdateLocation(false)
+                          setIsUpdateLocation(false);
                           setSelectedPallet(pallet);
                           setIsUpdateFormOpen(true);
                         }}
@@ -726,12 +739,12 @@ export default function StorageReceivingDetail() {
       {isUpdateFormOpen && selectedPallet && (
         <PalletUpdateForm
           pallet={selectedPallet}
-          showLocationOnly={isLUpdateLocation}
+          showLocationOnly={isUpdateLocation}
           onUpdate={async (updatedPallet) => {
             // Make API call to update the pallet
             try {
               const updatedPalletData = {
-                ...updatedPallet
+                ...updatedPallet,
               };
               await axios.put(
                 `/api/storage-receiving-pallets/${updatedPallet.id}`,
