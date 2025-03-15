@@ -147,7 +147,7 @@ export function SearchableCombobox({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn("p-0", className)} align="start">
+      <PopoverContent className={cn("p-0", className)} align="start" style={{ width: "max-content" }}>
         <Command shouldFilter={false}>
           <CommandInput 
             placeholder={searchPlaceholder} 
