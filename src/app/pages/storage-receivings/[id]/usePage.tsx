@@ -4,7 +4,7 @@ import { Unit } from "@/models/MstUnit";
 import { StorageReceiving } from "@/models/TrnStorageReceiving";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export default function useReceiving() {
@@ -49,6 +49,9 @@ export default function useReceiving() {
     barCode: "",
   });
 
+  const alertDialogRef = useRef(null);
+  const [alertDialogWidth, setAlertDialogWidth] = useState(300);
+
   const [units, setUnits] = useState<Unit[]>([]);
 
   useEffect(() => {
@@ -61,6 +64,19 @@ export default function useReceiving() {
     fetchStorageReceiving();
     fetchUnits();
   }, [id, router]);
+
+  useEffect(() => {
+    if (alertDialogRef.current) {
+      const resizeObserver = new ResizeObserver((entries) => {
+        const newWidth = entries[0].contentRect.width;
+        setAlertDialogWidth(newWidth);
+      });
+
+      resizeObserver.observe(alertDialogRef.current);
+
+      return () => resizeObserver.disconnect();
+    }
+  }, []);
 
   const fetchStorageReceiving = async () => {
     setIsLoading(true);
@@ -124,7 +140,7 @@ export default function useReceiving() {
     // Using a simple concatenation with separators for demonstration
     // In a real application, you might want to use a more sophisticated barcode generation algorithm
     const barcode = [
-      storageReceiving.receivingNumber,      
+      removeSRNUAndLeadingZeros(storageReceiving.receivingNumber),
       formattedDate,
       `PAL${Date.now().toString().slice(-6)}`, // Simple unique ID for the pallet
       palletData.materialNumber,
@@ -240,6 +256,10 @@ export default function useReceiving() {
     setActiveStep((prev) => Math.max(0, prev - 1));
   };
 
+  function removeSRNUAndLeadingZeros(code: string): string {
+    return code.replace(/^SRNU0+/, "");
+  }
+
   return {
     isLoading,
     storageReceiving,
@@ -254,5 +274,7 @@ export default function useReceiving() {
     fetchUnits,
     fetchStorageReceiving,
     deletePallet,
+    alertDialogRef,
+    alertDialogWidth,
   };
 }

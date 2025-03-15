@@ -73,6 +73,8 @@ export default function StorageReceivingDetail() {
     handlePreviousStep,
     fetchStorageReceiving,
     deletePallet,
+    alertDialogRef,
+    alertDialogWidth
   } = usePage();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -684,7 +686,7 @@ export default function StorageReceivingDetail() {
                             <LucideBarcode className="h-4 w-4 text-gray-500" />
                           </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent ref={alertDialogRef}>
                           <AlertDialogHeader>
                             <AlertDialogTitle>Pallet Barcode</AlertDialogTitle>
                             <AlertDialogDescription>
@@ -693,7 +695,7 @@ export default function StorageReceivingDetail() {
                               <br />
                               <ReactBarcode
                                 value={selectedPallet?.barCode || "NA"}
-                                width={1.12}
+                                width={alertDialogWidth / 240}
                                 height={80}
                               />
                             </AlertDialogDescription>

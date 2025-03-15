@@ -246,3 +246,64 @@ export async function PUT(
     );
   }
 }
+
+// DELETE /api/storage-receiving/[id] - Delete a specific storage receiving record with its pallets
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    // Check authentication
+    if (!session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check authorization
+    if (!["admin", "manager"].includes(session.user.role)) {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+    }
+
+    await dbConnect();
+
+    const { id } = await context.params;
+
+    // Check if storage receiving exists
+    const storageReceiving = await TrnStorageReceiving.findById(id);
+    if (!storageReceiving) {
+      return NextResponse.json(
+        { message: "Storage receiving record not found" },
+        { status: 404 }
+      );
+    }
+
+    // Start a transaction
+    const session_db = await mongoose.startSession();
+    session_db.startTransaction();
+
+    try {
+      // Delete the storage receiving record
+      await TrnStorageReceiving.findByIdAndDelete(id);
+
+      // Commit the transaction
+      await session_db.commitTransaction();
+      session_db.endSession();
+
+      return NextResponse.json({
+        message: "Storage receiving record deleted successfully",
+      });
+    } catch (error: any) {
+      // Abort transaction on error
+      await session_db.abortTransaction();
+      session_db.endSession();
+      throw error;
+    }
+  } catch (error: any) {
+    console.error("Error deleting storage receiving record:", error);
+    return NextResponse.json(
+      { message: error.message || "Failed to delete storage receiving record" },
+      { status: 500 }
+    );
+  }
+}

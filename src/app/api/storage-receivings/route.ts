@@ -141,12 +141,12 @@ export async function POST(request: NextRequest) {
     }
 
     if (body.receivingNumber === "NA") {
-      const receivingNumber = await TrnStorageReceiving.findOne().sort({
+      const storageReceiving = await TrnStorageReceiving.findOne().sort({
         receivingNumber: -1,
       });
 
-      if (receivingNumber) {
-        const lastSRNumber = receivingNumber.receivingNumber;
+      if (storageReceiving) {
+        const lastSRNumber = storageReceiving.receivingNumber;
         const lastReceivingNumberSuffix = lastSRNumber.slice(4);
         const nextReceivingNumberSuffix = (
           parseInt(lastReceivingNumberSuffix) + 1
@@ -154,9 +154,9 @@ export async function POST(request: NextRequest) {
           .toString()
           .padStart(9, "0");
         const nextReceivingNumber = `SRNU${nextReceivingNumberSuffix}`;
-        body.palletNumber = nextReceivingNumber;
+        body.receivingNumber = nextReceivingNumber;
       } else {
-        body.palletNumber = "SRNU000000001";
+        body.receivingNumber = "SRNU000000001";
       }
     }
 
