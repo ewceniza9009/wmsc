@@ -149,8 +149,8 @@ export default function useReceiving() {
         boxNumber: palletData.boxNumber,
         vendorBatchNumber: palletData.vendorBatchNumber,
         batchCode: palletData.batchCode,
-        expiryDate: new Date(),
-        manufactureDate: new Date(),
+        expiryDate: palletData.expiryDate,
+        manufactureDate: palletData.manufactureDate,
         grossWeight: palletData.grossWeight,
         packageTareWeight: palletData.packageTareWeight,
         palletTareWeight: palletData.palletTareWeight,
@@ -241,5 +241,6 @@ export default function useReceiving() {
     handleNextStep,
     handlePreviousStep,
     fetchUnits,
+    fetchStorageReceiving,
   };
 }

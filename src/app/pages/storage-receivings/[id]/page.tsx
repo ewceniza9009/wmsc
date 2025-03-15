@@ -2,6 +2,7 @@
 
 import { LocationCombobox } from "@/components/LocationCombobox";
 import { MaterialCombobox } from "@/components/MaterialCombobox";
+import PalletUpdateForm from "@/components/PalletUpdateForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -22,6 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Stepper } from "@/components/ui/stepper";
+import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
+import axios from "axios";
 import {
   ArrowLeft,
   ArrowRight,
@@ -54,9 +57,13 @@ export default function StorageReceivingDetail() {
     handleInputChange,
     handleNextStep,
     handlePreviousStep,
+    fetchStorageReceiving,
   } = usePage();
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPallet, setSelectedPallet] =
+    useState<StorageReceivingPallet | null>(null);
+  const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false);
 
   const steps = [
     {
@@ -167,7 +174,8 @@ export default function StorageReceivingDetail() {
                             if (item) {
                               handleInputChange(
                                 "materialNumber",
-                                item.materialNumber                              );
+                                item.materialNumber
+                              );
                             }
                           }}
                           placeholder="Search a material"
@@ -234,10 +242,7 @@ export default function StorageReceivingDetail() {
                           id="vendorBatchNumber"
                           value={palletData.vendorBatchNumber}
                           onChange={(e) =>
-                            handleInputChange(
-                              "vendorBatchNumber",
-                              e.target.value
-                            )
+                            handleInputChange("vendorBatchNumber", e.target.value)
                           }
                           placeholder="Enter vendor batch number"
                         />
@@ -566,7 +571,10 @@ export default function StorageReceivingDetail() {
                     <Button variant="ghost">
                       <LucideBarcode className="h-4 w-4 text-gray-500" />
                     </Button>
-                    <Button variant="ghost">
+                    <Button variant="ghost" onClick={() => {
+                      setSelectedPallet(pallet);
+                      setIsUpdateFormOpen(true);
+                    }}>
                       <Pencil className="h-4 w-4 text-gray-500" />
                     </Button>
                   </div>
@@ -575,6 +583,36 @@ export default function StorageReceivingDetail() {
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {isUpdateFormOpen && selectedPallet && (
+        <PalletUpdateForm
+          pallet={selectedPallet}
+          onUpdate={async (updatedPallet) => {
+            // Make API call to update the pallet
+            console.log(updatedPallet);
+
+            try {
+              const updatedPalletData = {
+                ...updatedPallet,
+                expiryDate: updatedPallet.expiryDate ? new Date(updatedPallet.expiryDate) : null,
+                manufactureDate: updatedPallet.manufactureDate ? new Date(updatedPallet.manufactureDate) : null,
+              };
+              await axios.put(`/api/storage-receiving-pallets/${updatedPallet.id}`, updatedPalletData);
+              // Refresh storage receiving data
+              fetchStorageReceiving();
+              // Close the form
+              setIsUpdateFormOpen(false);
+              setSelectedPallet(null);
+            } catch (error: any) {
+              console.error("Failed to update pallet:", error);
+            }
+          }}
+          onCancel={() => {
+            setIsUpdateFormOpen(false);
+            setSelectedPallet(null);
+          }}
+        />
       )}
     </div>
   );
