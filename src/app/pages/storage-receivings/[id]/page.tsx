@@ -638,25 +638,27 @@ export default function StorageReceivingDetail() {
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <Button
-                              variant="outline"
-                              onClick={() => {                                
-                                setIsDeleteModalOpen(false);
-                              }}
-                            >
-                              <X className="h-4 w-4" />
-                              Cancel
-                            </Button>
-                            <Button
-                              variant="destructive"
-                              onClick={() => {
-                                deletePallet(selectedPallet?.id || "");
-                                setIsDeleteModalOpen(false);
-                              }}
-                            >
-                              <Trash className="h-4 w-4" />
-                              Delete
-                            </Button>
+                            <div className="space-x-2">
+                              <Button
+                                variant="outline"
+                                onClick={() => {
+                                  setIsDeleteModalOpen(false);
+                                }}
+                              >
+                                <X className="h-4 w-4" />
+                                Cancel
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                onClick={() => {
+                                  deletePallet(selectedPallet?.id || "");
+                                  setIsDeleteModalOpen(false);
+                                }}
+                              >
+                                <Trash className="h-4 w-4" />
+                                Delete
+                              </Button>
+                            </div>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
@@ -686,10 +688,9 @@ export default function StorageReceivingDetail() {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Pallet Barcode</AlertDialogTitle>
                             <AlertDialogDescription>
-                              <div className="mb-2">
-                                Barcode for pallet:{" "}
-                                {selectedPallet?.palletNumber}
-                              </div>
+                              Barcode for pallet: {selectedPallet?.palletNumber}
+                              <br />
+                              <br />
                               <ReactBarcode
                                 value={selectedPallet?.barCode || "NA"}
                                 width={1.12}
@@ -698,22 +699,24 @@ export default function StorageReceivingDetail() {
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <Button
-                              variant="outline"
-                              onClick={() => setIsBarcodeModalOpen(false)}
-                            >
-                              <X className="h-4 w-4" />
-                              Close
-                            </Button>
-                            <Button
-                              variant="default"
-                              onClick={() => {
-                                setIsBarcodeModalOpen(false);
-                              }}
-                            >
-                              <Printer className="h-4 w-4" />
-                              Print
-                            </Button>
+                            <div className="space-x-2">
+                              <Button
+                                variant="outline"
+                                onClick={() => setIsBarcodeModalOpen(false)}
+                              >
+                                <X className="h-4 w-4" />
+                                Close
+                              </Button>
+                              <Button
+                                variant="default"
+                                onClick={() => {
+                                  setIsBarcodeModalOpen(false);
+                                }}
+                              >
+                                <Printer className="h-4 w-4" />
+                                Print
+                              </Button>
+                            </div>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
