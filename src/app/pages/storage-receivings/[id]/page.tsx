@@ -10,7 +10,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import { LocationCombobox } from "@/components/LocationCombobox";
 import { MaterialCombobox } from "@/components/MaterialCombobox";
 import PalletUpdateForm from "@/components/PalletUpdateForm";
 import { Button } from "@/components/ui/button";
@@ -39,7 +38,9 @@ import axios from "axios";
 import {
   ArrowLeft,
   ArrowRight,
+  Barcode,
   Check,
+  CircleX,
   Grid2X2,
   Grid2X2Plus,
   Grid2X2X,
@@ -74,7 +75,7 @@ export default function StorageReceivingDetail() {
     fetchStorageReceiving,
     deletePallet,
     alertDialogRef,
-    alertDialogWidth
+    alertDialogWidth,
   } = usePage();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -434,7 +435,7 @@ export default function StorageReceivingDetail() {
                         placeholder="Enter manual pallet number"
                       />
                     </div>
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                       <Label htmlFor="locationId">Location </Label>
                       <LocationCombobox
                         value={palletData.locationId}
@@ -449,11 +450,10 @@ export default function StorageReceivingDetail() {
                         }}
                         placeholder="Search a location"
                       />
-                    </div>
+                    </div> */}
                     <p className="text-sm text-muted-foreground">
                       Click "Generate Barcode" to create a barcode based on the
-                      receiving number, customer, date, weight, and a unique
-                      pallet ID.
+                      receiving number, date, material number and weight.
                     </p>
                     <div className="flex justify-center">
                       <Button onClick={handleNextStep}>Generate Barcode</Button>
@@ -633,7 +633,12 @@ export default function StorageReceivingDetail() {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Pallet</AlertDialogTitle>
+                            <AlertDialogTitle>
+                              <div className="flex flex-row gap-2">
+                                <CircleX className="h-6 w-6 pt-1 text-teal-500" />
+                                Delete Pallet
+                              </div>
+                            </AlertDialogTitle>
                             <AlertDialogDescription>
                               Are you sure you want to delete this pallet [
                               {selectedPallet?.palletNumber || "NA"}]?
@@ -688,7 +693,12 @@ export default function StorageReceivingDetail() {
                         </AlertDialogTrigger>
                         <AlertDialogContent ref={alertDialogRef}>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Pallet Barcode</AlertDialogTitle>
+                            <AlertDialogTitle>
+                            <div className="flex flex-row gap-2">
+                                <Barcode className="h-6 w-6 pt-1 text-teal-500" />
+                                Pallet Barcode
+                              </div>
+                            </AlertDialogTitle>
                             <AlertDialogDescription>
                               Barcode for pallet: {selectedPallet?.palletNumber}
                               <br />

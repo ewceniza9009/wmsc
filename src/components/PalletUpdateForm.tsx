@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import InputNumber from "@/components/ui/input-number";
 import { Label } from "@/components/ui/label";
 import { StorageReceivingPallet } from "@/models/TrnStorageReceivingPallet";
-import { Check, X } from "lucide-react";
+import { Check, ListChecks, Locate, X } from "lucide-react";
 import { useState } from "react";
 import { LocationCombobox } from "./LocationCombobox";
 import { Button } from "./ui/button";
@@ -31,6 +31,9 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
   onCancel,
   showLocationOnly = false,
 }) => {
+  const [manualPalletNumber, setManualPalletNumber] = useState(
+    pallet.manualPalletNumber
+  );
   const [boxNumber, setBoxNumber] = useState(pallet.boxNumber);
   const [vendorBatchNumber, setVendorBatchNumber] = useState(
     pallet.vendorBatchNumber
@@ -72,9 +75,16 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
     <AlertDialog open={true}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{showLocationOnly ? "Put Into Location" : "Update Pallet"}</AlertDialogTitle>
+          <AlertDialogTitle>
+            <div className="flex flex-row gap-2">
+              {showLocationOnly ? <Locate className="h-6 w-6 pt-1 text-teal-500"/> : <ListChecks className="h-6 w-6 pt-1 text-teal-500" />}{" "}
+              {showLocationOnly ? "Put Into Location" : "Update Pallet"}
+            </div>
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            {showLocationOnly? "Please select a location for the pallet." : "Please update the pallet details."}
+            {showLocationOnly
+              ? "Please select a location for the pallet."
+              : "Please update the pallet details."}
           </AlertDialogDescription>
         </AlertDialogHeader>
         {showLocationOnly ? (
@@ -92,6 +102,20 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
           </div>
         ) : (
           <div className="grid gap-4 py-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+              <Label
+                htmlFor="manualPalletNumber"
+                className="text-left sm:text-left"
+              >
+                Man. Pallet #
+              </Label>
+              <Input
+                id="manualPalletNumber"
+                value={manualPalletNumber}
+                onChange={(e) => setManualPalletNumber(e.target.value)}
+                className="sm:col-span-3"
+              />
+            </div>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
               <Label htmlFor="boxNumber" className="text-left sm:text-left">
                 Box #
@@ -204,8 +228,8 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
               <X className="h-4 w-4" /> Cancel
             </Button>
             <Button variant="default" onClick={handleUpdate}>
-              <Check className="h-4 w-4" /> 
-              {showLocationOnly? "Put" : "Update"}
+              <Check className="h-4 w-4" />
+              {showLocationOnly ? "Put" : "Update"}
             </Button>
           </div>
         </AlertDialogFooter>
