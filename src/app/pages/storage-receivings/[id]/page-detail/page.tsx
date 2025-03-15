@@ -19,7 +19,7 @@ export default function StorageReceivingDetailPage() {
   const { id } = useParams();
   const isEdit = id !== "new";
 
-  if (isDetailLoading) {
+  if (isDetailLoading) {    
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div>
@@ -67,6 +67,7 @@ export default function StorageReceivingDetailPage() {
                 <Input
                   id="receivingNumber"
                   value={form.receivingNumber}
+                  disabled
                   onChange={(e) =>
                     handleChange("receivingNumber", e.target.value)
                   }

@@ -13,9 +13,9 @@ export default function usePage() {
   const { id } = useParams();
   const isEdit = id !== "new";
 
-  const [storageReceivings, setStorageReceivings] = useState<StorageReceiving[]>(
-    []
-  );
+  const [storageReceivings, setStorageReceivings] = useState<
+    StorageReceiving[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailLoading, setIsDetailLoading] = useState(true);
 
@@ -26,7 +26,7 @@ export default function usePage() {
 
   const [form, setForm] = useState({
     receivingOrderId: null,
-    receivingNumber: "",
+    receivingNumber: "NA",
     warehouseId: "",
     pickFromWarehouseId: "",
     storagePickId: "",
@@ -44,6 +44,17 @@ export default function usePage() {
     receivedBy: "",
     isLocked: false,
   });
+
+  useEffect(() => {
+    const storedWarehouse = localStorage.getItem("selectedWarehouse");
+    if (storedWarehouse) {
+      console.log(storedWarehouse);
+      setForm((prevForm) => ({
+        ...prevForm,
+        warehouseId: storedWarehouse,
+      }));
+    }
+  }, []);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedStorageReceving, setSelectedStorageReceving] =
@@ -66,11 +77,11 @@ export default function usePage() {
   useEffect(() => {
     if (isEdit && id) {
       setIsDetailLoading(true);
-      
+
       axios
         .get(`/api/storage-receivings/${id}`)
         .then((res) => {
-          setForm(res.data)
+          setForm(res.data);
         })
         .catch((err) => console.error(err))
         .finally(() => setIsDetailLoading(false));
@@ -103,7 +114,9 @@ export default function usePage() {
   const handleDelete = async () => {
     if (!selectedStorageReceving) return;
     try {
-      await axios.delete(`/api/storage-receivings/${selectedStorageReceving.id}`);
+      await axios.delete(
+        `/api/storage-receivings/${selectedStorageReceving.id}`
+      );
       toast.success("Storage receiving deleted successfully");
       fetchStorageReceivings(currentPage, itemsPerPage, searchTerm);
       setIsDeleteDialogOpen(false);

@@ -57,7 +57,7 @@ export default function StorageRecevingsPage() {
           <p>Manage storage receivings and their information</p>
         </div>
 
-        <Link href="./storage-receivings/new">
+        <Link href={`/pages/storage-receivings/new/page-detail`}>
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" /> Add
           </Button>

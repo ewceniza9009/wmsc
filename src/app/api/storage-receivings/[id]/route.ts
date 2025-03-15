@@ -221,68 +221,9 @@ export async function PUT(
           {
             ...body,
             updatedBy: session.user.id,
-          },
-          { new: true, session: session_db }
-        );
-
-      // Process pallets if provided
-      if (body.pallets && Array.isArray(body.pallets)) {
-        // Get existing pallet IDs for this storage receiving
-        const existingPallets = await TrnStorageReceivingPallet.find(
-          {
-            storageReceivingId: id,
-          },
-          "_id",
-          { session: session_db }
-        );
-
-        const existingPalletIds = existingPallets.map((p) => p._id.toString());
-        const incomingPalletIds = body.pallets
-          .filter((p: any) => p.id)
-          .map((p: any) => p.id);
-
-        // Find pallets to delete (existing but not in incoming)
-        const palletIdsToDelete = existingPalletIds.filter(
-          (existingId) => !incomingPalletIds.includes(existingId)
-        );
-
-        // Delete pallets that are no longer in the list
-        if (palletIdsToDelete.length > 0) {
-          await TrnStorageReceivingPallet.deleteMany(
-            {
-              _id: { $in: palletIdsToDelete },
-              storageReceivingId: id,
-            },
-            { session: session_db }
-          );
-        }
-
-        // Update or create pallets
-        for (const pallet of body.pallets) {
-          if (pallet.id) {
-            // Update existing pallet
-            await TrnStorageReceivingPallet.findByIdAndUpdate(
-              pallet.id,
-              {
-                ...pallet,
-                storageReceivingId: id, // Ensure correct parent ID
-                updatedBy: session.user.id,
-              },
-              { session: session_db }
-            );
-          } else {
-            // Create new pallet
-            const newPallet = new TrnStorageReceivingPallet({
-              ...pallet,
-              storageReceivingId: id,
-              createdBy: session.user.id,
-              updatedBy: session.user.id,
-            });
-            await newPallet.save({ session: session_db });
           }
-        }
-      }
-
+        );
+      
       // Commit the transaction
       await session_db.commitTransaction();
       session_db.endSession();
