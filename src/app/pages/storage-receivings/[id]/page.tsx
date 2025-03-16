@@ -553,9 +553,9 @@ export default function StorageReceivingDetail() {
             <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4">
               {filteredPallets.map((pallet, index) => (
                 <div
-                  key={index}
-                  className="border rounded-lg p-4 flex flex-col h-full"
-                >
+                                  key={index}
+                                  className="rounded-lg p-4 flex flex-col h-full border border-gray-200 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+                                >
                   <div className="grid grid-rows-5 md:grid-flow-col gap-1 flex-grow">
                     <div>
                       <p className="font-medium text-[12px]">Pallet Number:</p>
