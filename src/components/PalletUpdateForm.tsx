@@ -89,7 +89,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
         </AlertDialogHeader>
         {showLocationOnly ? (
           <div className="grid gap-4 py-4">
-            <div className="flex flex-col gap-2 ">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="locationId">Location</Label>
               <LocationCombobox
                 value={pallet.locationId}
@@ -102,7 +102,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
           </div>
         ) : (
           <div className="grid gap-4 py-4">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <div className="flex flex-col gap-2">
               <Label
                 htmlFor="manualPalletNumber"
                 className="text-left sm:text-left"
@@ -113,10 +113,9 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
                 id="manualPalletNumber"
                 value={manualPalletNumber}
                 onChange={(e) => setManualPalletNumber(e.target.value)}
-                className="sm:col-span-3"
-              />
+                />
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="boxNumber" className="text-left sm:text-left">
                 Box #
               </Label>
@@ -124,10 +123,9 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
                 id="boxNumber"
                 value={boxNumber}
                 onChange={(e) => setBoxNumber(e.target.value)}
-                className="sm:col-span-3"
-              />
+                />
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <div className="flex flex-col gap-2">
               <Label
                 htmlFor="vendorBatchNumber"
                 className="text-left sm:text-left"
@@ -138,10 +136,9 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
                 id="vendorBatchNumber"
                 value={vendorBatchNumber}
                 onChange={(e) => setVendorBatchNumber(e.target.value)}
-                className="sm:col-span-3"
-              />
+                />
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="batchCode" className="text-left sm:text-left">
                 Batch Code
               </Label>
@@ -149,10 +146,9 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
                 id="batchCode"
                 value={batchCode}
                 onChange={(e) => setBatchCode(e.target.value)}
-                className="sm:col-span-3"
-              />
+                />
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="expiryDate" className="text-left sm:text-left">
                 Exp. Date
               </Label>
@@ -163,7 +159,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
                 className="sm:col-span-3"
               />
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <div className="flex flex-col gap-2">
               <Label
                 htmlFor="manufactureDate"
                 className="text-left sm:text-left"
@@ -174,10 +170,9 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
                 date={manufactureDate}
                 onSelect={(date) => setManufactureDate(date)}
                 placeholder="Select date"
-                className="sm:col-span-3"
               />
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <div className="flex flex-col gap-2">
               <Label
                 htmlFor="noDaysToPrompAlert"
                 className="text-left sm:text-left"
@@ -188,10 +183,9 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
                 id="noDaysToPrompAlert"
                 value={noDaysToPrompAlert}
                 onChange={(value) => setNoDaysToPrompAlert(value)}
-                className="sm:col-span-3"
               />
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <div className="flex flex-col gap-2">
               <Label
                 htmlFor="arrivalSequenceNo"
                 className="text-left sm:text-left"
@@ -202,10 +196,9 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
                 id="arrivalSequenceNo"
                 value={arrivalSequenceNo}
                 onChange={(value) => setArrivalSequenceNo(value)}
-                className="sm:col-span-3"
-              />
+                />
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:grid sm:grid-cols-4 sm:gap-4">
+            <div className="flex flex-col gap-2">
               <Label
                 htmlFor="isLastMaterial"
                 className="text-right sm:text-left"
@@ -217,8 +210,7 @@ const PalletUpdateForm: React.FC<PalletUpdateFormProps> = ({
                 id="isLastMaterial"
                 checked={isLastMaterial}
                 onChange={(e) => setIsLastMaterial(e.target.checked)}
-                className="sm:col-span-3"
-              />
+                />
             </div>
           </div>
         )}
