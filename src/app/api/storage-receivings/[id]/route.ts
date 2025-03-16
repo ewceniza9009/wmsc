@@ -281,6 +281,21 @@ export async function DELETE(
     session_db.startTransaction();
 
     try {
+      // Check if there are assigned pallets
+      const assignedPallets = await TrnStorageReceivingPallet.find({
+        storageReceivingId: id,
+      });
+
+      if (assignedPallets.length > 0) {
+        return NextResponse.json(
+          {
+            message:
+              "Cannot delete storage receiving record because it has assigned pallets",
+          },
+          { status: 400 }
+        );
+      }
+
       // Delete the storage receiving record
       await TrnStorageReceiving.findByIdAndDelete(id);
 
