@@ -563,7 +563,13 @@ export default function StorageReceivingDetail() {
                     </div>
                     <div>
                       <p className="font-medium text-[12px]">Location:</p>
-                      <p className="text-[12px]">{pallet.locationName}</p>
+                      <p
+                        className={`text-[12px] ${
+                          !pallet.locationName ? "text-yellow-400 font-bold italic" : "text-primary"
+                        }`}
+                      >
+                        {pallet.locationName || "Unassigned..."}
+                      </p>
                     </div>
                     <div>
                       <p className="font-medium text-[12px]">Material:</p>
@@ -694,7 +700,7 @@ export default function StorageReceivingDetail() {
                         <AlertDialogContent ref={alertDialogRef}>
                           <AlertDialogHeader>
                             <AlertDialogTitle>
-                            <div className="flex flex-row gap-2">
+                              <div className="flex flex-row gap-2">
                                 <Barcode className="h-6 w-6 pt-1 text-teal-500" />
                                 Pallet Barcode
                               </div>

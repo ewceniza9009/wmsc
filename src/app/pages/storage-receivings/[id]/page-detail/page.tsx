@@ -61,7 +61,7 @@ export default function StorageReceivingDetailPage() {
             <CardTitle>Storage Receiving Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-rows-8 md:grid-flow-col gap-4">
+            <div className="grid grid-rows-7 md:grid-flow-col gap-4">
               <div className="space-y-2">
                 <Label htmlFor="receivingNumber">Receiving Number *</Label>
                 <Input
