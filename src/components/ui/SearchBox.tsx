@@ -17,13 +17,19 @@ const SearchBox: React.FC<SearchBoxProps> = ({ onSearch }) => {
     <div className="relative">
       <input
         type="text"
-        placeholder="Search pallets..."
+        placeholder="Search pallet(s)..."
         value={searchTerm}
         onChange={handleInputChange}
-        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-primary"
+        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-primary placeholder:italic text-sm"
       />
     </div>
   );
 };
 
 export default SearchBox;
+
+const styles = {
+  'italic-placeholder': {
+    fontStyle: 'italic',
+  },
+};

@@ -150,8 +150,8 @@ export default function StorageReceivingDetail() {
             <Grid2X2Plus className="h-6 w-6 text-teal-500" />
             Storage Receiving Pallet
           </h1>
-          <p className="text-primary italic">
-            Receiving Number: {storageReceiving.receivingNumber}, Customer:{" "}
+          <p className="text-gray-500 text-xs font-semibold mt-2">
+            {storageReceiving.receivingNumber} {" - "}
             {storageReceiving.customerName}
           </p>
         </div>
