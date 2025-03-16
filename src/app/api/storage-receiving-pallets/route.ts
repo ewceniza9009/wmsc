@@ -1,4 +1,5 @@
 import dbConnect from "@/lib/mongoose";
+import TrnStorageReceiving from "@/models/TrnStorageReceiving";
 import TrnStorageReceivingPallet from "@/models/TrnStorageReceivingPallet";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -148,6 +149,23 @@ export async function POST(request: NextRequest) {
     });
 
     await storageReceivingPallet.save();
+
+    const storageReceivingId = storageReceivingPallet.storageReceivingId;
+    const pallets = await TrnStorageReceivingPallet.find({ storageReceivingId });
+
+    let totalQuantity = 0;
+    let totalWeight = 0;
+
+    pallets.forEach((pallet) => {
+      totalQuantity += pallet.quantity;
+      totalWeight += pallet.netWeight;
+    });
+
+    // Update the storage receiving record
+    await TrnStorageReceiving.findByIdAndUpdate(storageReceivingId, {
+      quantity: totalQuantity,
+      weight: totalWeight,
+    });
 
     return NextResponse.json(
       {
