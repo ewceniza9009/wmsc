@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 // Define Models for your tables (collections)
 // -------------------------------------------------------
 
-const TrnStorageStockTransferSchema = new Schema({
+const TrnStorageTransferSchema = new Schema({
   WarehouseId: { type: Schema.Types.ObjectId, ref: "MstWarehouse", required: true },
   STNumber: { type: String, required: true },
   STDate: { type: Date, required: true },
@@ -19,15 +19,15 @@ const TrnStorageStockTransferSchema = new Schema({
   UpdatedDateTime: { type: Date, required: false },
 });
 
-const TrnStorageStockTransfer = mongoose.model(
-  "TrnStorageStockTransfer",
-  TrnStorageStockTransferSchema
+const TrnStorageTransfer = mongoose.model(
+  "TrnStorageTransfer",
+  TrnStorageTransferSchema
 );
 
-const TrnStorageStockTransferMaterialSchema = new Schema({
-  StorageStockTransferId: {
+const TrnStorageTransferMaterialSchema = new Schema({
+  StorageTransferId: {
     type: Schema.Types.ObjectId,
-    ref: "TrnStorageStockTransfer",
+    ref: "TrnStorageTransfer",
     required: true,
   },
   StorageReceivingPalletId: {
@@ -42,9 +42,9 @@ const TrnStorageStockTransferMaterialSchema = new Schema({
   Weight: { type: Number, required: true },
 });
 
-const TrnStorageStockTransferMaterial = mongoose.model(
-  "TrnStorageStockTransferMaterial",
-  TrnStorageStockTransferMaterialSchema
+const TrnStorageTransferMaterial = mongoose.model(
+  "TrnStorageTransferMaterial",
+  TrnStorageTransferMaterialSchema
 );
 
 // -------------------------------------------------------
@@ -60,8 +60,8 @@ async function seedData() {
 
     // Clear out existing data
     await Promise.all([
-      TrnStorageStockTransfer.deleteMany({}),
-      TrnStorageStockTransferMaterial.deleteMany({}),
+      TrnStorageTransfer.deleteMany({}),
+      TrnStorageTransferMaterial.deleteMany({}),
     ]);
 
     // Get references to existing documents (replace with actual IDs)
@@ -74,8 +74,8 @@ async function seedData() {
     const materialId = "67c943d2229205c98c6cef71"; // Replace with a valid MstMaterial ID
     const unitId = "67c943d2229205c98c6cef6e"; // Replace with a valid MstUnit ID
 
-    // Seed TrnStorageStockTransfer
-    const stockTransfer = await TrnStorageStockTransfer.create({
+    // Seed TrnStorageTransfer
+    const stockTransfer = await TrnStorageTransfer.create({
       WarehouseId: warehouseId,
       STNumber: "ST001",
       STDate: new Date(),
@@ -89,9 +89,9 @@ async function seedData() {
       UpdatedDateTime: new Date(),
     });
 
-    // Seed TrnStorageStockTransferMaterial
-    await TrnStorageStockTransferMaterial.create({
-      StorageStockTransferId: stockTransfer._id,
+    // Seed TrnStorageTransferMaterial
+    await TrnStorageTransferMaterial.create({
+      StorageTransferId: stockTransfer._id,
       StorageReceivingPalletId: storageReceivingPalletId,
       LocationId: locationId,
       MaterialId: materialId,

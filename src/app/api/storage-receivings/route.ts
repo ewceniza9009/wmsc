@@ -165,11 +165,11 @@ export async function POST(request: NextRequest) {
       receivingNumber: body.receivingNumber,
     });
 
-    // Check if the room exists
+    // Check if the customer exists
     const customer = await MstCustomer.findById(body.customerId);
 
     if (!customer) {
-      return NextResponse.json({ message: "Room not found" }, { status: 404 });
+      return NextResponse.json({ message: "Customer not found" }, { status: 404 });
     }
 
     if (existingReceiving) {
