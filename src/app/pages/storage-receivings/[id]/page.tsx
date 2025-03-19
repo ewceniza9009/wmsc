@@ -553,9 +553,9 @@ export default function StorageReceivingDetail() {
             <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4">
               {filteredPallets.map((pallet, index) => (
                 <div
-                                  key={index}
-                                  className="rounded-lg p-4 flex flex-col h-full border border-gray-200 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
-                                >
+                  key={index}
+                  className="rounded-lg p-4 flex flex-col h-full border border-gray-200 shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105"
+                >
                   <div className="grid grid-rows-5 md:grid-flow-col gap-1 flex-grow">
                     <div>
                       <p className="font-medium text-[12px]">Pallet Number:</p>
@@ -565,7 +565,9 @@ export default function StorageReceivingDetail() {
                       <p className="font-medium text-[12px]">Location:</p>
                       <p
                         className={`text-[12px] ${
-                          !pallet.locationName ? "text-yellow-400 font-bold italic" : "text-primary"
+                          !pallet.locationName
+                            ? "text-yellow-400 font-bold italic"
+                            : "text-primary"
                         }`}
                       >
                         {pallet.locationName || "Unassigned..."}
@@ -711,8 +713,10 @@ export default function StorageReceivingDetail() {
                               <br />
                               <ReactBarcode
                                 value={selectedPallet?.barCode || "NA"}
-                                width={alertDialogWidth / 240}
+                                width={1.2}
                                 height={80}
+                                format="CODE128"
+                                renderer="svg"
                               />
                             </AlertDialogDescription>
                           </AlertDialogHeader>
