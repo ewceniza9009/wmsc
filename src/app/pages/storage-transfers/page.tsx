@@ -105,7 +105,7 @@ export default function StorageTransfersPage() {
                 </TableCell>
                 <TableCell className="text-right">
                   <Link
-                    href={`/pages/storage-transfers/${storageTransfer.id}/page-detail`}
+                    href={`/pages/storage-transfers/${storageTransfer.id}`}
                   >
                     <Button variant="ghost" size="icon">
                       <Pencil className="h-4 w-4" />
