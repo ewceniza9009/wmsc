@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { ITrnStorageTransferMaterial, StorageTransferMaterial } from './TrnStorageTransferMaterial';
 
 export interface ITrnStorageTransfer extends Document {
   WarehouseId: Schema.Types.ObjectId;
@@ -14,6 +15,8 @@ export interface ITrnStorageTransfer extends Document {
   CreatedDateTime?: Date;
   UpdatedById?: Schema.Types.ObjectId;
   UpdatedDateTime?: Date;
+  // Virtual property for related materials
+  materials?: ITrnStorageTransferMaterial[];
 }
 
 export interface StorageTransfer {
@@ -31,6 +34,8 @@ export interface StorageTransfer {
   CreatedDateTime?: Date;
   UpdatedById?: string;
   UpdatedDateTime?: Date;
+  // Virtual property for related material objects
+  materials?: StorageTransferMaterial[];
 }
 
 const TrnStorageTransferSchema: Schema = new Schema({
@@ -46,6 +51,18 @@ const TrnStorageTransferSchema: Schema = new Schema({
   UpdatedById: { type: Schema.Types.ObjectId, ref: 'User', required: false },
   UpdatedDateTime: { type: Date, required: false },
 });
+
+// Add a virtual property for related materials
+TrnStorageTransferSchema.virtual("materials", {
+  ref: "TrnStorageTransferMaterial",   // The model to use
+  localField: "_id",                    // Field in this schema to match
+  foreignField: "StorageStockTransferId", // Field in the material schema
+  justOne: false,                       // Indicates an array of materials
+});
+
+// Ensure that virtual fields are serialized.
+TrnStorageTransferSchema.set("toObject", { virtuals: true });
+TrnStorageTransferSchema.set("toJSON", { virtuals: true });
 
 const TrnStorageTransfer =
   mongoose.models.TrnStorageTransfer ||
