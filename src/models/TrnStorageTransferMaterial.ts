@@ -38,7 +38,11 @@ const TrnStorageTransferMaterialSchema: Schema = new Schema({
   Weight: { type: Number, required: true },
 });
 
-export default mongoose.model<ITrnStorageTransferMaterial>(
-  'TrnStorageTransferMaterial',
-  TrnStorageTransferMaterialSchema
-);
+const TrnStorageTransferMaterial =
+  mongoose.models.TrnStorageTransferMaterial ||
+  mongoose.model<ITrnStorageTransferMaterial>(
+    'TrnStorageTransferMaterial',
+    TrnStorageTransferMaterialSchema
+  );
+
+export default TrnStorageTransferMaterial;

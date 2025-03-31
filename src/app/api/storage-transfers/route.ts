@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/mongoose";
 import MstWarehouse from "@/models/MstWarehouse";
 import TrnStorageTransfer from "@/models/TrnStorageTransfer";
+import TrnStorageTransferMaterial from "@/models/TrnStorageTransferMaterial"; // Ensure import is here
 import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -97,6 +98,8 @@ export async function POST(request: NextRequest) {
     // Connect to database
     await dbConnect();
 
+    var warehousePlaceholder = MstWarehouse.find({});
+
     // Get user session
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -138,13 +141,34 @@ export async function POST(request: NextRequest) {
       // Create the storage transfer record
       const storageTransfer = new TrnStorageTransfer({
         ...body,
+        materials: undefined, // Exclude materials from the main document body initially
         CreatedById: session.user.id,
         UpdatedById: session.user.id,
       });
 
-      await storageTransfer.save();
-      
-      const warehouse = await MstWarehouse.findById(body.warehouseId);
+      // Save the main transfer document within the transaction
+      await storageTransfer.save({ session: session_db });
+
+      // Check if materials data is provided and is an array
+      if (body.materials && Array.isArray(body.materials)) {
+        // Create and save each material document
+        for (const materialData of body.materials) {
+          // Basic validation for material data (can be expanded)
+          if (!materialData.StorageReceivingPalletId || !materialData.MaterialId || !materialData.Quantity) {
+             throw new Error("Missing required fields in material data.");
+          }
+
+          const transferMaterial = new TrnStorageTransferMaterial({
+            ...materialData, // Spread the material data from the request
+            StorageStockTransferId: storageTransfer._id, // Link to the created transfer
+          });
+          await transferMaterial.save({ session: session_db });
+        }
+      } else {
+        // If materials are mandatory, you might want to throw an error here
+        // For now, we assume an empty materials array is acceptable if body.materials is missing/not an array
+        console.log("No materials data provided or data is not an array. Proceeding without materials.");
+      }
 
       // Commit the transaction
       await session_db.commitTransaction();
@@ -161,10 +185,23 @@ export async function POST(request: NextRequest) {
       // Abort transaction on error
       await session_db.abortTransaction();
       session_db.endSession();
-      throw error;
+      console.error("Error during storage transfer creation transaction:", error); // Log the specific error
+      // Provide more specific error messages if possible
+      let errorMessage = "Failed to create storage transfer";
+      if (error.message.includes("Missing required fields in material data")) {
+          errorMessage = error.message;
+      } else if (error instanceof mongoose.Error.ValidationError) {
+          errorMessage = `Validation Error: ${error.message}`;
+      } else {
+          errorMessage = error.message || errorMessage;
+      }
+      return NextResponse.json(
+        { message: errorMessage },
+        { status: error.message.includes("Missing required fields") ? 400 : 500 } // Return 400 for validation errors
+      );
     }
   } catch (error: any) {
-    console.error("Error creating storage transfer:", error);
+    console.error("Error creating storage transfer (outer):", error);
     return NextResponse.json(
       { message: error.message || "Failed to create storage transfer" },
       { status: 500 }

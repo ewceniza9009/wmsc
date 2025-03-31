@@ -15,6 +15,7 @@ export interface ITrnStorageTransfer extends Document {
   CreatedDateTime?: Date;
   UpdatedById?: Schema.Types.ObjectId;
   UpdatedDateTime?: Date;
+  __v: number;
   // Virtual property for related materials
   materials?: ITrnStorageTransferMaterial[];
 }
@@ -34,6 +35,7 @@ export interface StorageTransfer {
   CreatedDateTime?: Date;
   UpdatedById?: string;
   UpdatedDateTime?: Date;
+  __v: number;
   // Virtual property for related material objects
   materials?: StorageTransferMaterial[];
 }
@@ -50,6 +52,16 @@ const TrnStorageTransferSchema: Schema = new Schema({
   CreatedDateTime: { type: Date, required: false },
   UpdatedById: { type: Schema.Types.ObjectId, ref: 'User', required: false },
   UpdatedDateTime: { type: Date, required: false },
+  __v: {
+    type: Number,
+    default: 0,
+  },
+},
+{
+  timestamps: {
+    createdAt: "createdDateTime",
+    updatedAt: "updatedDateTime",
+  },
 });
 
 // Add a virtual property for related materials
