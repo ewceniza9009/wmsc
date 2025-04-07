@@ -132,8 +132,8 @@ export default function MaterialDetailPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {units.map((unit) => (
-                      <SelectItem key={unit.id} value={unit.id}>
-                        {unit.unitName} ({unit.unitName})
+                      <SelectItem key={(unit as any).id} value={(unit as any).id}>
+                        {(unit as any).unitName} ({(unit as any).unitNumber})
                       </SelectItem>
                     ))}
                   </SelectContent>
