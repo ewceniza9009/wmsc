@@ -56,26 +56,27 @@ export async function GET(request: NextRequest) {
       .skip(skip)
       .limit(limit);
 
-    const transformedStorageTransfers = storageTransfers.map((transfer) => ({
-      id: transfer._id.toString(),
-      WarehouseId: transfer.WarehouseId.toString(),
-      WarehouseName: transfer.WarehouseId?.warehouseName,
-      STNumber: transfer.STNumber,
-      STDate: transfer.STDate,
-      ToWarehouseId: transfer.ToWarehouseId.toString(),
-      ToWarehouseName: transfer.ToWarehouseId?.warehouseName,
-      Particulars: transfer.Particulars,
-      ManualSTNumber: transfer.ManualSTNumber,
-      IsLocked: transfer.IsLocked,
-      CreatedById: transfer.CreatedById
-        ? transfer.CreatedById.toString()
-        : null,
-      CreatedDateTime: transfer.CreatedDateTime,
-      UpdatedById: transfer.UpdatedById
-        ? transfer.UpdatedById.toString()
-        : null,
-      UpdatedDateTime: transfer.UpdatedDateTime,
-    }));
+  const transformedStorageTransfers = storageTransfers.map((transfer) => {
+    const { id: warehouseId, name: warehouseName } = getIdAndName(transfer.WarehouseId);
+    const { id: toWarehouseId, name: toWarehouseName } = getIdAndName(transfer.ToWarehouseId);
+
+    return {
+      id: transfer._id?.toString() ?? null,
+      WarehouseId: warehouseId,
+      WarehouseName: warehouseName,
+      STNumber: transfer.STNumber ?? null,
+      STDate: transfer.STDate ? new Date(transfer.STDate).toISOString() : null,
+      ToWarehouseId: toWarehouseId,
+      ToWarehouseName: toWarehouseName,
+      Particulars: transfer.Particulars ?? null,
+      ManualSTNumber: transfer.ManualSTNumber ?? null,
+      IsLocked: Boolean(transfer.IsLocked),
+      CreatedById: transfer.CreatedById?.toString() ?? null,
+      CreatedDateTime: transfer.CreatedDateTime ? new Date(transfer.CreatedDateTime).toISOString() : null,
+      UpdatedById: transfer.UpdatedById?.toString() ?? null,
+      UpdatedDateTime: transfer.UpdatedDateTime ? new Date(transfer.UpdatedDateTime).toISOString() : null,
+    };
+  });
 
     return NextResponse.json({
       items: transformedStorageTransfers,
@@ -90,6 +91,24 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function getIdAndName(obj: any): { id: string | null; name: string | null } {
+  if (!obj) return { id: null, name: null };
+
+  // If it's a Mongoose Document (populated), get from .._id and .warehouseName
+  if (typeof obj === 'object' && '_id' in obj) {
+    const id = obj._id?.toString() ?? null;
+    const name = obj.warehouseName ?? obj.name ?? null;
+    return { id, name };
+  }
+
+  // If it's just an ObjectId string
+  if (typeof obj === 'string') {
+    return { id: obj, name: null };
+  }
+
+  return { id: null, name: null };
 }
 
 // POST /api/storage-transfers - Create a new storage transfer record

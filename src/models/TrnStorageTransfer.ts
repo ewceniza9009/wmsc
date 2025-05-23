@@ -41,16 +41,16 @@ export interface StorageTransfer {
 }
 
 const TrnStorageTransferSchema: Schema = new Schema({
-  WarehouseId: { type: Schema.Types.ObjectId, ref: 'MstWarehouse', required: true },
+  WarehouseId: { type: mongoose.Schema.Types.ObjectId, ref: 'MstWarehouse', required: true },
   STNumber: { type: String, required: true },
   STDate: { type: Date, required: true },
-  ToWarehouseId: { type: Schema.Types.ObjectId, ref: 'MstWarehouse', required: true },
+  ToWarehouseId: { type: mongoose.Schema.Types.ObjectId, ref: 'MstWarehouse', required: true },
   Particulars: { type: String, required: true },
   ManualSTNumber: { type: String, required: true },
   IsLocked: { type: Boolean, default: false },
-  CreatedById: { type: Schema.Types.ObjectId, ref: 'User', required: false },
+  CreatedById: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
   CreatedDateTime: { type: Date, required: false },
-  UpdatedById: { type: Schema.Types.ObjectId, ref: 'User', required: false },
+  UpdatedById: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
   UpdatedDateTime: { type: Date, required: false },
   __v: {
     type: Number,
